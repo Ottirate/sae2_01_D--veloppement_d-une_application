@@ -1,0 +1,7 @@
+./cinke_terra/Controleur.java
+./cinke_terra/ihm/FrameGame.java
+./cinke_terra/ihm/PanelIles.java
+./cinke_terra/metier/Ile.java
+./cinke_terra/metier/Joueur.java
+./cinke_terra/metier/Mappe.java
+./cinke_terra/metier/Region.java
