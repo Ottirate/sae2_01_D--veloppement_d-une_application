@@ -26,4 +26,6 @@ public class FrameGame extends JFrame
 
 		this.setVisible(true);
 	}
+
+	public void maj () { this.panelIles.repaint();}
 }

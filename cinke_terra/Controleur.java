@@ -8,12 +8,6 @@ import java.util.List;
 import java.awt.Color;
 import java.awt.Dimension;
 
-import javax.swing.JFrame;
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Point;
-
 import java.awt.Toolkit;
 
 public class Controleur 
@@ -90,6 +84,7 @@ public class Controleur
 	public void piocher( int indice )
 	{
 		this.metier.piocher( indice );
+		this.ihmMappe.maj();
 	}
 
 	public Carte getCarte(int indice)
