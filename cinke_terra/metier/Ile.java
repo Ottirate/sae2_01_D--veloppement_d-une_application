@@ -54,6 +54,9 @@ public class Ile
 	public int    getXNom   () { return this.xNom;    }
 	public int    getYNom   () { return this.yNom;    }
 
+	public void addChemin (Chemin c) { this.lstChemins.add(c); }
+	public List<Chemin> getCheminAutour () { return this.lstChemins; }
+
 	public String toString ()
 	{
 		return String.format("%-15s", this.nom    ) +

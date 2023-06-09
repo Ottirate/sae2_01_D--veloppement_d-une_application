@@ -8,14 +8,16 @@ import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.event.*;
 
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PanelIles extends JPanel
 {
+	
+	private Ile ile1;
+	private Ile ile2;
+
 	public static String NOM_CHEMIN = "../resources/iles/";
 	private ArrayList<ImageIcon> lstImgIles;
 
@@ -24,6 +26,7 @@ public class PanelIles extends JPanel
 	private int maxX;
 	private int maxY;
 	private double coef;
+	private ArrayList<Polygon> polygons;
 
 	public PanelIles(Controleur ctrl) 
 	{
@@ -63,6 +66,11 @@ public class PanelIles extends JPanel
 		
 	}
 
+
+	/*-----------------------------------*/
+	/*      DESSINS DES COMPOSANTS       */
+	/*-----------------------------------*/
+	
 	public void paintComponent(Graphics g) 
 	{
 		super.paintComponent(g);
@@ -74,15 +82,18 @@ public class PanelIles extends JPanel
 		/* CALCUL DU COEF DE PROPORTIONS */
 		/*                               */
 		
-		int hauteur = this.ctrl.getHauteur() - 40 ;
-		int largeur = this.ctrl.getLargeur() - 20 ;
+		int hauteur    = this.ctrl.getHauteur() - 40 ;
+		int largeur    = this.ctrl.getLargeur() - 20 ;
 		
-		double coef1 = hauteur * 1.0 / (this.maxY);
-		double coef2 = largeur * 1.0 / (this.maxX);
+		double coef1   = hauteur * 1.0 / (this.maxY);
+		double coef2   = largeur * 1.0 / (this.maxX);
+		double oldCoef = this.coef;
 		
 		this.coef = Math.min(coef1, coef2);
 
 		if (this.coef < 0.3) this.coef = 0.3;
+
+		if ( oldCoef != this.coef ) this.updateShape();
 
 
 		//Afficher les routes
@@ -120,48 +131,192 @@ public class PanelIles extends JPanel
 
 		g2.setColor(Color.BLACK);
 
+		Color colFeutre = this.ctrl.getColFeutre();
 		// Afficher les iles
+		
+		if (this.ile1 != null)
+		{
+			for (Chemin c : this.ile1.getCheminAutour())
+				if (this.ctrl.estColoriable(c))
+				{
+					this.drawPolygonePossible(c.getIleA(), g2);
+					this.drawPolygonePossible(c.getIleB(), g2);
+				}
+				
+		}
+
 		for (Ile i : this.ctrl.getIles()) 
 		{
+			//Contour si selectionné 
+			if (i == this.ile1 || i == this.ile2)
+			{
+				Polygon p = this.trouverPolygon(i);
+				g2.setColor(colFeutre.brighter());
+				g2.fill(p);
+				g2.setStroke(new BasicStroke(5f));
+				g2.drawPolygon(p);
+			}
+
 			// Images
 			ImageIcon img = this.lstImgIles.get(lstIles.indexOf(i));
 
 			int larg = img.getIconWidth();
 			int lon  = img.getIconHeight();
-
 			Image reImage = img.getImage().getScaledInstance((int)(larg*this.coef), (int)(lon*this.coef), Image.SCALE_DEFAULT);
-
 			ImageIcon newImage = new ImageIcon(reImage);
+
 			newImage.paintIcon(this, g, (int) (i.getXImages() * this.coef), (int)(i.getYImages()*this.coef));
 
+
 			// Noms des iles
-			// this.ajouterTexte(this.lstImgIles.get(lstIles.indexOf(i)), i.getNom());
+			g2.setColor(Color.BLACK);
 			g2.drawString( i.getNom(), (int) (i.getXNom() * this.coef) , (int) (i.getYNom() * this.coef));
+		}
+
+	}
+
+	private void drawPolygonePossible(Ile i, Graphics2D g2)
+	{
+		Polygon p = this.trouverPolygon(i);
+
+		g2.setColor(new Color(255,255,200)); //par défauts
+
+		if(i.getCoul().equals("Rouge")) g2.setColor(new Color(204,  80, 124));
+		if(i.getCoul().equals("Vert" )) g2.setColor(new Color( 20, 186,  67));
+		if(i.getCoul().equals("Jaune")) g2.setColor(new Color(217, 215,  41));
+		if(i.getCoul().equals("Brun" )) g2.setColor(new Color(189, 187, 140));
+
+		g2.fill(p);
+		g2.setStroke(new BasicStroke(5f));
+		g2.drawPolygon(p); 
+	} 
+/*
+Couleurs exactes : 
+
+vert  = Color.decode("#49064C")
+rouge = Color.decode("#9D7E89")
+jaune = Color.decode("#BFA759")
+brun  = Color.decode("#8D8C70")
+*/
+
+	/**Mise a jour des polygones des iles. */
+	public void updateShape()
+	{
+		this.polygons = new ArrayList<>();
+
+		int cpt = 0;
+
+		for (ImageIcon i : this.lstImgIles)
+		{
+			Ile ile = this.ctrl.getIles().get(cpt++);
+
+			// Reset du polygone de l'image
+			Polygon p = new Polygon();
+
+			// Création d'une BufferedImage
+			BufferedImage img = new BufferedImage(i.getImage().getWidth(null), i.getImage().getHeight(null), BufferedImage.TYPE_INT_ARGB);
+			Graphics2D    bGr = img.createGraphics();
+
+			bGr.drawImage(i.getImage(), 0, 0, null);
+			bGr.dispose();
+
+			// On note tout les points sur les bords droit puis gauche
+			for (int y = 0; y < img.getHeight(); y++)
+			{
+				for (int x = img.getWidth() - 1; x >= 0; x--)
+				{
+					if ( img.getRGB(x, y) != 0 )
+					{
+						p.addPoint( (int) ( (x + ile.getXImages()) * this.coef ), (int) ( (y + ile.getYImages()) * this.coef ) );
+						break;
+					}
+				}
+			}
+
+			for (int y = img.getHeight() - 1; y >= 0; y--)
+			{
+				for (int x = 0; x < img.getWidth(); x++)
+				{
+					if ( img.getRGB(x, y) != 0 )
+					{
+						p.addPoint( (int) ( (x + ile.getXImages()) * this.coef ), (int) ( (y + ile.getYImages()) * this.coef ) );
+						break;
+					}
+				}
+			}
+
+			this.polygons.add(p);
 		}
 	}
 
-	/*       Classe        */
-	/*     GereSouris      */
+	public Polygon trouverPolygon(Ile i)
+	{
+		return this.polygons.get( this.ctrl.getIles().indexOf( i ) );
+	}
+
+
+	
+	/*-----------------------------------*/
+	/*       GESTIONS DE LA SOURIS       */
+	/*-----------------------------------*/
 	private class GereSouris extends MouseAdapter
 	{
+		private Ile ile1;
+		private Ile ile2;
+
+		/**Constructeur. */
+		public GereSouris()
+		{
+			super();
+
+			PanelIles.this.updateShape();
+			PanelIles.this.polygons = polygons;
+		}
+
+		/**Evement souris. */
 		public void mousePressed(MouseEvent e)
 		{
+			//PanelIles.this.ctrl.test();
+
 			int posX = e.getX();
 			int posY = e.getY();
 
 			Ile i = trouverIle( posX, posY );
+			Controleur ctrl =  PanelIles.this.ctrl; // raccourci inhumain de l'argumentation
 
-			System.out.println(i);
+			if ( i == null )
+			{
+				this.ile1 = this.ile2 = null;
+			} 
+			else 
+			{
+				this.ile2 = this.ile1;
+				this.ile1 = i;
+			}
+
+			if ( this.ile1 != null && this.ile2 != null  && this.ile1 != this.ile2)
+			{
+				Chemin c = ctrl.trouverChemin(this.ile1, this.ile2);
+				
+				if ( !ctrl.colorier(c) )
+				{
+					this.ile2 = null;
+					this.ile1 = i;
+				}
+			}
+
+			PanelIles.this.ile1 = this.ile1;
+			PanelIles.this.ile2 = this.ile2;
+			PanelIles.this.repaint();
+		
 		}
 
+		/**Cherche l'ile clique. */
 		private Ile trouverIle(int x, int y)
 		{
-			for (Ile i : PanelIles.this.ctrl.getIles())
-			{
-				Polygon ile = new Polygon();
-
-				
-			}
+			for (Polygon p : PanelIles.this.polygons)
+				if ( p != null  && p.contains(x, y) )
+					return PanelIles.this.ctrl.getIles().get( PanelIles.this.polygons.indexOf(p) );
 
 			return null;
 		}

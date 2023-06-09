@@ -1,38 +1,77 @@
 package cinke_terra.metier;
 
+/** Lecture */
+import java.util.Scanner;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
+
+/** Listes */
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Scanner;
 import java.util.Collections;
-import java.awt.Color;
 
+/** AWT */
+import java.awt.Color;
+import java.awt.geom.Line2D;
+
+/**
+ * Représentation de la carte de l'archipel.
+ */
 public class Mappe 
 {
-	private static final String      NOM_FICHIER = "../resources/data.csv";
-	private static final List<Color> COLORS      = new ArrayList<>(Arrays.asList(
-		Color.RED,
-		Color.BLUE
-	));
+	/*----------------------------------*/
+	/*           CONSTANTES             */
+	/*----------------------------------*/
 
+	/** Chemin relatif du fichier de données */
+	private static final String      NOM_FICHIER = "../resources/data.csv";
+
+	/** Liste de constantes de couleurs */
+	private static final List<Color> COLORS      = new ArrayList<>(Arrays.asList( Color.RED, Color.BLUE));
+
+	/*----------------------------------*/
+	/*           ATTRIBUTS              */
+	/*----------------------------------*/
+
+	/* Liste de toutes les îles */
 	private List<Ile>     lstIles;
+
+	/** Liste de toutes les régions */
 	private List<Region>  lstRegions;
+
+	/** List de tout les chemins */
 	private List<Chemin>  lstChemins;
-	private PaquetDeCarte paquet;
-	private Color         feutre;
+
+	/** Île de départ */
 	private Ile           ileDeDepart;
 
-	public Mappe() {
+	/** Liste des chemins coloriés */
+	private List<Chemin>  lstCheminColorie;
+
+	/** Paquet de cartes */
+	private PaquetDeCarte paquet;
+
+	/** Couleur du feutre */
+	private Color         feutre;
+
+	/**
+	 * Constructeur sans paramètres qui initialise l'objet.
+	 */
+	public Mappe() 
+	{
 		this.initialise();
 	}
 
+	/**
+	 * Initialise et lit le fichier csv.
+	 */
 	public void initialise()
 	{
-		this.lstRegions = new ArrayList<>();
-		this.lstIles    = new ArrayList<>();
-		this.lstChemins = new ArrayList<>();
+		this.lstRegions       = new ArrayList<>();
+		this.lstIles          = new ArrayList<>();
+		this.lstChemins       = new ArrayList<>();
+		this.lstCheminColorie = new ArrayList<>();
 		Collections.shuffle(Mappe.COLORS);
 		
 		try
@@ -75,6 +114,9 @@ public class Mappe
 		this.initialiserManche();
 	}
 
+	/**
+	 * Initialise la manche et définit la couleur du feutre.
+	 */
 	public void initialiserManche()
 	{
 		this.paquet = new PaquetDeCarte();
@@ -86,16 +128,44 @@ public class Mappe
 			this.ileDeDepart = this.getIleId("Mutaa");
 
 	}
+	
+	public Chemin trouverChemin (Ile i1, Ile i2) 
+	{
+		for (Chemin c1 : i1.getCheminAutour())
+			for (Chemin c2 : i2.getCheminAutour())
+				if (c1 == c2)
+					return c1;
 
+		return null;
+	}
+
+	/**
+	 * Retourne la liste des îles.
+	 * 
+	 * @return la liste des îles de la mappe
+	 */
 	public List<Ile> getIles() {
 		return this.lstIles;
 	}
-
-	public List<Chemin> getChemins() {
+	
+	/**
+	 * Retourne la liste des chemins.
+	 * 
+	 * @return la liste des chemins de la mappe
+	 */
+	public List<Chemin> getChemins() 
+	{
 		return this.lstChemins;
 	}
 
-	public Ile getIleId(String nom) {
+	/**
+	 * Retourne un objet {@code Ile} associé à un objet {@code String}.
+	 * 
+	 * @param nom - le nom de l'île souhaitée
+	 * @return une {@code Ile} en fonction du nom, {@code null} si inexistante
+	 */
+	public Ile getIleId(String nom) 
+	{
 		return this.lstIles.stream()
 		       .filter(i -> i.getNom().equals(nom))
 			   .findFirst()
@@ -107,18 +177,188 @@ public class Mappe
 		// return null;
 	}
 
-	public Carte piocher()
-	{
-		return this.paquet.piocher();
-	}
-
+	/**
+	 * Retourne une {@code Carte} en fonction de son indice.
+	 * 
+	 * @param indice - l'indice associé à une carte
+	 * @return une {@code Carte}
+	 */
 	public Carte getCarte(int indice)
 	{
-		return this.paquet.getCarte(indice);
+				return this.paquet.getCarte(indice);
 	}
 
+	/**
+	 * Retourne le nombre total de cartes.
+	 * 
+	 * @return le nombre de cartes
+	 */
 	public int getNbCarteTotal()
 	{
 		return this.paquet.getNbCarteTotal();
 	}
+
+	/**
+	 * Retourne une {@code List} de {@code Carte} de toutes
+	 * les cartes du paquet.
+	 * 
+	 * @return une liste de cartes
+	 */
+	public List<Carte> getCartes()
+	{
+		return this.paquet.getCartes();
+	}
+
+	public Carte getDerniereCartePiochee()
+	{
+		return this.paquet.getDerniereCartePiochee();
+	}
+
+	/**
+	 * Pioche une carte parmi le paquet à un indice voulu. 
+	 * 
+	 * @param indice - l'indice de la carte à piocher
+	 */
+	public void piocher(int indice)
+	{
+		this.paquet.piocher(indice);
+	}
+
+
+
+	/*----------------------------------*/
+	/*           COLORIAGE              */
+	/*----------------------------------*/
+
+	/**
+	 * Colorie un {@code Chemin}, seulement si il est coloriable.
+	 * 
+	 * @param c - le chemin à colorier
+	 * @return {@code vrai} si il a été colorié, sinon {@code faux}
+	 * @see {@link Mappe#estColoriable(Chemin)}
+	 */
+	public boolean colorier(Chemin c) 
+	{
+		if (!this.estColoriable(c))
+			return false;
+
+		c.setCouleur(this.feutre);
+		this.lstCheminColorie.add(c);
+		return true;
+	}
+
+	/**
+	 * Indique si un {@code Chemin} est coloriable ou non.
+	 * <br><br>
+	 * Pour qu'un chemin soit coloriable, il doit respecter ces conditions :
+	 * <ul>
+	 *   <li>Il ne doit pas être {@code null} ;</li>
+	 *   <li>Il ne doit pas déjà être colorié ;</li>
+	 *   <li>Il ne doit pas croiser une arête déjà coloriée ;</li>
+	 *   <li>Il ne doit pas former un cycle ;</li>
+	 *   <li>Il ne doit pas avoir plus d'un seul chemin séléctionné et de la même couleur autour de lui ;</li>
+	 * </ul>
+	 * <br><br>
+	 * @param c - le chemin à tester
+	 * @return {@code vrai} si le chemin est coloriable, autrement {@code faux}
+	 * @see {@link Mappe#colorier(Chemin)}
+	 */
+	public boolean estColoriable(Chemin c) 
+	{
+		/* Si le chemin n'existe pas */
+		if (c == null) return false;
+		System.out.println("Le chemin existe");
+
+		/* Si le chemin est déjà colorié */
+		if (c.getCouleur() != null) return false;
+		System.out.println("Le chemin n'est pas coloré");
+
+		/* Dans le cas où il s'agit du premier trait */
+		if (this.lstCheminColorie.size() == 0)
+			if (c.getIleA() == this.ileDeDepart || c.getIleB() == this.ileDeDepart) //Bonne ile : Okay
+				return true;
+			else
+				return false;
+		System.out.println("Le chemin n'est pas le premier trait");
+
+		/* Si le chemin croise une arête déjà coloriée */
+		if (this.cheminCroise(c)) return false;
+		System.out.println("Le chemin ne croise rien");
+
+		/* Si le chemin forme un cycle */
+		if (this.aCycle(c)) return false;
+		System.out.println("Le chemin ne forme pas de cycle");
+
+		/* Si il n'y a qu'un seul chemin autour de la même couleur qui est séléctionné */
+		if (this.cheminsColorieAutour(c.getIleA()) && 
+		    c.getIleB().getCoul().equals(this.paquet.getDerniereCartePiochee().getCouleur()))
+			return true;
+		System.out.println("Le chemin a plus d'un chemin autour de la première île ou n'est pas de bonne couleur");
+
+		if (this.cheminsColorieAutour(c.getIleB()) && 
+		    c.getIleA().getCoul().equals(this.paquet.getDerniereCartePiochee().getCouleur()))
+			return true;
+		System.out.println(c.getIleA().getCoul() + " " + this.paquet.getDerniereCartePiochee().getCouleur());
+		System.out.println(c.getIleB().getCoul() + " " + this.paquet.getDerniereCartePiochee().getCouleur());
+		System.out.println("Le chemin a plus d'un chemin autour de la deuxième île");
+
+		return false;
+	}
+
+	private boolean cheminsColorieAutour (Ile i)
+	{
+		int nbColorie = 0;
+
+		for (Chemin chemin : i.getCheminAutour())
+			if (chemin.getCouleur() == this.feutre)
+				nbColorie ++;
+
+		System.out.println(nbColorie + " " + i);
+
+		return nbColorie == 1;
+	}
+
+	private boolean aCycle(Chemin a1)
+	{ 
+	
+		for (Chemin a : a1.getIleA().getCheminAutour())
+				if ( this.feutre.equals(a.getCouleur()) )
+					for (Chemin a2 : a1.getIleB().getCheminAutour())
+						if ( this.feutre.equals(a2.getCouleur()) ) return true;
+
+						
+		return false;
+	}
+
+	private boolean cheminCroise(Chemin c1) 
+	{
+		int x1 = c1.getIleA().getXPoint();
+		int y1 = c1.getIleA().getYPoint();
+		int x2 = c1.getIleB().getXPoint();
+		int y2 = c1.getIleB().getYPoint();
+
+		for (Chemin c2 : this.lstChemins) 
+		{
+			if (c2.getCouleur() != null && !c1.ileIdentique(c2)) 
+			{
+				int x3 = c2.getIleA().getXPoint();
+				int y3 = c2.getIleA().getYPoint();
+				int x4 = c2.getIleB().getXPoint();
+				int y4 = c2.getIleB().getYPoint();
+
+				if (Line2D.linesIntersect(x1, y1, x2, y2, x3, y3, x4, y4))
+					return true;
+			}
+
+		}
+
+		return false;
+	}
+	
+	/**
+	 * Retourne la couleur du stylo.
+	 * 
+	 * @return la couleur du stylo
+	 */
+	public Color getColFeutre() { return this.feutre; }
 }

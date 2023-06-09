@@ -1,16 +1,17 @@
 package cinke_terra.metier;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Region 
 {
-	private String         nom;
-	private ArrayList<Ile> lstIle;
+	private String    nom;
+	private List<Ile> lstIle;
 
 	public Region (String nom)
 	{
 		this.nom = nom;
-		this.lstIle = new ArrayList<Ile>();
+		this.lstIle = new ArrayList<>();
 	}
 	
 	public boolean ajouterIle(Ile i)

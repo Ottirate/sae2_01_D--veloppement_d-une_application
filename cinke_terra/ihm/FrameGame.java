@@ -5,6 +5,7 @@ import cinke_terra.Controleur;
 
 public class FrameGame extends JFrame 
 {
+	@SuppressWarnings("unused")
 	private Controleur ctrl;
 
 	private PanelIles   panelIles;
