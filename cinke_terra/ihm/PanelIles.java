@@ -17,7 +17,7 @@ import java.util.List;
 public class PanelIles extends JPanel
 {
 	public static String NOM_CHEMIN = "../resources/iles/";
-	private ArrayList<ImageIcon> lstImgIles;
+	private List<ImageIcon> lstImgIles;
 
 	private Controleur ctrl;
 
