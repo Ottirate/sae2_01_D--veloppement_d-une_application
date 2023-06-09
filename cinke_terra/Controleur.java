@@ -90,6 +90,7 @@ public class Controleur
 	public void piocher( int indice )
 	{
 		this.metier.piocher( indice );
+		this.ihmMappe.maj();
 	}
 
 	public Carte getCarte(int indice)
