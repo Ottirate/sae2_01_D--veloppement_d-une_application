@@ -1,5 +1,7 @@
 package cinke_terra.metier;
 
+import java.awt.Color;
+
 public class Chemin
 {
 	
@@ -7,12 +9,20 @@ public class Chemin
 	private Ile ileB;
 	
 	private int bonus;
+
+	private Color color;
 	
 	public Chemin(Ile ileA, Ile ileB, int bonus)
 	{
-		this.ileA = ileA;
-		this.ileB = ileB;
+		this.ileA  = ileA;
+		this.ileB  = ileB;
 		this.bonus = bonus;
+		this.color = null;
+	}
+
+	public void setCouleur(Color c)
+	{
+		this.color = c;
 	}
 	
 	public int getBonus()
@@ -28,6 +38,11 @@ public class Chemin
 	public Ile getIleB()
 	{
 		return this.ileB;
+	}
+
+	public Color getCouleur()
+	{
+		return this.color;
 	}
 	
 }

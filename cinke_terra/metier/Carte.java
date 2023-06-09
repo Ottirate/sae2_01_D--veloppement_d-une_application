@@ -2,35 +2,55 @@ package cinke_terra.metier;
 
 import java.awt.Color;
 
-public enum Carte {
+public enum Carte
+{
 	// Cartes blanches
-	B_MULTI_COLOR(null, Color.white),
-	B_VERT(Color.decode("#49064C"), Color.white),
-	B_ROSE(Color.decode("#9D7E89"), Color.white),
-	B_JAUNE(Color.decode("#BFA759"), Color.white),
-	B_GRIS(Color.decode("#8D8C70"), Color.white),
+	B_MULTI_COLOR ( null,                    Color.white ),
+	B_VERT        ( "Vert" , Color.white ),
+	B_ROUGE       ( "Rouge", Color.white ),
+	B_JAUNE       ( "Jaune", Color.white ),
+	B_BRUN        ( "Brun" , Color.white ),
 
 	// Cartes noires
-	N_MULTI_COLOR(null, Color.black),
-	N_VERT(Color.decode("#49064C"), Color.black),
-	N_ROSE(Color.decode("#9D7E89"), Color.black),
-	N_JAUNE(Color.decode("#BFA759"), Color.black),
-	N_GRIS(Color.decode("#8D8C70"), Color.black);
+	N_MULTI_COLOR ( "Multi", Color.black ),
+	N_VERT        ( "Vert" , Color.black ),
+	N_ROUGE       ( "Rouge", Color.black ),
+	N_JAUNE       ( "Jaune", Color.black ),
+	N_BRUN        ( "Brun" , Color.black );
 
-	private Color color;
-	private Color contour;
+	private String  couleur;
+	private Color   contour;
+	private boolean estCache;
 
-	private Carte(Color coul, Color contour) {
-		this.color = coul;
-		this.contour = contour;
+	private Carte(String couleur, Color contour)
+	{
+		this.couleur  = couleur;
+		this.contour  = contour;
+		this.estCache = true;
 	}
 
-	public Color getColor() {
-		return this.color;
+	public String getCouleur()
+	{
+		return this.couleur;
 	}
 
-	public Color getContour() {
+	public Color getContour()
+	{
 		return this.contour;
 	}
 
+	public boolean estCache()
+	{
+		return this.estCache;
+	}
+
 }
+
+/*
+Couleurs exactes : 
+
+vert  = Color.decode("#49064C")
+rouge = Color.decode("#9D7E89")
+jaune = Color.decode("#BFA759")
+brun  = Color.decode("#8D8C70")
+*/

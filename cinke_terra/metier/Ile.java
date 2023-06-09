@@ -15,9 +15,12 @@ public class Ile
 	private int    xImages;
 	private int    yImages;
 
+	private int    xNom;
+	private int    yNom;
+
 	private List<Chemin> lstChemins;
 	
-	public Ile (Region reg, String nom, String coul, int xP, int yP, int xI, int yI)
+	public Ile (Region reg, String nom, String coul, int xP, int yP, int xI, int yI, int xN, int yN)
 	{
 		this.nom     = nom ;
 		this.reg     = reg ;
@@ -28,6 +31,9 @@ public class Ile
 		
 		this.xImages = xI;
 		this.yImages = yI;
+		
+		this.xNom    = xN;
+		this.yNom    = yN;
 
 		this.lstChemins = new ArrayList<>();
 
@@ -39,11 +45,14 @@ public class Ile
 	public String getCoul   () { return this.coul;    }
 	public Region getReg    () { return this.reg;     }
 
-	public int    getxImages() { return this.xImages; }
-	public int    getyImages() { return this.yImages; }
+	public int    getXImages() { return this.xImages; }
+	public int    getYImages() { return this.yImages; }
 	
-	public int    getxPoint () { return this.xPoint;  }
-	public int    getyPoint () { return this.yPoint;  }
+	public int    getXPoint () { return this.xPoint;  }
+	public int    getYPoint () { return this.yPoint;  }
+	
+	public int    getXNom   () { return this.xNom;    }
+	public int    getYNom   () { return this.yNom;    }
 
 	public String toString ()
 	{

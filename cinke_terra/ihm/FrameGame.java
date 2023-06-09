@@ -9,14 +9,16 @@ public class FrameGame extends JFrame {
 
 	private PanelIles panelIles;
 
-	public FrameGame(Controleur ctrl) {
+	public FrameGame(Controleur ctrl) 
+	{
 		this.ctrl = ctrl;
 
 		// Info de base
 		this.setTitle("CinkeTerra");
-		this.setLocation(0, 0);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 
-		this.setSize(0, 0);
+		this.setSize(1280, 925);
 
 		this.panelIles = new PanelIles(ctrl);
 		this.add(this.panelIles);
