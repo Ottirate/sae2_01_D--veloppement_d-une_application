@@ -1,16 +1,21 @@
 package cinke_terra.metier;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class Ile 
 {
 	private String nom;
 	private Region reg;
 	private String coul;
 
-	private int    xPoint;	
+	private int    xPoint;
 	private int    yPoint;
-	
-	private int    xImages;	
+
+	private int    xImages;
 	private int    yImages;
+
+	private List<Chemin> lstChemins;
 	
 	public Ile (Region reg, String nom, String coul, int xP, int yP, int xI, int yI)
 	{
@@ -23,6 +28,8 @@ public class Ile
 		
 		this.xImages = xI;
 		this.yImages = yI;
+
+		this.lstChemins = new ArrayList<>();
 
 		//Ajouter l'île à la Region
 		reg.ajouterIle(this);

@@ -1,4 +1,7 @@
 {
-	"editor.autoIndent": "brackets",
-	"editor.tabFocusMode": false
+  "editor.autoIndent": "brackets",
+  "editor.tabFocusMode": false,
+  "editor.formatOnSave": false
 }
+
+
