@@ -9,7 +9,8 @@ import java.util.Scanner;
 import java.util.Collections;
 import java.awt.Color;
 
-public class Mappe {
+public class Mappe 
+{
 	private static final String      NOM_FICHIER = "../resources/data.csv";
 	private static final List<Color> COLORS      = new ArrayList<>(Arrays.asList(
 		Color.RED,
@@ -21,6 +22,7 @@ public class Mappe {
 	private List<Chemin>  lstChemins;
 	private PaquetDeCarte paquet;
 	private Color         feutre;
+	private Ile           ileDeDepart;
 
 	public Mappe() {
 		this.initialise();
@@ -79,13 +81,9 @@ public class Mappe {
 		this.feutre = COLORS.remove(0);
 
 		if (this.feutre.equals(Color.RED))
-		{
-			// Ile de départ = Tico
-		}
+			this.ileDeDepart = this.getIleId("Ticó");
 		else
-		{
-			// Ile de départ = Mutaa
-		}
+			this.ileDeDepart = this.getIleId("Mutaa");
 
 	}
 
@@ -117,5 +115,10 @@ public class Mappe {
 	public Carte getCarte(int indice)
 	{
 		return this.paquet.getCarte(indice);
+	}
+
+	public int getNbCarteTotal()
+	{
+		return this.paquet.getNbCarteTotal();
 	}
 }

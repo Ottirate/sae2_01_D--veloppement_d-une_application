@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +33,14 @@ public class PanelIles extends JPanel
 		
 
 		//Création des images
-
 		this.declarerImage();
+
+
+		/*     Activation      */
+		GereSouris gereSouris = new GereSouris();
+
+		this.addMouseListener(gereSouris);
+		this.addMouseMotionListener(gereSouris);
 	}
 
 	private void declarerImage()
@@ -122,8 +129,7 @@ public class PanelIles extends JPanel
 			int larg = img.getIconWidth();
 			int lon  = img.getIconHeight();
 
-			Image ogImage = img.getImage();
-			Image reImage = ogImage.getScaledInstance((int)(larg*this.coef), (int)(lon*this.coef), Image.SCALE_DEFAULT);
+			Image reImage = img.getImage().getScaledInstance((int)(larg*this.coef), (int)(lon*this.coef), Image.SCALE_DEFAULT);
 
 			ImageIcon newImage = new ImageIcon(reImage);
 			newImage.paintIcon(this, g, (int) (i.getXImages() * this.coef), (int)(i.getYImages()*this.coef));
@@ -131,6 +137,33 @@ public class PanelIles extends JPanel
 			// Noms des iles
 			// this.ajouterTexte(this.lstImgIles.get(lstIles.indexOf(i)), i.getNom());
 			g2.drawString( i.getNom(), (int) (i.getXNom() * this.coef) , (int) (i.getYNom() * this.coef));
+		}
+	}
+
+	/*       Classe        */
+	/*     GereSouris      */
+	private class GereSouris extends MouseAdapter
+	{
+		public void mousePressed(MouseEvent e)
+		{
+			int posX = e.getX();
+			int posY = e.getY();
+
+			Ile i = trouverIle( posX, posY );
+
+			System.out.println(i);
+		}
+
+		private Ile trouverIle(int x, int y)
+		{
+			for (Ile i : PanelIles.this.ctrl.getIles())
+			{
+				Polygon ile = new Polygon();
+
+				
+			}
+
+			return null;
 		}
 	}
 }

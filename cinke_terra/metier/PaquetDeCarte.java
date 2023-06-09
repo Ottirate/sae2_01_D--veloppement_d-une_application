@@ -7,6 +7,8 @@ import java.awt.Color;
 
 public class PaquetDeCarte
 {
+	private static final int TAILLE = 10;
+
 	private List<Carte> ensCarte;
 	private int         nbNoiresPiochees;
 
@@ -47,5 +49,10 @@ public class PaquetDeCarte
 	public Carte getCarte(int i)
 	{
 		return this.ensCarte.get(i);
+	}
+
+	public int getNbCarteTotal()
+	{
+		return PaquetDeCarte.TAILLE;
 	}
 }

@@ -1,8 +1,9 @@
 ./cinke_terra/Controleur.java
 
+./cinke_terra/ihm/FrameCartes.java
 ./cinke_terra/ihm/FrameGame.java
 ./cinke_terra/ihm/PanelIles.java
-./cinke_terra/ihm/PanelIles.java
+./cinke_terra/ihm/PanelPioche.java
 
 ./cinke_terra/metier/Carte.java
 ./cinke_terra/metier/Chemin.java

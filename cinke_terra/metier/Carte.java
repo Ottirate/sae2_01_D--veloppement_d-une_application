@@ -5,7 +5,7 @@ import java.awt.Color;
 public enum Carte
 {
 	// Cartes blanches
-	B_MULTI_COLOR ( null,                    Color.white ),
+	B_MULTI_COLOR ( "Multi", Color.white ),
 	B_VERT        ( "Vert" , Color.white ),
 	B_ROUGE       ( "Rouge", Color.white ),
 	B_JAUNE       ( "Jaune", Color.white ),
