@@ -4,30 +4,50 @@ import cinke_terra.ihm.FrameGame;
 import cinke_terra.ihm.FrameCartes;
 import cinke_terra.metier.*;
 import java.util.List;
-import java.awt.Color;
 
-public class Controleur {
+import javax.swing.JFrame;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Toolkit;
+
+public class Controleur 
+{
 	private Mappe metier;
-	private FrameGame ihm;
+	private FrameGame   ihmMappe;
+	private FrameCartes ihmPioche;
 
 	public Controleur() 
 	{
-		this.metier = new Mappe();
-		this.ihm = new FrameGame(this);
-		new FrameCartes(this);
+		this.metier    = new Mappe();
+		this.ihmMappe  = new FrameGame(this);
+		this.ihmPioche = new FrameCartes(this);
+
+		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+		int hauteur = (int) (screen.getHeight());
+		int largeur = (int) (screen.getWidth ());
+
+		this.ihmMappe .setSize((int)((70.0/100) * largeur), hauteur);
+		this.ihmPioche.setSize((int)((30.0/100) * largeur), hauteur);
+		
+		this.ihmMappe .setLocation(0,0);
+		this.ihmPioche.setLocation(this.ihmMappe.getWidth(), 0);
 	}
 
-	public List<Ile> getIles() {
+	public List<Ile> getIles() 
+	{
 		return this.metier.getIles();
 	}
 
-	public List<Chemin> getChemins() {
+	public List<Chemin> getChemins() 
+	{
 		return this.metier.getChemins();
 	}
 
-	public int getHauteur() {return this.ihm.getHeight();}
+	public int getHauteur() {return this.ihmMappe.getHeight();}
 
-	public int getLargeur() {return this.ihm.getWidth ();}
+	public int getLargeur() {return this.ihmMappe.getWidth ();}
 
 	public String getImage(int indice)
 	{
@@ -51,6 +71,7 @@ public class Controleur {
 	{
 		return this.metier.getNbCarteTotal();
 	}
+
 
 	public static void main(String[] args) {
 		new Controleur();

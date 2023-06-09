@@ -25,5 +25,4 @@ public class FrameGame extends JFrame
 
 		this.setVisible(true);
 	}
-
 }

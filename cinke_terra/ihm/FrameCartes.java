@@ -1,11 +1,12 @@
 package cinke_terra.ihm;
 
 import java.awt.BorderLayout;
+
 import javax.swing.JFrame;
 import cinke_terra.Controleur;
 import cinke_terra.metier.*;
 
-public class FrameCartes extends JFrame 
+public class FrameCartes extends JFrame
 {
 	private Controleur ctrl;
 
@@ -26,8 +27,7 @@ public class FrameCartes extends JFrame
 
 		this.panelPioche = new PanelPioche(ctrl);
 
-		this.add(this.panelPioche);
-
+		this.add(this.panelPioche);		
 		this.setVisible(true);
 	}
 
