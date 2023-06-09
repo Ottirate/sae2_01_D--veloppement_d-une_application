@@ -98,11 +98,6 @@ public class PanelPioche extends JPanel
 				newImage.paintIcon(this, g, this.calculPosCarteDefausse( ++cptDefausse ), PanelPioche.POS_Y_CARTE);
 			}
 		}
-
-
-		for (Rectangle rectangle : ensCartePioche) {
-			g2.draw(rectangle);
-		}
 	}
 	
 	public int calculPosCartePioche  ( int indice ){ return PanelPioche.MARGE_X_CARTE + indice*PanelPioche.ESPACEMENT; }
