@@ -23,6 +23,8 @@ public class PanelPioche extends JPanel
 
 	private int largCarte;
 	private int longCarte;
+
+	private int carteRelevee;     // indice de la carte que l'on sélectionne
 	
 	private ArrayList<Rectangle> ensCartePioche;
 
@@ -36,8 +38,9 @@ public class PanelPioche extends JPanel
 	//carteCachee( int )
 	public PanelPioche( Controleur ctrl )
 	{
-		this.ctrl = ctrl;
+		this.ctrl         = ctrl;
 		this.nbCarteTotal = this.ctrl.getNbCarteTotal();
+		this.carteRelevee = -1;
 
 		// Images
 		ImageIcon img = new ImageIcon( this.ctrl.getImage(0) );
@@ -53,7 +56,9 @@ public class PanelPioche extends JPanel
 		
 		this.repaint();
 
-		this.addMouseListener(new GereSouris());
+		GereSouris gs = new GereSouris();
+		this.addMouseListener      (gs);
+		this.addMouseMotionListener(gs);
 	}
 
 	public void paintComponent( Graphics g )
@@ -77,7 +82,12 @@ public class PanelPioche extends JPanel
 			ImageIcon newImage = new ImageIcon(reImage);
 			
 			// Cas des cartes de la pioche
-			if ( this.ctrl.carteCachee( cpt ) )
+			if ( this.ctrl.carteCachee( cpt ) && cptPioche == this.carteRelevee)
+			{
+				newImage.paintIcon(this, g, this.calculPosCartePioche(cptPioche), PanelPioche.POS_Y_CARTE - 10);
+				cptPioche++;
+			}
+			else if ( this.ctrl.carteCachee( cpt ) )
 			{
 				newImage.paintIcon(this, g, this.calculPosCartePioche(cptPioche), PanelPioche.POS_Y_CARTE);
 				//System.out.println( "coord x image " +cptPioche+ " posée : " + this.calculPosCartePioche( cptPioche ) );
@@ -208,17 +218,35 @@ public class PanelPioche extends JPanel
 			}
 		}
 
-		/*public void mouseEntered(MouseEvent e)
+		public void mouseMoved(MouseEvent e)
 		{
 	 		int posX = e.getX();
 			int posY = e.getY();
-			
-			if ( r.contains(x, y) )
-			{
-				
-			}
 
-		}*/
+			Integer indice = trouverCarte(posX, posY);
+
+			if (indice != null)
+				PanelPioche.this.carteRelevee = indice;
+			else
+				PanelPioche.this.carteRelevee = -1;
+
+			PanelPioche.this.repaint();
+		}
+
+		// public void mouseExited(MouseEvent e)
+		// {
+	 	// 	int posX = e.getX();
+		// 	int posY = e.getY();
+			
+		// 	Integer indice = trouverCarte(posX, posY);
+
+		// 	if (indice != null && indice == PanelPioche.this.carteRelevee)
+		// 	{
+		// 		System.out.println("testExit " + indice);
+		// 		PanelPioche.this.carteRelevee = indice;
+		// 	}
+
+		// }
 
 		/**Cherche l'ile clique. */
 		private Integer trouverCarte(int x, int y)
@@ -229,7 +257,6 @@ public class PanelPioche extends JPanel
 
 				if ( r.contains(x, y) )
 				{
-					System.out.println("trouverCarte i = " + i);
 					return i;
 				}
 			}

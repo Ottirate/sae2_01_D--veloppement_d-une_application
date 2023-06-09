@@ -51,17 +51,16 @@ public class PaquetDeCarte
 		{
 			Carte c;
 
-			System.out.println("on rentre " + indice);
 
 			c = this.ensCarte.get(indice);
 
 			if (!c.estCache()) this.piocher(indice+1);
-			else               c.setCache(false);
-
-			this.derniereCartePiochee = c;
-
-			if ( c.getContour().equals(Color.black) ) this.nbNoiresPiochees++;
-			System.out.println("on sors " + this.ensCarte.size());
+			else
+			{
+				c.setCache(false);
+				this.derniereCartePiochee = c;
+				if ( c.getContour().equals(Color.black) ) this.nbNoiresPiochees++;
+			}
 		}
 	}
 
@@ -71,6 +70,7 @@ public class PaquetDeCarte
 	public void reinitialiser()
 	{
 		this.ensCarte = new ArrayList<>(Arrays.asList(Carte.values()));
+		Collections.shuffle(this.ensCarte);
 	}
 
 	/**
@@ -98,9 +98,6 @@ public class PaquetDeCarte
 	 */
 	public Carte getCarte(int i)
 	{
-		//System.out.println("i = " + i);
-		//System.out.println("size = " + this.ensCarte.size());
-
 		if (i >= 0 && i < this.ensCarte.size()) return this.ensCarte.get(i);
 
 		return null;

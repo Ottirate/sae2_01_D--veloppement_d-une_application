@@ -63,11 +63,8 @@ public class Controleur
 		String sRet = "../resources/cartes/";
 		Carte c = this.metier.getCarte(indice);
 
-		if (c == null) System.out.println("ouais");
-
-		if (c != null && !c.estCache()) {
+		if (c != null && !c.estCache())
 			sRet += (c.getContour().equals(Color.white) ? "blanc_" : "noir_") + c.getCouleur().toLowerCase() + ".png";
-			System.out.println(c.estCache()); }
 		else
 			sRet += "carte_dos.png";
 
