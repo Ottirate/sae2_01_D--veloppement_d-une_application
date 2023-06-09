@@ -112,6 +112,7 @@ public class Controleur
 	public boolean estColoriable(Chemin c) { return this.metier.estColoriable(c);}
 	public Color   getColFeutre() { return this.metier.getColFeutre();}
 
+	public Ile getIleDebut() {return this.metier.getIleDebut();}
 
 	public static void main(String[] args) {
 		new Controleur();

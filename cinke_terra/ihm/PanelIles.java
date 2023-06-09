@@ -14,7 +14,7 @@ import java.util.List;
 
 public class PanelIles extends JPanel
 {
-	
+	private boolean estNouvelleManche;	
 	private Ile ile1;
 	private Ile ile2;
 
@@ -31,6 +31,7 @@ public class PanelIles extends JPanel
 	public PanelIles(Controleur ctrl) 
 	{
 		this.ctrl = ctrl;
+		this.estNouvelleManche = true;
 
 		this.setBackground( new Color(182, 211, 229) );
 		
@@ -94,6 +95,11 @@ public class PanelIles extends JPanel
 		if (this.coef < 0.3) this.coef = 0.3;
 
 		if ( oldCoef != this.coef ) this.updateShape();
+
+		//Afficher l'ile de début en surligné pour savoir ou on commence
+		if (this.estNouvelleManche) this.ile1 = this.ctrl.getIleDebut();
+
+		this.estNouvelleManche = false;
 
 
 		//Afficher les routes

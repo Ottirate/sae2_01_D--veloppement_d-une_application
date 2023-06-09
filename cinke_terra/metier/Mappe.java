@@ -144,19 +144,14 @@ public class Mappe
 	 * 
 	 * @return la liste des îles de la mappe
 	 */
-	public List<Ile> getIles() {
-		return this.lstIles;
-	}
+	public List<Ile> getIles() { return this.lstIles; }
 	
 	/**
 	 * Retourne la liste des chemins.
 	 * 
 	 * @return la liste des chemins de la mappe
 	 */
-	public List<Chemin> getChemins() 
-	{
-		return this.lstChemins;
-	}
+	public List<Chemin> getChemins() { return this.lstChemins; }
 
 	/**
 	 * Retourne un objet {@code Ile} associé à un objet {@code String}.
@@ -170,11 +165,6 @@ public class Mappe
 		       .filter(i -> i.getNom().equals(nom))
 			   .findFirst()
 			   .orElse(null);
-		// for (Ile i : this.lstIles)
-		// if (i.getNom().equals(nom))
-		// return i;
-
-		// return null;
 	}
 
 	/**
@@ -183,20 +173,21 @@ public class Mappe
 	 * @param indice - l'indice associé à une carte
 	 * @return une {@code Carte}
 	 */
-	public Carte getCarte(int indice)
-	{
-				return this.paquet.getCarte(indice);
-	}
+	public Carte getCarte(int indice) { return this.paquet.getCarte(indice); }
 
 	/**
 	 * Retourne le nombre total de cartes.
 	 * 
 	 * @return le nombre de cartes
 	 */
-	public int getNbCarteTotal()
-	{
-		return this.paquet.getNbCarteTotal();
-	}
+	public int getNbCarteTotal() { return this.paquet.getNbCarteTotal(); }
+
+	/**
+	 * Retourne le nombre total de cartes.
+	 * 
+	 * @return le nombre de cartes
+	 */
+	public Ile getIleDebut() { return this.ileDeDepart; }
 
 	/**
 	 * Retourne une {@code List} de {@code Carte} de toutes
