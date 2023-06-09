@@ -49,10 +49,14 @@ public class PaquetDeCarte
 	{
 		if (indice >= 0 && indice < this.ensCarte.size())
 		{
-			System.out.println("on rentre " + this.ensCarte.size());
-			Carte c = this.ensCarte.get(indice);
-			c.setCache(false);
-			System.out.println(c);
+			Carte c;
+
+			System.out.println("on rentre " + indice);
+
+			c = this.ensCarte.get(indice);
+
+			if (!c.estCache()) this.piocher(indice+1);
+			else               c.setCache(false);
 
 			this.derniereCartePiochee = c;
 

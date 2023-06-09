@@ -192,6 +192,7 @@ public class PanelPioche extends JPanel
 				//PanelPioche.this.ctrl.piocher(indice);
 				//Carte c = null;//PanelPioche.this.ctrl.getCarte(indice);
 
+				System.out.println("indice = " + indice);
 				PanelPioche.this.ctrl.piocher(indice);
 				PanelPioche.this.ensCartePioche.remove(PanelPioche.this.ensCartePioche.size() - 1);
 
