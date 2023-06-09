@@ -84,6 +84,8 @@ public class PaquetDeCarte
 		return this.derniereCartePiochee;
 	}
 
+	public void carteJouer () {this.derniereCartePiochee = null;}
+
 	/**
 	 * Retourne la {@code Carte} à l'indice {@code i} donné.
 	 * 

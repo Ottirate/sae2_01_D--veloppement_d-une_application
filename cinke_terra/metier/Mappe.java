@@ -244,6 +244,7 @@ public class Mappe
 
 		c.setCouleur(this.feutre);
 		this.lstCheminColorie.add(c);
+		this.paquet.carteJouer();
 		return true;
 	}
 
@@ -265,17 +266,21 @@ public class Mappe
 	 */
 	public boolean estColoriable(Chemin c) 
 	{
-		/* Si le chemin n'existe pas */
-		if (c == null) return false;
-		System.out.println("Le chemin existe");
+		/* Si le chemin n'existe pas ou que on peut pas jouer de carte */
+		if (c == null || this.paquet.getDerniereCartePiochee() == null) return false;
+		System.out.println("Le chemin existe et on a une carte");
 
 		/* Si le chemin est déjà colorié */
 		if (c.getCouleur() != null) return false;
 		System.out.println("Le chemin n'est pas coloré");
 
+		Ile ileA = c.getIleA();
+		Ile ileB = c.getIleB();
+
 		/* Dans le cas où il s'agit du premier trait */
 		if (this.lstCheminColorie.size() == 0)
-			if (c.getIleA() == this.ileDeDepart || c.getIleB() == this.ileDeDepart) //Bonne ile : Okay
+			if (ileA == this.ileDeDepart && this.bonneCouleur(ileB) ||
+			    ileB == this.ileDeDepart && this.bonneCouleur(ileA)) //Bonne ile : Okay
 				return true;
 			else
 				return false;
@@ -289,17 +294,13 @@ public class Mappe
 		if (this.aCycle(c)) return false;
 		System.out.println("Le chemin ne forme pas de cycle");
 
-		/* Si il n'y a qu'un seul chemin autour de la même couleur qui est séléctionné */
-		if (this.cheminsColorieAutour(c.getIleA()) && 
-		    c.getIleB().getCoul().equals(this.paquet.getDerniereCartePiochee().getCouleur()))
+		/* Si c'est une extrémité ou si la direction est pas une bonne couleur */
+		if (this.cheminsColorieAutour(ileB) && this.bonneCouleur(ileA))
 			return true;
-		System.out.println("Le chemin a plus d'un chemin autour de la première île ou n'est pas de bonne couleur");
 
-		if (this.cheminsColorieAutour(c.getIleB()) && 
-		    c.getIleA().getCoul().equals(this.paquet.getDerniereCartePiochee().getCouleur()))
+		if (this.cheminsColorieAutour(ileA) && this.bonneCouleur(ileB))
 			return true;
-		System.out.println(c.getIleA().getCoul() + " " + this.paquet.getDerniereCartePiochee().getCouleur());
-		System.out.println(c.getIleB().getCoul() + " " + this.paquet.getDerniereCartePiochee().getCouleur());
+			
 		System.out.println("Le chemin a plus d'un chemin autour de la deuxième île");
 
 		return false;
@@ -355,6 +356,16 @@ public class Mappe
 		return false;
 	}
 	
+
+	private boolean bonneCouleur(Ile i)
+	{
+		String coul = this.paquet.getDerniereCartePiochee().getCouleur();
+
+		if (coul == null) return false;
+
+		return coul.equals("Multi") || coul.equals(i.getCoul());
+	}
+
 	/**
 	 * Retourne la couleur du stylo.
 	 * 
