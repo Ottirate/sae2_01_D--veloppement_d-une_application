@@ -1,10 +1,10 @@
-EfTera 
+EfTera
 Tavula	Rouge	135	125		42	75
 Tokha	Vert	170	310		86	258
 Tiamù	Jaune	290	80		222	36
 Ticó	Brun	320	250		277	182
 
-EmTera  
+EmTera
 Kosa	Jaune	630	70		572	16
 Kita	Vert	530	195		463	126
 Khont-Rolah	Brun	675	260		590	217
@@ -28,3 +28,49 @@ Fuego	Rouge	955	360		900	306
 Fama	Vert	1090	290		1053	231
 Finista	Jaune	1185	385		1116	341
 Fissah	Brun	1075	480		1020	414
+
+
+Kosa	Kiola
+Kosa	Kita
+Kosa	Khont-Rolah
+Kita	Kiola
+Kita	Khont-Rolah
+Kiola	Khont-Rolah
+Kita	Ticó
+Tiamù	Ticó
+Tavula	Tiamù
+Tavula	Tokha
+Tokha	Ticó
+Tokha	Tiamù
+Tavula	Ticó
+Ticó	Laçao
+Tokha	Laçao
+Laçao	Loümu
+Loümu	Lokha
+Lokha	Laçao
+Loümu	Loà
+Loà	Laçao
+Loà	Milaù
+Milaù	Khont-Rolah
+Mutaa	Milaù
+Milaù	Massao
+Massao	Mutaa
+Mutaa	Maÿa
+Maÿa	Massao
+Maÿa	Mokah
+Mokah	Mutaa
+Mokah	Milaù
+Mokah	Fuego
+Fuego	Kiola
+Fuego	Fama
+Fuego	Fissah
+Fama	Fissah
+Fama	Finista
+Finista	Fissah
+
+
+Tokha	Laçao	Ticó	1
+Laçao	Milaù	1
+Mutaa	Khont-Rolah	1
+Khont-Rolah	Fuego	1
+Mokah	Fissah	1
