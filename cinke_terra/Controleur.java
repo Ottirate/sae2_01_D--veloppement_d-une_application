@@ -5,8 +5,16 @@ import cinke_terra.ihm.FrameCartes;
 import cinke_terra.metier.*;
 import java.util.List;
 
+<<<<<<< HEAD
 import java.awt.Color;
 import java.awt.Dimension;
+=======
+import javax.swing.JFrame;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Point;
+>>>>>>> 8cbf6e20020c51437bfa42644405253aa07254a8
 import java.awt.Toolkit;
 
 public class Controleur 
@@ -22,6 +30,7 @@ public class Controleur
 		this.ihmPioche = new FrameCartes(this);
 
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+<<<<<<< HEAD
 		int hauteur = (int) (screen.getHeight()) - 3 * 45;
 		int largeur = (int) (screen.getWidth ());
 
@@ -30,6 +39,16 @@ public class Controleur
 		
 		this.ihmMappe .setLocation( 45, 45 );
 		this.ihmPioche.setLocation( 45, 90 + this.ihmMappe.getHeight() );
+=======
+		int hauteur = (int) (screen.getHeight());
+		int largeur = (int) (screen.getWidth ());
+
+		this.ihmMappe .setSize((int)((70.0/100) * largeur), hauteur);
+		this.ihmPioche.setSize((int)((30.0/100) * largeur), hauteur);
+		
+		this.ihmMappe .setLocation(0,0);
+		this.ihmPioche.setLocation(this.ihmMappe.getWidth(), 0);
+>>>>>>> 8cbf6e20020c51437bfa42644405253aa07254a8
 	}
 
 	public List<Ile> getIles() 
@@ -37,11 +56,14 @@ public class Controleur
 		return this.metier.getIles();
 	}
 
+<<<<<<< HEAD
 	public List<Carte> getCartes()
 	{
 		return this.metier.getCartes();
 	}
 
+=======
+>>>>>>> 8cbf6e20020c51437bfa42644405253aa07254a8
 	public List<Chemin> getChemins() 
 	{
 		return this.metier.getChemins();
@@ -89,6 +111,7 @@ public class Controleur
 		return this.metier.getNbCarteTotal();
 	}
 
+<<<<<<< HEAD
 	public Carte getDerniereCartePiochee()
 	{
 		return this.metier.getDerniereCartePiochee();
@@ -101,6 +124,10 @@ public class Controleur
 
 	public static void main(String[] args)
 	{
+=======
+
+	public static void main(String[] args) {
+>>>>>>> 8cbf6e20020c51437bfa42644405253aa07254a8
 		new Controleur();
 	}
 }
