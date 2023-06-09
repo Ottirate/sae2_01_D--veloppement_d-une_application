@@ -28,6 +28,16 @@ public class Ile
 		reg.ajouterIle(this);
 	}
 
+	public String getNom    () { return this.nom;     }
+	public String getCoul   () { return this.coul;    }
+	public Region getReg    () { return this.reg;     }
+
+	public int    getxImages() { return this.xImages; }
+	public int    getyImages() { return this.yImages; }
+	
+	public int    getxPoint () { return this.xPoint;  }
+	public int    getyPoint () { return this.yPoint;  }
+
 	public String toString ()
 	{
 		return String.format("%-15s", this.nom    ) +

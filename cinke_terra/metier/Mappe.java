@@ -48,7 +48,6 @@ public class Mappe
 				System.out.println("Nom fichier invalide : " + Mappe.NOM_FICHIER);
 		}
 	}
-	public static void main(String[] args) {
-		new Mappe();
-	}
+	
+	public ArrayList<Ile> getIles() { return this.lstIles; }
 }
