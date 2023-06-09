@@ -8,12 +8,6 @@ import java.util.List;
 import java.awt.Color;
 import java.awt.Dimension;
 
-import javax.swing.JFrame;
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Point;
-
 import java.awt.Toolkit;
 
 public class Controleur 
