@@ -18,7 +18,7 @@ public class Controleur
 
 	public Controleur() 
 	{
-		this.metier    = new Mappe();
+		this.metier    = new Mappe(this);
 		this.ihmMappe  = new FrameGame(this);
 		this.ihmPioche = new FrameCartes(this);
 
@@ -106,6 +106,12 @@ public class Controleur
 
 	public Ile getIleDebut() {return this.metier.getIleDebut();}
 
+
+	public void majIHM ()
+	{
+		if (this.ihmPioche != null) this.ihmPioche.maj();
+		if (this.ihmPioche != null) this.ihmMappe.maj();
+	}
 	public static void main(String[] args) {
 		new Controleur();
 	}

@@ -1,5 +1,8 @@
 package cinke_terra.metier;
 
+
+import cinke_terra.Controleur;
+
 /** Lecture */
 import java.util.Scanner;
 import java.io.FileInputStream;
@@ -34,6 +37,8 @@ public class Mappe
 	/*           ATTRIBUTS              */
 	/*----------------------------------*/
 
+	private Controleur ctrl;
+
 	/* Liste de toutes les îles */
 	private List<Ile>     lstIles;
 
@@ -58,8 +63,9 @@ public class Mappe
 	/**
 	 * Constructeur sans paramètres qui initialise l'objet.
 	 */
-	public Mappe() 
+	public Mappe(Controleur ctrl) 
 	{
+		this.ctrl = ctrl;
 		this.initialise();
 	}
 
@@ -119,7 +125,9 @@ public class Mappe
 	 */
 	public void initialiserManche()
 	{
-		this.paquet = new PaquetDeCarte();
+		if (this.paquet == null) this.paquet = new PaquetDeCarte();
+		else                     this.paquet.reinitialiser();
+
 		this.feutre = COLORS.remove(0);
 
 		if (this.feutre.equals(Color.RED))
@@ -127,6 +135,7 @@ public class Mappe
 		else
 			this.ileDeDepart = this.getIleId("Mutaa");
 
+		this.ctrl.majIHM();
 	}
 	
 	public Chemin trouverChemin (Ile i1, Ile i2) 
@@ -185,7 +194,7 @@ public class Mappe
 	/**
 	 * Retourne le nombre total de cartes.
 	 * 
-	 * @return le nombre de cartes
+	 * @return l'île du début
 	 */
 	public Ile getIleDebut() { return this.ileDeDepart; }
 
@@ -236,6 +245,10 @@ public class Mappe
 		c.setCouleur(this.feutre);
 		this.lstCheminColorie.add(c);
 		this.paquet.carteJouer();
+
+		if (this.paquet.getNbNoiresPiochees() == 5)
+			this.initialiserManche();
+
 		return true;
 	}
 

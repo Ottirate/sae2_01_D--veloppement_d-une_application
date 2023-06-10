@@ -32,4 +32,7 @@ public class FrameCartes extends JFrame
 		this.setVisible(true);
 	}
 
+	public void maj () { this.panelPioche.repaint(); }
+
+
 }
