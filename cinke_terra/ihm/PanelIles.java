@@ -14,6 +14,8 @@ import java.util.List;
 
 public class PanelIles extends JPanel
 {
+	private int id;
+
 	private boolean estNouvelleManche;	
 	private Ile ile1;
 	private Ile ile2;
@@ -28,9 +30,10 @@ public class PanelIles extends JPanel
 	private double coef;
 	private ArrayList<Polygon> polygons;
 
-	public PanelIles(Controleur ctrl) 
+	public PanelIles(Controleur ctrl, int id) 
 	{
 		this.ctrl = ctrl;
+		this.id   = id;
 		this.estNouvelleManche = true;
 
 		this.setBackground( new Color(182, 211, 229) );
@@ -50,11 +53,11 @@ public class PanelIles extends JPanel
 	private void declarerImage()
 	{
 		this.lstImgIles = new ArrayList<>();
-		for (Ile i : this.ctrl.getIles()) 
+		for (Ile i : this.ctrl.getIles(this.id)) 
 			this.lstImgIles.add( new ImageIcon(PanelIles.NOM_CHEMIN + i.getNom() + ".png"));
 
 		//On regarde le max X et Y
-		List<Ile> lstIles = this.ctrl.getIles();
+		List<Ile> lstIles = this.ctrl.getIles(this.id);
 		for (Ile i : lstIles) 
 		{
 			int x = this.lstImgIles.get(lstIles.indexOf(i)).getIconHeight() + i.getXImages();
@@ -76,15 +79,15 @@ public class PanelIles extends JPanel
 	{
 		super.paintComponent(g);
 
-		List<Ile> lstIles = this.ctrl.getIles();
+		List<Ile> lstIles = this.ctrl.getIles(this.id);
 		Graphics2D g2 = (Graphics2D) g;
 
 		/*                               */
 		/* CALCUL DU COEF DE PROPORTIONS */
 		/*                               */
 		
-		int hauteur    = this.ctrl.getHauteur() - 40 ;
-		int largeur    = this.ctrl.getLargeur() - 20 ;
+		int hauteur    = this.ctrl.getHauteur(this.id) - 40 ;
+		int largeur    = this.ctrl.getLargeur(this.id) - 20 ;
 		
 		double coef1   = hauteur * 1.0 / (this.maxY);
 		double coef2   = largeur * 1.0 / (this.maxX);
@@ -97,13 +100,13 @@ public class PanelIles extends JPanel
 		if ( oldCoef != this.coef ) this.updateShape();
 
 		//Afficher l'ile de début en surligné pour savoir ou on commence
-		if (this.estNouvelleManche) this.ile1 = this.ctrl.getIleDebut();
+		if (this.estNouvelleManche) this.ile1 = this.ctrl.getIleDebut(this.id);
 
 		this.estNouvelleManche = false;
 
 
 		//Afficher les routes
-		for (Chemin c : this.ctrl.getChemins()) 
+		for (Chemin c : this.ctrl.getChemins(this.id)) 
 		{
 			// Point
 			Ile i1 = c.getIleA();
@@ -137,13 +140,13 @@ public class PanelIles extends JPanel
 
 		g2.setColor(Color.BLACK);
 
-		Color colFeutre = this.ctrl.getColFeutre();
+		Color colFeutre = this.ctrl.getColFeutre(this.id);
 		// Afficher les iles
 		
 		if (this.ile1 != null)
 		{
 			for (Chemin c : this.ile1.getCheminAutour())
-				if (this.ctrl.estColoriable(c))
+				if (this.ctrl.estColoriable(c, this.id))
 				{
 					this.drawPolygonePossible(c.getIleA(), g2);
 					this.drawPolygonePossible(c.getIleB(), g2);
@@ -151,7 +154,7 @@ public class PanelIles extends JPanel
 				
 		}
 
-		for (Ile i : this.ctrl.getIles()) 
+		for (Ile i : this.ctrl.getIles(this.id)) 
 		{
 			//Contour si selectionné 
 			if (i == this.ile1 || i == this.ile2)
@@ -214,7 +217,7 @@ brun  = Color.decode("#8D8C70")
 
 		for (ImageIcon i : this.lstImgIles)
 		{
-			Ile ile = this.ctrl.getIles().get(cpt++);
+			Ile ile = this.ctrl.getIles(this.id).get(cpt++);
 
 			// Reset du polygone de l'image
 			Polygon p = new Polygon();
@@ -257,7 +260,7 @@ brun  = Color.decode("#8D8C70")
 
 	public Polygon trouverPolygon(Ile i)
 	{
-		return this.polygons.get( this.ctrl.getIles().indexOf( i ) );
+		return this.polygons.get( this.ctrl.getIles(this.id).indexOf( i ) );
 	}
 
 
@@ -302,9 +305,9 @@ brun  = Color.decode("#8D8C70")
 
 			if ( this.ile1 != null && this.ile2 != null  && this.ile1 != this.ile2)
 			{
-				Chemin c = ctrl.trouverChemin(this.ile1, this.ile2);
+				Chemin c = ctrl.trouverChemin(this.ile1, this.ile2, PanelIles.this.id);
 				
-				if ( !ctrl.colorier(c) )
+				if ( !ctrl.colorier(c, PanelIles.this.id) )
 				{
 					this.ile2 = null;
 					this.ile1 = i;
@@ -322,7 +325,7 @@ brun  = Color.decode("#8D8C70")
 		{
 			for (Polygon p : PanelIles.this.polygons)
 				if ( p != null  && p.contains(x, y) )
-					return PanelIles.this.ctrl.getIles().get( PanelIles.this.polygons.indexOf(p) );
+					return PanelIles.this.ctrl.getIles(PanelIles.this.id).get( PanelIles.this.polygons.indexOf(p) );
 
 			return null;
 		}

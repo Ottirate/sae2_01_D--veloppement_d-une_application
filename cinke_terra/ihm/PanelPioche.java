@@ -101,7 +101,7 @@ public class PanelPioche extends JPanel
 	}
 	
 	public int calculPosCartePioche  ( int indice ){ return PanelPioche.MARGE_X_CARTE + indice*PanelPioche.ESPACEMENT; }
-	public int calculPosCarteDefausse( int indice ){ return (int)(this.ctrl.getLargeur() - indice*(this.largCarte+PanelPioche.ESPACEMENT) - PanelPioche.MARGE_X_CARTE); }
+	public int calculPosCarteDefausse( int indice ){ return (int)(this.ctrl.getLargeurPioche() - indice*(this.largCarte+PanelPioche.ESPACEMENT) - PanelPioche.MARGE_X_CARTE); }
 
 
 	/*-----------------------------------*/

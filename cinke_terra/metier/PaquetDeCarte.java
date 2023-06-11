@@ -27,10 +27,7 @@ public class PaquetDeCarte
 	 */
 	public PaquetDeCarte()
 	{
-		this.ensCarte = new ArrayList<>(Arrays.asList(Carte.values()));
-		Collections.shuffle(this.ensCarte);
-
-		this.nbNoiresPiochees = 0;
+		this.reinitialiser();
 	}
 
 	/*
@@ -71,6 +68,9 @@ public class PaquetDeCarte
 	{
 		this.ensCarte = new ArrayList<>(Arrays.asList(Carte.values()));
 		Collections.shuffle(this.ensCarte);
+
+		this.nbNoiresPiochees = 0;
+
 	}
 
 	/**

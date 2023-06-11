@@ -12,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 
 /** AWT */
@@ -31,7 +32,7 @@ public class Mappe
 	private static final String      NOM_FICHIER = "../resources/data.csv";
 
 	/** Liste de constantes de couleurs */
-	private static final List<Color> COLORS      = new ArrayList<>(Arrays.asList( Color.RED, Color.BLUE));
+	private static List<Color> colors;
 
 	/*----------------------------------*/
 	/*           ATTRIBUTS              */
@@ -53,9 +54,11 @@ public class Mappe
 
 	/** Liste des chemins coloriés */
 	private List<Chemin>  lstCheminColorie;
+	private boolean       estDebutManche;
 
 	/** Paquet de cartes */
 	private PaquetDeCarte paquet;
+	private boolean       aJouer;
 
 	/** Couleur du feutre */
 	private Color         feutre;
@@ -63,9 +66,20 @@ public class Mappe
 	/**
 	 * Constructeur sans paramètres qui initialise l'objet.
 	 */
-	public Mappe(Controleur ctrl) 
+	public Mappe(Controleur ctrl, PaquetDeCarte p) 
 	{
-		this.ctrl = ctrl;
+		this.ctrl   = ctrl;
+		this.paquet = p;
+		
+		if (Mappe.colors == null)
+			if ((int) (Math.random()*2) == 1) Mappe.colors = new ArrayList<>(Arrays.asList( Color.RED , Color.BLUE));
+			else                              Mappe.colors = new ArrayList<>(Arrays.asList( Color.BLUE, Color.RED ));
+		else
+			if (Mappe.colors.get(0) == Color.RED) Collections.addAll(Mappe.colors, Color.RED , Color.BLUE);
+			else                                        Collections.addAll(Mappe.colors, Color.BLUE, Color.RED );			
+
+		System.out.println(Mappe.colors);
+
 		this.initialise();
 	}
 
@@ -78,7 +92,6 @@ public class Mappe
 		this.lstIles          = new ArrayList<>();
 		this.lstChemins       = new ArrayList<>();
 		this.lstCheminColorie = new ArrayList<>();
-		Collections.shuffle(Mappe.COLORS);
 		
 		try
 		{
@@ -110,8 +123,7 @@ public class Mappe
 							Integer.parseInt(ensInfo[2])));
 
 			}
-			for (Region r : this.lstRegions)
-				System.out.println(r);
+			
 
 		} catch (Exception e) {
 			System.out.println("Nom fichier invalide : " + Mappe.NOM_FICHIER);
@@ -125,15 +137,16 @@ public class Mappe
 	 */
 	public void initialiserManche()
 	{
-		if (this.paquet == null) this.paquet = new PaquetDeCarte();
-		else                     this.paquet.reinitialiser();
+		this.paquet.reinitialiser();
 
-		this.feutre = COLORS.remove(0);
+		this.feutre = Mappe.colors.remove(0);
 
 		if (this.feutre.equals(Color.RED))
 			this.ileDeDepart = this.getIleId("Ticó");
 		else
 			this.ileDeDepart = this.getIleId("Mutaa");
+
+		this.estDebutManche = true;
 
 		this.ctrl.majIHM();
 	}
@@ -221,7 +234,19 @@ public class Mappe
 	 */
 	public void piocher(int indice)
 	{
+		if (this.paquet.getNbNoiresPiochees() == 5)
+			this.initialiserManche();
+
+		this.aJouer = false;
+
 		this.paquet.piocher(indice);
+	}
+	public void piocher()
+	{
+		if (this.paquet.getNbNoiresPiochees() == 5)
+			this.initialiserManche();
+			
+		this.aJouer = false;
 	}
 
 
@@ -244,7 +269,11 @@ public class Mappe
 
 		c.setCouleur(this.feutre);
 		this.lstCheminColorie.add(c);
-		this.paquet.carteJouer();
+
+		this.estDebutManche = false;
+		// this.paquet.carteJouer();
+		this.aJouer = true;
+
 
 		if (this.paquet.getNbNoiresPiochees() == 5)
 			this.initialiserManche();
@@ -271,32 +300,28 @@ public class Mappe
 	public boolean estColoriable(Chemin c) 
 	{
 		/* Si le chemin n'existe pas ou que on peut pas jouer de carte */
-		if (c == null || this.paquet.getDerniereCartePiochee() == null) return false;
-		System.out.println("Le chemin existe et on a une carte");
+		if (c == null || this.aJouer) return false;
+		// if (c == null || this.paquet.getDerniereCartePiochee() == null) return false;
 
 		/* Si le chemin est déjà colorié */
 		if (c.getCouleur() != null) return false;
-		System.out.println("Le chemin n'est pas coloré");
 
 		Ile ileA = c.getIleA();
 		Ile ileB = c.getIleB();
 
 		/* Dans le cas où il s'agit du premier trait */
-		if (this.lstCheminColorie.size() == 0)
+		if (this.estDebutManche)
 			if (ileA == this.ileDeDepart && this.bonneCouleur(ileB) ||
 			    ileB == this.ileDeDepart && this.bonneCouleur(ileA)) //Bonne ile : Okay
 				return true;
 			else
 				return false;
-		System.out.println("Le chemin n'est pas le premier trait");
 
 		/* Si le chemin croise une arête déjà coloriée */
 		if (this.cheminCroise(c)) return false;
-		System.out.println("Le chemin ne croise rien");
 
 		/* Si le chemin forme un cycle */
 		if (this.aCycle(c)) return false;
-		System.out.println("Le chemin ne forme pas de cycle");
 
 		/* Si c'est une extrémité ou si la direction est pas une bonne couleur */
 		if (this.cheminsColorieAutour(ileB) && this.bonneCouleur(ileA))
@@ -305,8 +330,6 @@ public class Mappe
 		if (this.cheminsColorieAutour(ileA) && this.bonneCouleur(ileB))
 			return true;
 			
-		System.out.println("Le chemin a plus d'un chemin autour de la deuxième île");
-
 		return false;
 	}
 
@@ -317,8 +340,6 @@ public class Mappe
 		for (Chemin chemin : i.getCheminAutour())
 			if (chemin.getCouleur() == this.feutre)
 				nbColorie ++;
-
-		System.out.println(nbColorie + " " + i);
 
 		return nbColorie == 1;
 	}
@@ -363,6 +384,8 @@ public class Mappe
 
 	private boolean bonneCouleur(Ile i)
 	{
+		if (this.paquet.getDerniereCartePiochee() == null) return false;
+
 		String coul = this.paquet.getDerniereCartePiochee().getCouleur();
 
 		if (coul == null) return false;
