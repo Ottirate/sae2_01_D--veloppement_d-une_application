@@ -12,7 +12,7 @@ import java.awt.Toolkit;
 
 public class Controleur 
 {
-	private static int NB_JOUEUR = 1;
+	private static int NB_JOUEUR = 2;
 
 	// Joueur 1
 	private Mappe       metier1;
@@ -167,7 +167,7 @@ public class Controleur
 	public Ile getIleDebut(int id) 
 	{
 		if (id == 1) return this.metier1.getIleDebut();
-		else         return this.metier1.getIleDebut();
+		else         return this.metier2.getIleDebut();
 	}
 
 
@@ -176,6 +176,12 @@ public class Controleur
 		if (this.ihmPioche != null) this.ihmPioche.maj();
 		if (this.ihmMappe1 != null) this.ihmMappe1.maj();
 		if (this.ihmMappe2 != null) this.ihmMappe2.maj();
+	}
+
+	public void initialiserManche ()
+	{
+		this.metier1.initialiserManche();
+		if (this.metier2 != null) this.metier2.initialiserManche();
 	}
 	public static void main(String[] args) {
 		new Controleur();

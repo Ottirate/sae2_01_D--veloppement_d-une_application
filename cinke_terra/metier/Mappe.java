@@ -148,6 +148,8 @@ public class Mappe
 
 		this.estDebutManche = true;
 
+		System.out.println("Nouvelle manche avec coul :" + this.feutre);
+
 		this.ctrl.majIHM();
 	}
 	
@@ -234,17 +236,14 @@ public class Mappe
 	 */
 	public void piocher(int indice)
 	{
-		if (this.paquet.getNbNoiresPiochees() == 5)
-			this.initialiserManche();
-
-		this.aJouer = false;
-
+		this.piocher();
 		this.paquet.piocher(indice);
 	}
+	
 	public void piocher()
 	{
 		if (this.paquet.getNbNoiresPiochees() == 5)
-			this.initialiserManche();
+			this.ctrl.initialiserManche();
 			
 		this.aJouer = false;
 	}
@@ -275,8 +274,6 @@ public class Mappe
 		this.aJouer = true;
 
 
-		if (this.paquet.getNbNoiresPiochees() == 5)
-			this.initialiserManche();
 
 		return true;
 	}
@@ -316,6 +313,7 @@ public class Mappe
 				return true;
 			else
 				return false;
+
 
 		/* Si le chemin croise une arête déjà coloriée */
 		if (this.cheminCroise(c)) return false;
