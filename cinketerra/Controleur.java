@@ -240,10 +240,10 @@ public class Controleur implements WindowStateListener
 
 			mess += "<br>Point du <font style='color: rgb(" + c2.getRed() + ", " + c2.getGreen() + ", " + c2.getBlue() + ")'>Joueur 2 : " + tabScore2[0] + " points</font> <br><ul>";
 			mess +=   "<font style='color: rgb(" + c2.getRed() + ", " + c2.getGreen() + ", " + c2.getBlue() + ")'> " + tabScore2[1].substring(15) + " points</font> (" + tabScore2[1].substring(0,13) + ")<br>";
-			mess +=   "<font style='color: rgb(" + c2.getRed() + ", " + c2.getGreen() + ", " + c2.getBlue() + ")'> " + tabScore2[2].substring(12) + " points</font> (" + tabScore2[2].substring(0,10) + ")</ul></html> ";
+			mess +=   "<font style='color: rgb(" + c2.getRed() + ", " + c2.getGreen() + ", " + c2.getBlue() + ")'> " + tabScore2[2].substring(12) + " points</font> (" + tabScore2[2].substring(0,10) + ")</ul>";
 		}
 
-		JOptionPane.showConfirmDialog( null, mess , "Fin de la partie", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showConfirmDialog( null, mess+"</html>" , "Fin de la partie", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
 		
 		if (this.ihmMappe2 != null) this.ihmMappe2.dispose();
 
