@@ -338,7 +338,6 @@ public class Mappe
 	{
 		/* Si le chemin n'existe pas ou que on peut pas jouer de carte */
 		if (c == null || this.aJouer) return false;
-		// if (c == null || this.paquet.getDerniereCartePiochee() == null) return false;
 
 		/* Si le chemin est déjà colorié */
 		if (c.getCouleur() != null) return false;
