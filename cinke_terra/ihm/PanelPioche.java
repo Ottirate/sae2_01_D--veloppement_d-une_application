@@ -73,7 +73,8 @@ public class PanelPioche extends JPanel
 
 	public void bloquerPioche(boolean bloque)
 	{
-		this.isBlocked = bloque;
+		this.isBlocked    = bloque;
+		this.carteRelevee = -1;
 	}
 
 	public void paintComponent( Graphics g )

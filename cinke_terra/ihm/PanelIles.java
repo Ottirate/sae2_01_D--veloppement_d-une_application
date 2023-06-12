@@ -66,8 +66,12 @@ public class PanelIles extends JPanel
 			maxX = Math.max(x, maxX);
 			maxY = Math.max(y, maxY);
 		}
+	}
 
-		
+	public void newManche () 
+	{ 
+		this.estNouvelleManche = true;
+		this.ile2 = null; 
 	}
 
 
@@ -100,7 +104,10 @@ public class PanelIles extends JPanel
 		if ( oldCoef != this.coef ) this.updateShape();
 
 		//Afficher l'ile de début en surligné pour savoir ou on commence
-		if (this.estNouvelleManche) this.ile1 = this.ctrl.getIleDebut(this.id);
+		if (this.estNouvelleManche)
+		{
+			this.ile1 = this.ctrl.getIleDebut(this.id);
+		}
 
 		this.estNouvelleManche = false;
 
@@ -314,9 +321,6 @@ brun  = Color.decode("#8D8C70")
 	/*-----------------------------------*/
 	private class GereSouris extends MouseAdapter
 	{
-		private Ile ile1;
-		private Ile ile2;
-
 		/**Constructeur. */
 		public GereSouris()
 		{
@@ -339,27 +343,25 @@ brun  = Color.decode("#8D8C70")
 
 			if ( i == null )
 			{
-				this.ile1 = this.ile2 = null;
+				PanelIles.this.ile1 = PanelIles.this.ile2 = null;
 			} 
 			else 
 			{
-				this.ile2 = this.ile1;
-				this.ile1 = i;
+				PanelIles.this.ile2 = PanelIles.this.ile1;
+				PanelIles.this.ile1 = i;
 			}
 
-			if ( this.ile1 != null && this.ile2 != null  && this.ile1 != this.ile2)
+			if ( PanelIles.this.ile1 != null && PanelIles.this.ile2 != null  && PanelIles.this.ile1 != PanelIles.this.ile2)
 			{
-				Chemin c = ctrl.trouverChemin(this.ile1, this.ile2, PanelIles.this.id);
+				Chemin c = ctrl.trouverChemin(PanelIles.this.ile1, PanelIles.this.ile2, PanelIles.this.id);
 				
 				if ( !ctrl.colorier(c, PanelIles.this.id) )
 				{
-					this.ile2 = null;
-					this.ile1 = i;
+					PanelIles.this.ile2 = null;
+					PanelIles.this.ile1 = i;
 				}
 			}
 
-			PanelIles.this.ile1 = this.ile1;
-			PanelIles.this.ile2 = this.ile2;
 			PanelIles.this.repaint();
 		
 		}

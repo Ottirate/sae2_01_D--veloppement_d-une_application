@@ -29,10 +29,11 @@ public class Chemin
 	 */
 	public Chemin(Ile ileA, Ile ileB, int bonus)
 	{
-		this.ileA  = ileA;
-		this.ileB  = ileB;
+		this.ileA  = ileA ;
+		this.ileB  = ileB ;
 		this.bonus = bonus;
-		this.color = null;
+
+		this.color = null ;
 
 		ileA.addChemin(this);
 		ileB.addChemin(this);
@@ -86,6 +87,17 @@ public class Chemin
 	public Color getCouleur()
 	{
 		return this.color;
+	}
+
+	/**
+	 * Retourne {@code vrai} si le chemin est colorié,
+	 * autrement {@code faux}.
+	 * 
+	 * @return {@code vrai} si le chemin est déjà colorié, sinon {@code faux}.
+	 */
+	public boolean estColorie()
+	{
+		return this.color != null;
 	}
 
 	/**

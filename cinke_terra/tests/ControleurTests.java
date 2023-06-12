@@ -8,15 +8,19 @@
 package cinke_terra.tests;
 
 
+/*       Imports       */
+import cinke_terra.Controleur;
+
+
 /*       Classe        */
-public class Controleur
+public class ControleurTests
 {
 	/* Attributs de Classe */
 	private FrameTests ihm;
 
 
 	/*    Constructeur     */
-	public Controleur()
+	public ControleurTests()
 	{
 		this.ihm = new FrameTests();
 	}
@@ -25,13 +29,13 @@ public class Controleur
 	/*      Méthodes       */
 	public void lancerTest( int indice )
 	{
-
+		new Controleur();
 	}
 
 
 	/*      Lancement      */
 	public static void main( String[] args )
 	{
-		new Controleur();
+		new ControleurTests();
 	}
 }

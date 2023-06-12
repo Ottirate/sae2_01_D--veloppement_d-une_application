@@ -38,6 +38,8 @@ public class FrameGame extends JFrame
 		this.setVisible(true);
 	}
 
+	public void newManche () { this.panelIles.newManche(); }
+
 	public void maj () 
 	{ 
 		this.lblScore.setText(this.ctrl.getScore(this.id));

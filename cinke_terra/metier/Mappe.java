@@ -273,8 +273,8 @@ public class Mappe
 			this.ctrl.bloquerPioche(true);
 			this.ctrl.showButton();
 		}
-		else
-			this.aJouer = false;
+
+		this.aJouer = false;
 	}
 
 
@@ -469,11 +469,47 @@ public class Mappe
 
 		int score = nbMaxIles * lstRegionsParcourues.size();
 
-		this.points = "Score de base : " + score;
+		int bonusChemins = 0;
+		int bonusIles = 0;
 
+		for (Chemin c : this.lstCheminColorie)
+		{
+			bonusChemins += c.getBonus();
+		}
+
+		boolean red = false;
+		boolean blue = false;
+
+		for (Ile i : lstIlesParcourues)
+		{
+			List<Chemin> lstChms = i.getCheminAutour();
+
+			red = false;
+			blue = false;
+
+			for (Chemin c : lstChms)
+			{
+				if (!c.estColorie())
+					continue;
+
+				if (c.getCouleur().equals(Color.RED))
+					red = true;
+				
+				if (c.getCouleur().equals(Color.BLUE))
+					blue = true;
+			}
+
+			if (red && blue)
+				bonusIles += 2;
+		}
+
+		this.points = score + "; bonus chemins: " + bonusChemins + "; bonus îles: " + bonusIles;
+
+		
 		System.out.println("Nb Max Iles=> " + nbMaxIles);
 		System.out.println("Nb regions=> " + lstRegionsParcourues.size());
 		System.out.println("SCORE=> " + this.points);
+		
 
 		/*
 		lstRegionsParcourues.stream()

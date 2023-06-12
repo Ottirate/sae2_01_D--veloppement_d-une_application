@@ -61,7 +61,7 @@ public class PanelSelection extends JPanel implements ActionListener
 		this.ddlstTestMappe.addActionListener(this);
 		this.ddlstTestIHM.addActionListener(this);
 
-		/*      Affichage      */
+		/*      Affichage      */ 
 		this.setVisible( true );
 	}
 

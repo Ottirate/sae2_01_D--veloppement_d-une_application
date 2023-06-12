@@ -49,8 +49,7 @@ public class PaquetDeCarte
 		{
 			Carte c;
 
-
-			c = this.ensCarte.get(indice);
+			/*c = this.ensCarte.get(indice);
 
 			if (!c.estCache()) this.piocher(indice+1);
 			else
@@ -58,6 +57,26 @@ public class PaquetDeCarte
 				c.setCache(false);
 				this.derniereCartePiochee = c;
 				if ( c.getContour().equals(Color.black) ) this.nbNoiresPiochees++;
+			}*/
+
+			int cpt  = 0;
+			int cpt2 = 0;
+
+			while (cpt < PaquetDeCarte.TAILLE)
+			{
+				c = this.ensCarte.get(cpt);
+				
+				if (!c.estCache()) cpt2++;
+
+				if (cpt == cpt2 + indice)
+				{
+					c.setCache(false);
+					this.derniereCartePiochee = c;
+					if ( c.getContour().equals(Color.black) ) this.nbNoiresPiochees++;
+					return;
+				}
+
+				cpt++;
 			}
 		}
 	}
