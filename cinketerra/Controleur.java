@@ -224,7 +224,6 @@ public class Controleur implements WindowStateListener
 	{
 		String mess;
 		Color c1 = this.getColFeutre(1);
-		Color c2 = this.getColFeutre(2);
 
 		String[] tabScore1 = this.metier1.getScore().split("; ");
 
@@ -235,6 +234,7 @@ public class Controleur implements WindowStateListener
 
 		if (Controleur.NB_JOUEUR == 2)
 		{
+			Color c2 = this.getColFeutre(2);
 			// Score du joueur 2
 			String[] tabScore2 = this.metier2.getScore().split("; ");
 
