@@ -8,7 +8,6 @@
 ./cinketerra/metier/Carte.java
 ./cinketerra/metier/Chemin.java
 ./cinketerra/metier/Ile.java
-./cinketerra/metier/Joueur.java
 ./cinketerra/metier/Mappe.java
 ./cinketerra/metier/PaquetDeCarte.java
 ./cinketerra/metier/Region.java

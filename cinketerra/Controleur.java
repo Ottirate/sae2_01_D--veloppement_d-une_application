@@ -236,7 +236,7 @@ public class Controleur implements WindowStateListener
 		if (Controleur.NB_JOUEUR == 2)
 		{
 			// Score du joueur 2
-			String[] tabScore2 = this.metier1.getScore().split("; ");
+			String[] tabScore2 = this.metier2.getScore().split("; ");
 
 			mess += "<br>Point du <font style='color: rgb(" + c2.getRed() + ", " + c2.getGreen() + ", " + c2.getBlue() + ")'>Joueur 2 : " + tabScore2[0] + " points</font> <br><ul>";
 			mess +=   "<font style='color: rgb(" + c2.getRed() + ", " + c2.getGreen() + ", " + c2.getBlue() + ")'> " + tabScore2[1].substring(15) + " points</font> (" + tabScore2[1].substring(0,13) + ")<br>";
