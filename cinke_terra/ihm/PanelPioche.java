@@ -38,7 +38,7 @@ public class PanelPioche extends JPanel
 	private final static double COEF_CARTE    = 0.667;
 	private final static int    POS_Y_CARTE   = 50;
 	private final static int    MARGE_X_CARTE = 50;
-	private final static int    ESPACEMENT    = 10;
+	private final static int    ESPACEMENT    = 15;
 
 	//getImage( int )
 	//carteCachee( int )
@@ -154,15 +154,7 @@ public class PanelPioche extends JPanel
 			PanelPioche.this.ensCartePioche = new ArrayList<>();
 
 			for (int i = 0 ; i < PanelPioche.this.ctrl.getNbCarteTotal() ; i++)
-			{
 				PanelPioche.this.ensCartePioche.add(new Rectangle(PanelPioche.this.calculPosCartePioche(i), PanelPioche.POS_Y_CARTE, PanelPioche.this.largCarte, PanelPioche.this.longCarte));
-
-				//System.out.println( "i = " + i);
-				//System.out.println( "x = " + PanelPioche.this.calculPosCartePioche(i) );
-				//System.out.println( "y = " + PanelPioche.POS_Y_CARTE );
-				//System.out.println( "longueur = " + PanelPioche.this.longCarte );
-				//System.out.println( "largeur = " + PanelPioche.this.largCarte );
-			}
 		}
 
 		/**

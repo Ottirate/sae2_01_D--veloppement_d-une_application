@@ -5,14 +5,16 @@ import cinke_terra.ihm.FrameCartes;
 import cinke_terra.metier.*;
 import java.util.List;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import java.awt.Color;
 import java.awt.Dimension;
-
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
 import java.awt.Toolkit;
 
-public class Controleur 
+public class Controleur implements WindowStateListener
 {
 	private static int NB_JOUEUR = 2;
 
@@ -27,16 +29,25 @@ public class Controleur
 	//Pioche Commune
 	private FrameCartes ihmPioche;
 
-	public Controleur() 
+	public Controleur()
 	{
+		String[] options = {"1 joueur", "2 joueurs"};
+
+		int choix = JOptionPane.showOptionDialog(null, "Choisissez le nombre de joueurs", "Choix du nombre de joueurs", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+		
+		if (choix == 0)
+			Controleur.NB_JOUEUR = 1;
+		else if (choix == 1)
+			Controleur.NB_JOUEUR = 2;
+		
 		PaquetDeCarte p = new PaquetDeCarte();
 
-		this.metier1    = new Mappe(this,p);
+		this.metier1    = new Mappe(this, p);
 		this.ihmMappe1  = new FrameGame(this, 1);
 
 		if (Controleur.NB_JOUEUR == 2)
 		{
-			this.metier2    = new Mappe(this,p);
+			this.metier2    = new Mappe    (this, p);
 			this.ihmMappe2  = new FrameGame(this, 2);
 		}
 
@@ -61,6 +72,10 @@ public class Controleur
 		
 		this.ihmMappe1 .setLocation( 45, 45 );
 		this.ihmPioche.setLocation( 45, 55 + this.ihmMappe1.getHeight() );
+
+		this.ihmMappe1.addWindowStateListener(this);
+		this.ihmMappe2.addWindowStateListener(this);
+		this.ihmPioche.addWindowStateListener(this);
 	}
 
 	public List<Ile> getIles(int id) 
@@ -96,7 +111,7 @@ public class Controleur
 
 	public String getImage(int indice)
 	{
-		String sRet = "../resources/cartes/";
+		String sRet = "./resources/cartes/";
 		Carte c = this.metier1.getCarte(indice);
 
 		if (c != null && !c.estCache())
@@ -225,6 +240,23 @@ public class Controleur
 	{
 		if (id == 1) return this.metier1.getScore();
 		else         return this.metier2.getScore();
+	}
+
+	@Override
+	public void windowStateChanged(WindowEvent e)
+	{
+		if (JFrame.class.cast(e.getSource()).getState() == JFrame.ICONIFIED) {
+			this.ihmMappe1.setState(JFrame.ICONIFIED);
+			if (this.ihmMappe2 != null)
+				this.ihmMappe2.setState(JFrame.ICONIFIED);
+			this.ihmPioche.setState(JFrame.ICONIFIED);
+		}
+		if (JFrame.class.cast(e.getSource()).getState() == JFrame.NORMAL) {
+			this.ihmMappe1.setState(JFrame.NORMAL);
+			if (this.ihmMappe2 != null)
+				this.ihmMappe2.setState(JFrame.NORMAL);
+			this.ihmPioche.setState(JFrame.NORMAL);
+		}
 	}
 
 	public static void main(String[] args) {

@@ -5,7 +5,6 @@ import cinke_terra.Controleur;
 
 /** Lecture */
 import java.util.Scanner;
-import java.util.stream.Stream;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
 
@@ -29,7 +28,7 @@ public class Mappe
 	/*----------------------------------*/
 
 	/** Chemin relatif du fichier de données */
-	private static final String      NOM_FICHIER = "../resources/data.csv";
+	private static final String      NOM_FICHIER = "./resources/data.csv";
 
 	/** Liste de constantes de couleurs */
 	private static List<Color> colors;
@@ -65,7 +64,9 @@ public class Mappe
 	private Color         feutre;
 
 	/** Le nombre de points */
-	private String         points;
+	private String        points;
+
+	private int           numTourSpecial;
 
 	/**
 	 * Constructeur sans paramètres qui initialise l'objet.
@@ -82,7 +83,7 @@ public class Mappe
 			else                              Mappe.colors = new ArrayList<>(Arrays.asList( Color.BLUE, Color.RED ));
 		else
 			if (Mappe.colors.get(0) == Color.RED) Collections.addAll(Mappe.colors, Color.RED , Color.BLUE);
-			else                                  Collections.addAll(Mappe.colors, Color.BLUE, Color.RED );			
+			else                                  Collections.addAll(Mappe.colors, Color.BLUE, Color.RED );
 
 		System.out.println(Mappe.colors);
 
@@ -156,6 +157,8 @@ public class Mappe
 		this.ctrl.bloquerPioche(false);
 
 		this.feutre = Mappe.colors.remove(0);
+
+		this.numTourSpecial   = (int) (Math.random() * 11);
 
 		if (this.feutre.equals(Color.RED))
 			this.ileDeDepart = this.getIleId("Ticó");
