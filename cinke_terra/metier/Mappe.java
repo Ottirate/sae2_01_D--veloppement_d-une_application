@@ -5,6 +5,7 @@ import cinke_terra.Controleur;
 
 /** Lecture */
 import java.util.Scanner;
+import java.util.stream.Stream;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
 
@@ -12,7 +13,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 
 /** AWT */
@@ -51,6 +51,7 @@ public class Mappe
 
 	/** Île de départ */
 	private Ile           ileDeDepart;
+	private boolean       mancheTermine;
 
 	/** Liste des chemins coloriés */
 	private List<Chemin>  lstCheminColorie;
@@ -63,6 +64,9 @@ public class Mappe
 	/** Couleur du feutre */
 	private Color         feutre;
 
+	/** Le nombre de points */
+	private String         points;
+
 	/**
 	 * Constructeur sans paramètres qui initialise l'objet.
 	 */
@@ -70,13 +74,15 @@ public class Mappe
 	{
 		this.ctrl   = ctrl;
 		this.paquet = p;
+
+		this.points = "0";
 		
 		if (Mappe.colors == null)
 			if ((int) (Math.random()*2) == 1) Mappe.colors = new ArrayList<>(Arrays.asList( Color.RED , Color.BLUE));
 			else                              Mappe.colors = new ArrayList<>(Arrays.asList( Color.BLUE, Color.RED ));
 		else
 			if (Mappe.colors.get(0) == Color.RED) Collections.addAll(Mappe.colors, Color.RED , Color.BLUE);
-			else                                        Collections.addAll(Mappe.colors, Color.BLUE, Color.RED );			
+			else                                  Collections.addAll(Mappe.colors, Color.BLUE, Color.RED );			
 
 		System.out.println(Mappe.colors);
 
@@ -137,7 +143,17 @@ public class Mappe
 	 */
 	public void initialiserManche()
 	{
+		// S'il n'y a plus de couleurs disponibles
+		if (Mappe.colors.size() == 0)
+		{
+			this.ctrl.finDePartie();
+			Mappe.colors.add(Color.WHITE);
+			return;
+		}
+		
+		// S'il reste des couleurs disponibles
 		this.paquet.reinitialiser();
+		this.ctrl.bloquerPioche(false);
 
 		this.feutre = Mappe.colors.remove(0);
 
@@ -151,6 +167,8 @@ public class Mappe
 		System.out.println("Nouvelle manche avec coul :" + this.feutre);
 
 		this.ctrl.majIHM();
+
+		this.mancheTermine = true;
 	}
 	
 	public Chemin trouverChemin (Ile i1, Ile i2) 
@@ -237,15 +255,26 @@ public class Mappe
 	public void piocher(int indice)
 	{
 		this.piocher();
-		this.paquet.piocher(indice);
+		
+		if (this.paquet.getNbNoiresPiochees() != 5)
+		{
+			this.paquet.piocher(indice);
+		}
+
+
+		if (this.paquet.getNbCarteRestante() == 0)
+			this.ctrl.showButton();
 	}
 	
 	public void piocher()
 	{
 		if (this.paquet.getNbNoiresPiochees() == 5)
-			this.ctrl.initialiserManche();
-			
-		this.aJouer = false;
+		{
+			this.ctrl.bloquerPioche(true);
+			this.ctrl.showButton();
+		}
+		else
+			this.aJouer = false;
 	}
 
 
@@ -270,10 +299,11 @@ public class Mappe
 		this.lstCheminColorie.add(c);
 
 		this.estDebutManche = false;
-		// this.paquet.carteJouer();
-		this.aJouer = true;
+		
+		this.aJouer         = true ;
 
-
+		this.recalculerPoints();
+		this.ctrl.majIHM();
 
 		return true;
 	}
@@ -397,4 +427,86 @@ public class Mappe
 	 * @return la couleur du stylo
 	 */
 	public Color getColFeutre() { return this.feutre; }
+
+	public void recalculerPoints()
+	{
+		
+		List<Region> lstRegionsParcourues = new ArrayList<>();
+		List<Ile>    lstIlesParcourues    = new ArrayList<>();
+
+		int tempIles = 0;
+		int nbMaxIles = 0;
+
+		for (Chemin c : this.lstCheminColorie)
+		{
+			Ile ile = c.getIleA();
+			
+			lstRegionsParcourues.add(ile.getReg());
+			lstIlesParcourues.add(ile);
+
+			ile = c.getIleB();
+			
+			lstRegionsParcourues.add(ile.getReg());
+			lstIlesParcourues.add(ile);
+		}
+
+		lstIlesParcourues = lstIlesParcourues.stream().distinct().toList();
+		lstRegionsParcourues = lstRegionsParcourues.stream().distinct().toList();
+
+		for (Region r : lstRegionsParcourues)
+		{
+			tempIles = 0;
+
+			for (Ile i : lstIlesParcourues)
+			{
+				if (r.contien(i))
+					tempIles++;
+			}
+
+			if (tempIles > nbMaxIles)
+				nbMaxIles = tempIles;
+		}
+
+		int score = nbMaxIles * lstRegionsParcourues.size();
+
+		this.points = "Score de base : " + score;
+
+		System.out.println("Nb Max Iles=> " + nbMaxIles);
+		System.out.println("Nb regions=> " + lstRegionsParcourues.size());
+		System.out.println("SCORE=> " + this.points);
+
+		/*
+		lstRegionsParcourues.stream()
+		.peek(r -> {
+			this.tempIles = 0;
+
+			lstIlesParcourues.stream()
+			.filter(i -> r.contien(i))
+			.forEach(i -> this.tempIles++);
+
+			if (this.tempIles > this.nbMaxIles)
+				this.nbMaxIles = this.tempIles;
+		});
+
+		this.points = this.nbMaxIles * lstRegionsParcourues.size();
+
+		strChemin.peek(c -> {
+			this.points += c.getBonus();
+		});
+
+		Stream<Ile> strIles1 = this.ctrl.getChemins(1).stream().map(c -> c.getIleA());
+		strIles1 = Stream.concat(strIles1, this.ctrl.getChemins(1).stream().map(c -> c.getIleB()));
+		strIles1 = strIles1.distinct();
+
+		Stream<Ile> strIles2 = this.ctrl.getChemins(0).stream().map(c -> c.getIleA());
+		strIles2 = Stream.concat(strIles2, this.ctrl.getChemins(0).stream().map(c -> c.getIleB()));
+		strIles2 = strIles2.distinct();
+		*/
+
+		
+
+	}
+
+	public String getScore() { return this.points; }
+
 }

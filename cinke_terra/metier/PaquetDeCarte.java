@@ -27,7 +27,8 @@ public class PaquetDeCarte
 	 */
 	public PaquetDeCarte()
 	{
-		this.reinitialiser();
+		this.ensCarte = new ArrayList<>(Arrays.asList(Carte.values()));
+		Collections.shuffle(this.ensCarte);
 	}
 
 	/*
@@ -66,11 +67,15 @@ public class PaquetDeCarte
 	 */
 	public void reinitialiser()
 	{
-		this.ensCarte = new ArrayList<>(Arrays.asList(Carte.values()));
+		for (Carte c : this.ensCarte)
+		{
+			c.setCache(true);
+		}
+
 		Collections.shuffle(this.ensCarte);
 
-		this.nbNoiresPiochees = 0;
-
+		this.nbNoiresPiochees     = 0;
+		this.derniereCartePiochee = null;
 	}
 
 	/**
@@ -121,5 +126,16 @@ public class PaquetDeCarte
 	public List<Carte> getCartes()
 	{
 		return this.ensCarte;
+	}
+
+	public int getNbCarteRestante()
+	{
+		int nbCarteRestante = 0;
+
+		for (Carte c : this.ensCarte)
+			if (c.estCache()) nbCarteRestante++;
+
+		return nbCarteRestante;
+
 	}
 }

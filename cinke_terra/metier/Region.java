@@ -22,6 +22,12 @@ public class Region
 		this.lstIle.add(i);
 		return true;
 	}
+
+	public boolean contien(Ile i)
+	{
+		return this.lstIle.stream()
+			.anyMatch(ile -> ile.equals(i));
+	}
 	
 	public String toString()
 	{

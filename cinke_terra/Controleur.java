@@ -5,6 +5,8 @@ import cinke_terra.ihm.FrameCartes;
 import cinke_terra.metier.*;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -55,10 +57,10 @@ public class Controleur
 			this.ihmMappe1 .setSize( largeur  - 90, (int) ( 0.75 * hauteur ) );
 		}
 
-		this.ihmPioche.setSize( largeur - 90, (int) ( 0.25 * hauteur ) );
+		this.ihmPioche.setSize( largeur - 90, (int) ( 0.30 * hauteur ) );
 		
 		this.ihmMappe1 .setLocation( 45, 45 );
-		this.ihmPioche.setLocation( 45, 90 + this.ihmMappe1.getHeight() );
+		this.ihmPioche.setLocation( 45, 55 + this.ihmMappe1.getHeight() );
 	}
 
 	public List<Ile> getIles(int id) 
@@ -90,17 +92,17 @@ public class Controleur
 		else         return this.ihmMappe2.getWidth();
 	}
 
-	public int getLargeurPioche() { return this.ihmPioche.getWidth();}
+	/*public int getLargeurPioche() { return this.ihmPioche.getWidth();}*/
 
 	public String getImage(int indice)
 	{
 		String sRet = "../resources/cartes/";
 		Carte c = this.metier1.getCarte(indice);
 
-		if (c != null && !c.estCache())
+		//if (c != null && !c.estCache())
 			sRet += (c.getContour().equals(Color.white) ? "blanc_" : "noir_") + c.getCouleur().toLowerCase() + ".png";
-		else
-			sRet += "carte_dos.png";
+		//else
+			//sRet += "carte_dos.png";
 
 		return sRet;
 	}
@@ -115,13 +117,14 @@ public class Controleur
 	public void piocher( int indice )
 	{
 		this.metier1.piocher( indice );
-		this.ihmMappe1.maj();
 
 		if (Controleur.NB_JOUEUR == 2)
 		{
 			this.metier2.piocher();
 			this.ihmMappe2.maj();
 		}
+
+		this.ihmMappe1.maj();
 	}
 
 	public Carte getCarte(int indice)
@@ -181,8 +184,45 @@ public class Controleur
 	public void initialiserManche ()
 	{
 		this.metier1.initialiserManche();
+		
 		if (this.metier2 != null) this.metier2.initialiserManche();
+
+		this.ihmPioche.hideButton();
+		this.ihmPioche.initPioche();
 	}
+
+	public void showButton() {this.ihmPioche.showButton();}
+	public void bloquerPioche(boolean bloque) { if (this.ihmPioche != null) this.ihmPioche.bloquerPioche(bloque); }
+
+	public void finDePartie ()
+	{
+		String score1 = this.metier1.getScore();
+		String mess = "Points J1 : " + score1;
+
+		if(Controleur.NB_JOUEUR == 2)
+		{
+			String score2 = this.metier2.getScore();
+			mess += "\nPoints J2 : " + score2;
+
+			// if (score1 >  score2) mess+= "\n Joueur 1 à gagner";
+			// if (score1 <  score2) mess+= "\n Joueur 2 à gagner";
+			// if (score1 == score2) mess+= "\n Egalité !"        ;
+		}
+
+		JOptionPane.showConfirmDialog( null, mess , "Fin de la partie", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+		
+		if (this.ihmMappe2 != null) this.ihmMappe2.dispose();
+
+		this.ihmMappe1.dispose();
+		this.ihmPioche.dispose();
+	}
+
+	public String getScore (int id)
+	{
+		if (id == 1) return this.metier1.getScore();
+		else         return this.metier2.getScore();
+	}
+
 	public static void main(String[] args) {
 		new Controleur();
 	}

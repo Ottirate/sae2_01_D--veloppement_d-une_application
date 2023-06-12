@@ -18,7 +18,7 @@ public class Chemin
 
 	/** La couleur du chemin */
 	private Color color;
-	
+
 	/**
 	 * Constructeur qui crée un {@code Chemin} avec une île de départ,
 	 * une île d'arrivée et un bonus.

@@ -12,6 +12,8 @@ import java.awt.BorderLayout;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.*;
+import java.awt.Cursor;
+import java.awt.Font;
 
 @SuppressWarnings("unused")
 public class PanelPioche extends JPanel
@@ -28,6 +30,10 @@ public class PanelPioche extends JPanel
 	
 	private ArrayList<Rectangle> ensCartePioche;
 
+	private GereSouris gs;
+
+	private boolean isBlocked;
+
 
 	private final static double COEF_CARTE    = 0.667;
 	private final static int    POS_Y_CARTE   = 50;
@@ -41,6 +47,7 @@ public class PanelPioche extends JPanel
 		this.ctrl         = ctrl;
 		this.nbCarteTotal = this.ctrl.getNbCarteTotal();
 		this.carteRelevee = -1;
+		this.isBlocked = false;
 
 		// Images
 		ImageIcon img = new ImageIcon( this.ctrl.getImage(0) );
@@ -50,15 +57,23 @@ public class PanelPioche extends JPanel
 
 		this.setLayout(new BorderLayout());
 
-		JLabel lbl = new JLabel("Pioche : ");
-		lbl.setOpaque(false);
-		this.add(lbl, BorderLayout.NORTH);
-		
 		this.repaint();
 
-		GereSouris gs = new GereSouris();
+		gs = new GereSouris();
+		
 		this.addMouseListener      (gs);
 		this.addMouseMotionListener(gs);
+	}
+
+	public void initPioche()
+	{
+		gs.init();
+		this.repaint();
+	}
+
+	public void bloquerPioche(boolean bloque)
+	{
+		this.isBlocked = bloque;
 	}
 
 	public void paintComponent( Graphics g )
@@ -68,10 +83,12 @@ public class PanelPioche extends JPanel
 		this.g2 = (Graphics2D) g;
 
 		//dessiner l'ensemble des cartes
-		int cptPioche  = 0;
-		int cptDefausse= 0;
+		int cptPioche   = 0;
+		int cptDefausse = 0;
 
-		for( int cpt = 0; cpt < ctrl.getNbCarteTotal(); cpt++ )
+		g.setFont(new Font("", Font.BOLD, 12));
+
+		for( int cpt = 0; cpt < this.ctrl.getNbCarteTotal(); cpt++ )
 		{
 			// Images
 			ImageIcon img = new ImageIcon( this.ctrl.getImage(cpt) );
@@ -81,27 +98,39 @@ public class PanelPioche extends JPanel
 
 			ImageIcon newImage = new ImageIcon(reImage);
 			
-			// Cas des cartes de la pioche
+			// Surélévation de la pioche
 			if ( this.ctrl.carteCachee( cpt ) && cptPioche == this.carteRelevee)
 			{
 				newImage.paintIcon(this, g, this.calculPosCartePioche(cptPioche), PanelPioche.POS_Y_CARTE - 10);
 				cptPioche++;
 			}
+			// Pioche
 			else if ( this.ctrl.carteCachee( cpt ) )
 			{
 				newImage.paintIcon(this, g, this.calculPosCartePioche(cptPioche), PanelPioche.POS_Y_CARTE);
 				//System.out.println( "coord x image " +cptPioche+ " posée : " + this.calculPosCartePioche( cptPioche ) );
 				cptPioche++;
 			}
-			else //cas des cartes du tas
+			//cas des cartes du tas
+			else if (!this.ctrl.getCarte(cpt).equals(this.ctrl.getDerniereCartePiochee()))
 			{
-				newImage.paintIcon(this, g, this.calculPosCarteDefausse( ++cptDefausse ), PanelPioche.POS_Y_CARTE);
+				newImage.paintIcon(this, g, this.calculPosCarteDefausse(++cptDefausse), PanelPioche.POS_Y_CARTE);
+			}
+			// Main
+			else
+			{
+				int x = this.calculPosCarteDefausse(this.ctrl.getNbCarteTotal() - cptPioche) - 200;
+				g.drawString("Main :", x, 20);
+				newImage.paintIcon(this, g, x, PanelPioche.POS_Y_CARTE);
 			}
 		}
+
+		if (cptDefausse != 0) g.drawString("Défausse : ", this.calculPosCarteDefausse(cptDefausse), 20);
+		if (cptPioche   != 0) g.drawString("Pioche : "  , this.calculPosCartePioche  (0          ), 20);
 	}
 	
 	public int calculPosCartePioche  ( int indice ){ return PanelPioche.MARGE_X_CARTE + indice*PanelPioche.ESPACEMENT; }
-	public int calculPosCarteDefausse( int indice ){ return (int)(this.ctrl.getLargeurPioche() - indice*(this.largCarte+PanelPioche.ESPACEMENT) - PanelPioche.MARGE_X_CARTE); }
+	public int calculPosCarteDefausse( int indice ){ return (int)(this.getWidth() - indice*(this.largCarte+PanelPioche.ESPACEMENT) - PanelPioche.MARGE_X_CARTE); }
 
 
 	/*-----------------------------------*/
@@ -114,15 +143,14 @@ public class PanelPioche extends JPanel
 		public GereSouris()
 		{
 			super();
-			PanelPioche.this.ensCartePioche = new ArrayList<>();
 			
 			this.init();
 		}
 
-		private void init()
+		public void init()
 		{
 			//liste de carte
-			
+			PanelPioche.this.ensCartePioche = new ArrayList<>();
 
 			for (int i = 0 ; i < PanelPioche.this.ctrl.getNbCarteTotal() ; i++)
 			{
@@ -136,56 +164,15 @@ public class PanelPioche extends JPanel
 			}
 		}
 
-		/**Mise a jour des polygones des iles. */
-		// private void retirer()
-		// {
-		// 	int cpt = 0;
-
-		// 	for (ImageIcon i : PanelIles.this.lstImgIles)
-		// 	{
-		// 		System.out.println(" ok -> début ");
-		// 		// Reset du polygone de l'image
-		// 		Polygon p = this.polygons[cpt++];
-
-		// 		if ( p == null ) p = new Polygon(); else p.reset();
-
-		// 		// Création d'une BufferedImage
-		// 		BufferedImage img = new BufferedImage(i.getImage().getWidth(null), i.getImage().getHeight(null), BufferedImage.TYPE_INT_ARGB);
-		// 		Graphics2D    bGr = img.createGraphics();
-
-		// 		bGr.drawImage(i.getImage(), 0, 0, null);
-		// 		bGr.dispose();
-
-		// 		// On note tout les points qui ne sont pas transparents
-		// 		for (int y = 0; y < img.getHeight(); y++)
-		// 		{
-		// 			for (int x = img.getWidth() - 1; x >= 0; x--)
-		// 			{
-		// 				if ( img.getRGB(x, y) != 0 )
-		// 				{
-		// 					p.addPoint(x, y);
-		// 					break;
-		// 				}
-		// 			}
-		// 		}
-
-		// 		for (int y = img.getHeight() - 1; y >= 0; y--)
-		// 		{
-		// 			for (int x = img.getWidth() - 1; x >= 0; x--)
-		// 			{
-		// 				if ( img.getRGB(x, y) != 0 )
-		// 				{
-		// 					p.addPoint(x, y);
-		// 					break;
-		// 				}
-		// 			}
-		// 		}
-		// 	}
-		// }
-
-		/**Evement souris. */
+		/**
+		 * Lorsque la souris est cliquée.
+		 * <br><br>
+		 * {@inheritDoc}
+		 */
 		public void mousePressed(MouseEvent e)
 		{
+			if (PanelPioche.this.isBlocked) return;
+
 			int posX = e.getX();
 			int posY = e.getY();
 
@@ -213,17 +200,28 @@ public class PanelPioche extends JPanel
 			}
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		public void mouseMoved(MouseEvent e)
 		{
+			if (PanelPioche.this.isBlocked) return;
+
 	 		int posX = e.getX();
 			int posY = e.getY();
 
 			Integer indice = trouverCarte(posX, posY);
 
 			if (indice != null)
+			{
 				PanelPioche.this.carteRelevee = indice;
+				PanelPioche.this.setCursor( new Cursor( Cursor.HAND_CURSOR ));
+			}
 			else
+			{
 				PanelPioche.this.carteRelevee = -1;
+				PanelPioche.this.setCursor( new Cursor( Cursor.DEFAULT_CURSOR   ));
+			}
 
 			PanelPioche.this.repaint();
 		}

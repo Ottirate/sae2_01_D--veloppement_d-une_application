@@ -217,6 +217,7 @@ brun  = Color.decode("#8D8C70")
 
 		for (ImageIcon i : this.lstImgIles)
 		{
+			
 			Ile ile = this.ctrl.getIles(this.id).get(cpt++);
 
 			// Reset du polygone de l'image
@@ -255,9 +256,52 @@ brun  = Color.decode("#8D8C70")
 			}
 
 			this.polygons.add(p);
+			
+			
+			/*Ile ile = this.ctrl.getIles(this.id).get(cpt++);
+
+			// Reset du polygone de l'image
+			Polygon p = new Polygon();
+
+			// Création d'une BufferedImage
+			BufferedImage img = new BufferedImage(i.getImage().getWidth(null), i.getImage().getHeight(null), BufferedImage.TYPE_INT_ARGB);
+			Graphics2D    bGr = img.createGraphics();
+
+			bGr.drawImage(i.getImage(), 0, 0, null);
+			bGr.dispose();
+
+			// Trouver point de départ
+			Point premier = null;
+
+			for (int y = 0; y < img.getHeight(); y++)
+			{
+				for (int x = 0; x < img.getWidth(); x++)
+				{
+					if ( img.getRGB(x, y) != 0 )
+					{
+						if (x-1 < 0)
+							premier = new Point(img.getWidth(), y-1);
+						else
+							premier = new Point(x-1, y);
+						break;
+					}
+				}
+
+				if (premier != null) break;
+			}
+
+			// longer les bords
+			Point last = null;
+
+			while (last != premier)
+			{
+				
+			}
+
+			this.polygons.add(p);*/
 		}
 	}
-
+	
 	public Polygon trouverPolygon(Ile i)
 	{
 		return this.polygons.get( this.ctrl.getIles(this.id).indexOf( i ) );
