@@ -130,13 +130,8 @@ public class PanelIles extends JPanel
 			// Ligne
 			if (c.getCouleur() == null)
 			{
-				g2.setColor(new Color(255, 255, 0, 40));
-				g2.setStroke(new BasicStroke(5f));
-				g2.drawLine(x1, y1, x2, y2);
-				
-				g2.setColor(new Color(255, 0, 0, 40));
-				g2.setStroke(new BasicStroke(3f));
-				g2.drawLine(x1, y1, x2, y2);
+				for (int i = 0; i <= c.getBonus(); i++)
+					this.dessinerLigneLibre(g2, x1, y1, x2, y2);
 			}
 			else
 			{
@@ -190,6 +185,17 @@ public class PanelIles extends JPanel
 			g2.drawString( i.getNom(), (int) (i.getXNom() * this.coef) , (int) (i.getYNom() * this.coef));
 		}
 
+	}
+
+	private void dessinerLigneLibre (Graphics2D g2, int x1, int y1, int x2, int y2)
+	{
+		g2.setColor(new Color(255, 255, 0, 40));
+		g2.setStroke(new BasicStroke(5f));
+		g2.drawLine(x1, y1, x2, y2);
+		
+		g2.setColor(new Color(255, 0, 0, 40));
+		g2.setStroke(new BasicStroke(3f));
+		g2.drawLine(x1, y1, x2, y2);
 	}
 
 	private void drawPolygonePossible(Ile i, Graphics2D g2)
