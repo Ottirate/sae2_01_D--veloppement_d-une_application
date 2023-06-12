@@ -510,37 +510,6 @@ public class Mappe
 		System.out.println("Nb regions=> " + lstRegionsParcourues.size());
 		System.out.println("SCORE=> " + this.points);
 		
-
-		/*
-		lstRegionsParcourues.stream()
-		.peek(r -> {
-			this.tempIles = 0;
-
-			lstIlesParcourues.stream()
-			.filter(i -> r.contien(i))
-			.forEach(i -> this.tempIles++);
-
-			if (this.tempIles > this.nbMaxIles)
-				this.nbMaxIles = this.tempIles;
-		});
-
-		this.points = this.nbMaxIles * lstRegionsParcourues.size();
-
-		strChemin.peek(c -> {
-			this.points += c.getBonus();
-		});
-
-		Stream<Ile> strIles1 = this.ctrl.getChemins(1).stream().map(c -> c.getIleA());
-		strIles1 = Stream.concat(strIles1, this.ctrl.getChemins(1).stream().map(c -> c.getIleB()));
-		strIles1 = strIles1.distinct();
-
-		Stream<Ile> strIles2 = this.ctrl.getChemins(0).stream().map(c -> c.getIleA());
-		strIles2 = Stream.concat(strIles2, this.ctrl.getChemins(0).stream().map(c -> c.getIleB()));
-		strIles2 = strIles2.distinct();
-		*/
-
-		
-
 	}
 
 	public String getScore() { return this.points; }
