@@ -16,29 +16,32 @@ public class FrameAnnonce extends JFrame
 	private Image img;
 	private int x;
 	private int y;
-	private PanelAnnonce panel;
 
-	public FrameAnnonce()
+	public FrameAnnonce( String imgName )
 	{
 		double width  = getToolkit().getScreenSize().getWidth();
 
 		this.setUndecorated(true);
-		//this.setBackground(new Color(0, 0, 0, 0));
+		this.setBackground(new Color(0, 0, 0, 0));
 		this.setSize((int) width, 233);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setAlwaysOnTop(true);
+		this.setFocusable(false);
 
-		this.img = getToolkit().getImage( "./resources/zeppelin.png" );
-
+		this.img  = getToolkit().getImage( String.format("./resources/images/%s.png", imgName) );
 		Image img = new ImageIcon(this.img).getImage();
+		this.img  = img.getScaledInstance(1440 / 2, 467 / 2, Image.SCALE_SMOOTH); // 1440 467
 
-		this.img   = img.getScaledInstance(1440 / 2, 467 / 2, Image.SCALE_SMOOTH); // 1440 467
-		this.panel = new PanelAnnonce();
-
-		this.add( this.panel );
 		this.setVisible(true);
 
 		new Animation( this ).start();
+	}
+
+	public void paint(Graphics g) {
+		super.paint(g);
+
+		g.drawImage(this.img, this.x, 0, null);
 	}
 
 	private class Animation extends Thread
@@ -52,45 +55,29 @@ public class FrameAnnonce extends JFrame
 
 		public void run()
 		{
-			int time = 5; // Temps en seconde
+			int time = 10; // Temps en seconde
+			int fps  = 60; // Qualité de l'animation
 
 			double width  = getToolkit().getScreenSize().getWidth();
 			double height = getToolkit().getScreenSize().getHeight();
 
-			double gap  = width / (time * 10);
+			double gap  = (width + 720 * 1.5) / (time * fps);
 
 			try
 			{
-				for (int i = 0; i < (time * 10); i++)
+				for (int i = 0; i < (time * fps); i++)
 				{
-					Thread.sleep(100);
+					Thread.sleep(1000 / fps);
 
 					FrameAnnonce.this.x = (int) (i * gap) - 720;
 					FrameAnnonce.this.y = (int) (height / 2);
 
-					//this.frame.setLocation( (int) (i * gap), (int) (height / 2) );
-					FrameAnnonce.this.panel.repaint();
+					FrameAnnonce.this.repaint();
 				}
 
 				this.frame.dispose();
 			}
 			catch (Exception e) {}
-		}
-	}
-
-	private class PanelAnnonce extends JPanel
-	{
-		public PanelAnnonce() {}
-		
-		public void paintComponent(Graphics g)
-		{
-			super.paintComponents(g);
-
-			Graphics2D g2 = (Graphics2D) g;
-
-
-// FrameAnnonce.this.x, FrameAnnonce.this.y
-			g2.drawImage(FrameAnnonce.this.img, FrameAnnonce.this.x, FrameAnnonce.this.y, null);
 		}
 	}
 }
