@@ -8,7 +8,7 @@ import cinketerra.metier.*;
 
 import java.awt.*;
 import java.awt.event.*;
-
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class PanelIles extends JPanel
 	private double coef;
 	private ArrayList<Polygon> polygons;
 
-	private static final Color BACK_COLOR = new Color(90,188,216); // 182, 211, 255
+	private static final Color BACK_COLOR = new Color( 35,137,218); // 182, 211, 255
 
 	public PanelIles(Controleur ctrl, int id) 
 	{
@@ -119,6 +119,48 @@ public class PanelIles extends JPanel
 		this.estNouvelleManche = false;
 
 
+		// représenter les régions
+		for (Region r : this.ctrl.getRegions( this.id ))
+		{
+			Polygon     poly   = new Polygon    ();
+			List<Point> points = new ArrayList<>();
+
+			for (Ile i : r.getIles())
+			{
+				int       x   = i.getXImages();
+				int       y   = i.getYImages();
+
+				ImageIcon img = this.lstImgIles.get( lstIles.indexOf(i) );
+
+				int       w   = img.getIconWidth();
+				int       h   = img.getIconHeight();
+
+				points.add( new Point( x    , y    ) );
+				points.add( new Point( x + w, y    ) );
+				points.add( new Point( x    , y + h) );
+				points.add( new Point( x + w, y + h) );
+			}
+
+			this.trierPointsPolygone(points, poly);
+			this.dessinerFondRegion(g2,poly);
+			poly = PanelIles.resizePolygon(poly, 1.2);
+
+			g2.setColor(fondCol[i]);
+			g2.fill(poly);
+		}
+
+		for (Ile i : this.ctrl.getIles(this.id))
+		{
+			Polygon p = this.trouverPolygon(i);
+			Polygon pResize = new Polygon(p.xpoints, p.ypoints, p.npoints);
+
+			pResize = PanelIles.resizePolygon(pResize, 1.2);
+			g2.setColor(new Color(116,204,244));
+			g2.fill(pResize);
+
+		}
+
+
 		//Afficher les routes
 		for (Chemin c : this.ctrl.getChemins(this.id)) 
 		{
@@ -147,51 +189,6 @@ public class PanelIles extends JPanel
 			}
 		}
 
-		// représenter les régions
-		for (Region r : this.ctrl.getRegions( this.id ))
-		{
-			Polygon     poly   = new Polygon    ();
-			List<Point> points = new ArrayList<>();
-
-			for (Ile i : r.getIles())
-			{
-				int       x   = i.getXImages();
-				int       y   = i.getYImages();
-
-				ImageIcon img = this.lstImgIles.get( lstIles.indexOf(i) );
-
-				int       w   = img.getIconWidth();
-				int       h   = img.getIconHeight();
-
-				points.add( new Point( x    , y     ) );
-				points.add( new Point( x + w, y     ) );
-				points.add( new Point( x    , y + h ) );
-				points.add( new Point( x + w, y + h ) );
-			}
-
-			this.trierPointsPolygone(points, poly);
-
-			//g2.setColor( new Color( 116,204,244, 50 ) );
-			g2.setColor( new Color( 255,255,255, 25 ) );
-			g2.fill(poly);
-			//g2.setColor( new Color( 116,204,244, 100 ) );
-			g2.setColor( new Color( 255,255,255, 50 ) );
-			g2.drawPolygon(poly);
-
-			double x = poly.getBounds().getMinX();
-			double y = poly.getBounds().getMinY();
-
-			g2.setColor(Color.BLACK);
-			g2.setFont( boldFont );
-
-			g2.drawString( r.getNom(), (float) x, (float) y);
-			g2.drawLine((int) x, (int) y + 2, (int) x + getFontMetrics(boldFont).stringWidth(r.getNom()), (int) y + 2);
-
-			g2.setFont( dialogFont );
-		}
-
-		g2.setColor(Color.BLACK);
-
 		Color colFeutre = this.ctrl.getColFeutre(this.id);
 		// Afficher les iles
 		
@@ -208,6 +205,7 @@ public class PanelIles extends JPanel
 
 		for (Ile i : this.ctrl.getIles(this.id)) 
 		{
+
 			//Contour si selectionné 
 			if (i == this.ile1 || i == this.ile2)
 			{
@@ -218,6 +216,8 @@ public class PanelIles extends JPanel
 				g2.setStroke(new BasicStroke(5f));
 				g2.drawPolygon(p);
 			}
+
+
 
 			// Images
 			ImageIcon img      = this.lstImgIles.get(lstIles.indexOf(i));
@@ -235,6 +235,59 @@ public class PanelIles extends JPanel
 			g2.setColor(Color.BLACK);
 			g2.drawString( i.getNom(), (int) (i.getXNom() * this.coef) , (int) (i.getYNom() * this.coef));
 		}
+	}
+
+	private void dessinerFondRegion (Graphics2D g2, Polygon p)
+	{
+		double[] echelle = { 1.2, 0.8};
+		Color [] fondCol = {new Color( 28,163,236), new Color( 90,188,216)};
+
+		//Poly 1
+		for (int i = 0; i < echelle.length; i++)
+		{
+			Polygon poly = PanelIles.resizePolygon(p, echelle[i]);
+
+			g2.setColor(fondCol[i]);
+			g2.fill(poly);
+		}
+
+	}
+
+	public static Polygon resizePolygon(Polygon poly, double scale) 
+	{
+		Polygon polygon = new Polygon();
+		Point center = getPolygonCenter(polygon);
+
+		for (int i = 0; i < polygon.npoints; i++) 
+		{
+			int deltaX = polygon.xpoints[i] - center.x;
+			int deltaY = polygon.ypoints[i] - center.y;
+
+			int newX = center.x + (int) (deltaX * scale);
+			int newY = center.y + (int) (deltaY * scale);
+
+			polygon.xpoints[i] = newX;
+			polygon.ypoints[i] = newY;
+		}
+
+		return polygon;
+	}
+
+	public static Point getPolygonCenter(Polygon polygon) 
+	{
+		int totalX = 0;
+		int totalY = 0;
+
+		for (int i = 0; i < polygon.npoints; i++) 
+		{
+			totalX += polygon.xpoints[i]; //On regarde la largeur  x
+			totalY += polygon.ypoints[i]; //On regarde la longueur y
+		}
+
+		int centerX = totalX / polygon.npoints;
+		int centerY = totalY / polygon.npoints;
+
+		return new Point(centerX, centerY);
 	}
 
 	private void trierPointsPolygone(List<Point> points, Polygon poly)
