@@ -28,15 +28,12 @@ public class PaquetDeCarte
 	public PaquetDeCarte()
 	{
 		this.ensCarte = new ArrayList<>(Arrays.asList(Carte.values()));
-		Collections.shuffle(this.ensCarte);
 	}
 
-	/*
 	public void melanger()
 	{
 		Collections.shuffle(this.ensCarte);
 	}
-	*/
 
 	/**
 	 * Pioche une {@code Carte} à l'indice {@code indice} voulu.
@@ -93,7 +90,7 @@ public class PaquetDeCarte
 			c.setCache(true);
 		}
 
-		Collections.shuffle(this.ensCarte);
+		this.melanger();
 
 		this.nbNoiresPiochees     = 0;
 		this.derniereCartePiochee = null;
