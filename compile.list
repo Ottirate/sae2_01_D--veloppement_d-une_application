@@ -4,6 +4,8 @@
 ./cinketerra/ihm/FrameGame.java
 ./cinketerra/ihm/PanelIles.java
 ./cinketerra/ihm/PanelPioche.java
+./cinketerra/ihm/FrameDebut.java
+./cinketerra/ihm/PanelDebut.java
 
 ./cinketerra/metier/Carte.java
 ./cinketerra/metier/Chemin.java

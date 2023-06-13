@@ -10,7 +10,6 @@ import java.awt.Color;
 
 public class FrameGame extends JFrame 
 {
-	@SuppressWarnings("unused")
 	private Controleur ctrl;
 
 	private JLabel lblScore;

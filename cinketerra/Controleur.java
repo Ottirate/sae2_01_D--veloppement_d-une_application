@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 import cinketerra.ihm.FrameCartes;
 import cinketerra.ihm.FrameGame;
+import cinketerra.ihm.FrameDebut;
 import cinketerra.metier.*;
 
 import java.awt.Color;
@@ -42,6 +43,8 @@ public class Controleur implements WindowStateListener
 			Controleur.NB_JOUEUR = 2;
 		else
 			return;
+
+		//new FrameDebut(this);
 		
 		PaquetDeCarte p = new PaquetDeCarte();
 
@@ -102,6 +105,12 @@ public class Controleur implements WindowStateListener
 	{
 		if (id == 1) return this.ihmMappe1.getHeight();
 		else         return this.ihmMappe2.getHeight();
+	}
+
+	public List<Region> getRegions(int id) 
+	{
+		if (id == 1) return this.metier1.getRegions();
+		else         return this.metier2.getRegions();
 	}
 
 	public int getLargeur(int id) 

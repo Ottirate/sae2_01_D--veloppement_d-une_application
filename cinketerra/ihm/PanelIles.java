@@ -31,14 +31,15 @@ public class PanelIles extends JPanel
 	private double coef;
 	private ArrayList<Polygon> polygons;
 
+	private static final Color BACK_COLOR = new Color(90,188,216); // 182, 211, 255
+
 	public PanelIles(Controleur ctrl, int id) 
 	{
 		this.ctrl = ctrl;
 		this.id   = id;
 		this.estNouvelleManche = true;
 
-		this.setBackground( new Color(182, 211, 229) );
-		
+		this.setBackground( PanelIles.BACK_COLOR );
 
 		//Création des images
 		this.declarerImage();
@@ -86,6 +87,11 @@ public class PanelIles extends JPanel
 
 		List<Ile> lstIles = this.ctrl.getIles(this.id);
 		Graphics2D g2 = (Graphics2D) g;
+
+		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+		Font boldFont   = new Font("BoldFont"  , Font.BOLD , 12);
+		Font dialogFont = new Font("DialogFont", Font.PLAIN, 12);
 
 		/*                               */
 		/* CALCUL DU COEF DE PROPORTIONS */
@@ -141,6 +147,49 @@ public class PanelIles extends JPanel
 			}
 		}
 
+		// représenter les régions
+		for (Region r : this.ctrl.getRegions( this.id ))
+		{
+			Polygon     poly   = new Polygon    ();
+			List<Point> points = new ArrayList<>();
+
+			for (Ile i : r.getIles())
+			{
+				int       x   = i.getXImages();
+				int       y   = i.getYImages();
+
+				ImageIcon img = this.lstImgIles.get( lstIles.indexOf(i) );
+
+				int       w   = img.getIconWidth();
+				int       h   = img.getIconHeight();
+
+				points.add( new Point( x    , y     ) );
+				points.add( new Point( x + w, y     ) );
+				points.add( new Point( x    , y + h ) );
+				points.add( new Point( x + w, y + h ) );
+			}
+
+			this.trierPointsPolygone(points, poly);
+
+			//g2.setColor( new Color( 116,204,244, 50 ) );
+			g2.setColor( new Color( 255,255,255, 25 ) );
+			g2.fill(poly);
+			//g2.setColor( new Color( 116,204,244, 100 ) );
+			g2.setColor( new Color( 255,255,255, 50 ) );
+			g2.drawPolygon(poly);
+
+			double x = poly.getBounds().getMinX();
+			double y = poly.getBounds().getMinY();
+
+			g2.setColor(Color.BLACK);
+			g2.setFont( boldFont );
+
+			g2.drawString( r.getNom(), (float) x, (float) y);
+			g2.drawLine((int) x, (int) y + 2, (int) x + getFontMetrics(boldFont).stringWidth(r.getNom()), (int) y + 2);
+
+			g2.setFont( dialogFont );
+		}
+
 		g2.setColor(Color.BLACK);
 
 		Color colFeutre = this.ctrl.getColFeutre(this.id);
@@ -163,6 +212,7 @@ public class PanelIles extends JPanel
 			if (i == this.ile1 || i == this.ile2)
 			{
 				Polygon p = this.trouverPolygon(i);
+
 				g2.setColor(colFeutre.brighter());
 				g2.fill(p);
 				g2.setStroke(new BasicStroke(5f));
@@ -170,22 +220,80 @@ public class PanelIles extends JPanel
 			}
 
 			// Images
-			ImageIcon img = this.lstImgIles.get(lstIles.indexOf(i));
+			ImageIcon img      = this.lstImgIles.get(lstIles.indexOf(i));
 
-			int larg = img.getIconWidth();
-			int lon  = img.getIconHeight();
-			Image reImage = img.getImage().getScaledInstance((int)(larg*this.coef), (int)(lon*this.coef), Image.SCALE_DEFAULT);
+			int       larg     = img.getIconWidth();
+			int       lon      = img.getIconHeight();
+			Image     reImage  = img.getImage().getScaledInstance((int) (larg*this.coef), (int) (lon*this.coef), Image.SCALE_DEFAULT);
+
 			ImageIcon newImage = new ImageIcon(reImage);
 
-			newImage.paintIcon(this, g, (int) (i.getXImages() * this.coef), (int)(i.getYImages()*this.coef));
+			newImage.paintIcon(this, g, (int) (i.getXImages() * this.coef), (int) (i.getYImages()*this.coef));
 
 
 			// Noms des iles
 			g2.setColor(Color.BLACK);
 			g2.drawString( i.getNom(), (int) (i.getXNom() * this.coef) , (int) (i.getYNom() * this.coef));
 		}
-
 	}
+
+	private void trierPointsPolygone(List<Point> points, Polygon poly)
+	{
+		int n = points.size();
+		if (n < 3)
+		{
+			for ( Point p : points ) poly.addPoint( (int) (p.getX() * this.coef), (int) (p.getY() * this.coef) );
+
+			return;
+		}
+
+		ArrayList<Point> polygoneTri = new ArrayList<>();
+
+		// Trouver le point le plus à gauche
+		int pointGaucheIndex = 0;
+		for (int i = 1; i < n; i++)
+		{
+			if ( points.get(i).getX() < points.get(pointGaucheIndex).getX() )
+			{
+				pointGaucheIndex = i;
+			}
+		}
+
+		int pointCourantIndex = pointGaucheIndex;
+		int pointSuivantIndex;
+
+		do
+		{
+			polygoneTri.add( points.get(pointCourantIndex) );
+			pointSuivantIndex = (pointCourantIndex + 1) % n;
+
+			for ( int i = 0; i < n; i++ )
+			{
+				// Vérifier si le point i est plus à gauche que le pointSuivant
+				if ( orientation(points.get(pointCourantIndex), points.get(i), points.get(pointSuivantIndex)) == 2 )
+				{
+					pointSuivantIndex = i;
+				}
+			}
+
+			pointCourantIndex = pointSuivantIndex;
+
+		}
+		while ( pointCourantIndex != pointGaucheIndex );
+
+		for ( Point p : polygoneTri ) poly.addPoint( (int) (p.getX() * this.coef), (int) (p.getY() * this.coef) );
+	}
+
+
+	private static int orientation(Point p, Point q, Point r)
+	{
+		int val = (int) ( (q.getY() - p.getY()) * (r.getX() - q.getX()) - (q.getX() - p.getX()) * (r.getY() - q.getY()) );
+
+		if (val == 0) return 0;  // Les points sont colinéaires
+
+		return (val > 0) ? 1 : 2; // 1 pour sens horaire, 2 pour sens anti-horaire
+	}
+
 
 	private void dessinerLigneLibre (Graphics2D g2, int x1, int y1, int x2, int y2)
 	{
@@ -202,25 +310,20 @@ public class PanelIles extends JPanel
 	{
 		Polygon p = this.trouverPolygon(i);
 
-		g2.setColor(new Color(255,255,200)); //par défauts
-
-		if(i.getCoul().equals("Rouge")) g2.setColor(new Color(204,  80, 124));
-		if(i.getCoul().equals("Vert" )) g2.setColor(new Color( 20, 186,  67));
-		if(i.getCoul().equals("Jaune")) g2.setColor(new Color(217, 215,  41));
-		if(i.getCoul().equals("Brun" )) g2.setColor(new Color(189, 187, 140));
+		switch (i.getCoul())
+		{
+			case "Rouge" -> g2.setColor(new Color(204,  80, 124));
+			case "Vert"  -> g2.setColor(new Color( 20, 186,  67));
+			case "Jaune" -> g2.setColor(new Color(217, 215,  41));
+			case "Brun"  -> g2.setColor(new Color(189, 187, 140));
+			default      -> g2.setColor(new Color(255, 255, 200)); //par défauts
+		}
 
 		g2.fill(p);
 		g2.setStroke(new BasicStroke(5f));
 		g2.drawPolygon(p); 
 	} 
-/*
-Couleurs exactes : 
 
-vert  = Color.decode("#49064C")
-rouge = Color.decode("#9D7E89")
-jaune = Color.decode("#BFA759")
-brun  = Color.decode("#8D8C70")
-*/
 
 	/**Mise a jour des polygones des iles. */
 	public void updateShape()
