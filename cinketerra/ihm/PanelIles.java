@@ -9,7 +9,9 @@ import cinketerra.metier.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
+import java.security.spec.ECFieldF2m;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +32,8 @@ public class PanelIles extends JPanel
 	private int maxY;
 	private double coef;
 	private ArrayList<Polygon> polygons;
+
+	private Ellipse2D historique;
 
 	private static final Color BACK_COLOR = new Color( 35,137,218); // 182, 211, 255
 
@@ -229,24 +233,27 @@ public class PanelIles extends JPanel
 				g2.drawPolygon(p);
 			}
 
-
-
 			// Images
 			ImageIcon img      = this.lstImgIles.get(lstIles.indexOf(i));
-
-			int       larg     = img.getIconWidth();
-			int       lon      = img.getIconHeight();
-			Image     reImage  = img.getImage().getScaledInstance((int) (larg*this.coef), (int) (lon*this.coef), Image.SCALE_DEFAULT);
-
-			ImageIcon newImage = new ImageIcon(reImage);
-
-			newImage.paintIcon(this, g, (int) (i.getXImages() * this.coef), (int) (i.getYImages()*this.coef));
-
+			redimensionnerIcon(img, this.coef).paintIcon(this, g, (int) (i.getXImages() * this.coef), (int) (i.getYImages()*this.coef));
 
 			// Noms des iles
 			g2.setColor(Color.BLACK);
 			g2.drawString( i.getNom(), (int) (i.getXNom() * this.coef) , (int) (i.getYNom() * this.coef));
 		}
+
+
+		//Déssiner le logo de l'hisorique en bas à droite du truc
+		ImageIcon logo = redimensionnerIcon(new ImageIcon("./resources/images/Historique.png"), 5 * this.coef / 50);
+
+		int x = largeur - logo.getIconWidth();
+		int y = hauteur - logo.getIconHeight() - 10;
+
+		logo.paintIcon(this, g2, x, y);
+
+		double larg = logo.getIconWidth() - 20;
+		
+		this.historique = new Ellipse2D.Double(x + 10, y + 10, larg, larg );
 	}
 
 	private void dessinerFondRegion (Graphics2D g2, Polygon p)
@@ -358,16 +365,15 @@ public class PanelIles extends JPanel
 		return (val > 0) ? 1 : 2; // 1 pour sens horaire, 2 pour sens anti-horaire
 	}
 
-
-	private void dessinerLigneLibre (Graphics2D g2, int x1, int y1, int x2, int y2)
+	private ImageIcon redimensionnerIcon(ImageIcon img, double coef)
 	{
-		g2.setColor(new Color(255, 255, 0, 40));
-		g2.setStroke(new BasicStroke(5f));
-		g2.drawLine(x1, y1, x2, y2);
-		
-		g2.setColor(new Color(255, 0, 0, 40));
-		g2.setStroke(new BasicStroke(3f));
-		g2.drawLine(x1, y1, x2, y2);
+		int       larg     = img.getIconWidth();
+		int       lon      = img.getIconHeight();
+		Image     reImage  = img.getImage().getScaledInstance((int) (larg*coef), (int) (lon*coef), Image.SCALE_DEFAULT);
+
+		ImageIcon newImage = new ImageIcon(reImage);
+
+		return newImage;
 	}
 
 	private void drawPolygonePossible(Ile i, Graphics2D g2)
@@ -494,6 +500,14 @@ public class PanelIles extends JPanel
 			}
 
 			PanelIles.this.repaint();
+
+			
+			if (PanelIles.this.historique.contains(e.getX(), e.getY()))
+				System.out.println("Rentrez");
+				// PanelIles.this.ctrl.showHistorique(PanelIles.this.id);
+			else
+				// PanelIles.this.ctrl.hideHistorique(PanelIles.this.id);
+				System.out.println("Pas dedans");
 		
 		}
 
