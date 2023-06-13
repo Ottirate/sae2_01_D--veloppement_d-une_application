@@ -249,15 +249,6 @@ public class Controleur implements WindowStateListener
 		if (this.ihmMappe2 != null) this.ihmMappe2.newManche();
 
 	}
-	
-	public String getImageRetournee(Carte c)
-	{
-		String sRet = "./resources/cartes/";
-
-		sRet += (c.getContour().equals(Color.white) ? "blanc_" : "noir_") + c.getCouleur().toLowerCase() + ".png";
-
-		return sRet;
-	}
 
 	public void showButton() {this.ihmPioche.showButton();}
 	public void bloquerPioche(boolean bloque) { if (this.ihmPioche != null) this.ihmPioche.bloquerPioche(bloque); }
