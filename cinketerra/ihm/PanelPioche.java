@@ -101,11 +101,13 @@ public class PanelPioche extends JPanel
 			ImageIcon img  = new ImageIcon( this.ctrl.getImage         (cpt) );
 			ImageIcon img2 = new ImageIcon( this.ctrl.getImageRetournee(cpt) );
 			
-			//int coefPanel = this.longCarte / this.getHeight;
-
+			int longueur = Math.max(this.ctrl.getHauteurPioche(), this.ctrl.getLargeurPioche() / 6);
+			
+			double coefPanel = (this.longCarte / (longueur * 1.0)) * 2;
+			
 			Image ogImage = img.getImage();
-			Image reImage = ogImage.getScaledInstance((int)(this.largCarte), (int)(this.longCarte), Image.SCALE_DEFAULT);
-
+			Image reImage = ogImage.getScaledInstance((int) (this.largCarte / coefPanel), (int) (this.longCarte / coefPanel), Image.SCALE_DEFAULT);
+			
 			ImageIcon newImage = new ImageIcon(reImage);
 
 			// Scale de la deuxieme image

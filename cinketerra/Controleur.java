@@ -1,6 +1,7 @@
 package cinketerra;
 
 import java.util.List;
+import java.util.Arrays;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -76,10 +77,10 @@ public class Controleur implements WindowStateListener
 			this.ihmMappe1 .setSize( largeur  - 90, (int) ( 0.75 * hauteur ) );
 		}
 
-		this.ihmPioche.setSize( largeur - 90, (int) ( 0.30 * hauteur ) );
+		this.ihmPioche.setSize( largeur - 60, (int) ( 0.30 * hauteur ) );
 		
 		this.ihmMappe1 .setLocation( 45, 45 );
-		this.ihmPioche.setLocation( 45, 55 + this.ihmMappe1.getHeight() );
+		this.ihmPioche.setLocation( 30, 55 + this.ihmMappe1.getHeight() );
 
 		this.ihmMappe1.addWindowStateListener(this);
 		this.ihmPioche.addWindowStateListener(this);
@@ -119,9 +120,10 @@ public class Controleur implements WindowStateListener
 		if (id == 1) return this.ihmMappe1.getWidth();
 		else         return this.ihmMappe2.getWidth();
 	}
-
-	/*public int getLargeurPioche() { return this.ihmPioche.getWidth();}*/
-
+	
+	public int getLargeurPioche() { return this.ihmPioche.getWidth(); }
+	public int getHauteurPioche() { return this.ihmPioche.getHeight(); }
+	
 	public String getImage(int indice)
 	{
 		String sRet = "./resources/cartes/";
@@ -253,11 +255,14 @@ public class Controleur implements WindowStateListener
 		Color c1 = this.getColFeutre(1);
 
 		String[] tabScore1 = this.metier1.getScore().split("; ");
-
+		
 		// Score du joueur 1
-		mess  = "<html>Point du <font style='color: rgb(" + c1.getRed() + ", " + c1.getGreen() + ", " + c1.getBlue() + ")'>Joueur 1 : " + tabScore1[0] + " points</font> <br><ul>";
-		mess += "<font style='color: rgb(" + c1.getRed() + ", " + c1.getGreen() + ", " + c1.getBlue() + ")'> " + tabScore1[1].substring(15) + " points</font> (" + tabScore1[1].substring(0,13) + ")<br>";
-		mess += "<font style='color: rgb(" + c1.getRed() + ", " + c1.getGreen() + ", " + c1.getBlue() + ")'> " + tabScore1[2].substring(12) + " points</font> (" + tabScore1[2].substring(0,10) + ")</ul>";
+		
+		String rgb = "rgb(" + c1.getRed() + ", " + c1.getGreen() + ", " + c1.getBlue() + ")";
+		
+		mess  = "<html>Point du <font style='color: " + rgb + "'>Joueur 1 : " + tabScore1[0] + " points</font><br><ul>";
+		mess += "<font style='color: " + rgb + "'> " + tabScore1[1].substring(15) + " points</font> (" + tabScore1[1].substring(0,13) + ")<br>";
+		mess += "<font style='color: " + rgb + "'> " + tabScore1[2].substring(12) + " points</font> (" + tabScore1[2].substring(0,10) + ")</ul>";
 
 		if (Controleur.NB_JOUEUR == 2)
 		{
