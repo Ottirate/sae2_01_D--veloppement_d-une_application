@@ -23,9 +23,9 @@ Pas de panique, les îles atteignables seront surlignées de leur couleur afin d
 
 
 ## Comment lancer le jeu
-1. Veuillez vous positionner dans le fichier envoyé, puis avec la commande `javac @compile.list @option.list`, compilez les fichiers java.
-2. Ensuite, déplacer vous dans le fichier class avec la commande `cd class`
-3. Lancer l'application avec la commande `java cinketerra.Controleur`
+1. Veuillez vous positionner dans le fichier envoyé, puis avec la commande javac @compile.list @option.list, compilez les fichiers java.
+2. Ensuite, déplacer vous dans le fichier class avec la commande cd class
+3. Lancer l'application avec la commande java cinketerra.Controleur
 
 
 
