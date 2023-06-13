@@ -88,7 +88,6 @@ public class FrameAnnonce extends JFrame
 
 			Graphics2D g2 = (Graphics2D) g;
 
-			System.out.println(FrameAnnonce.this.x + " " + FrameAnnonce.this.y);
 
 // FrameAnnonce.this.x, FrameAnnonce.this.y
 			g2.drawImage(FrameAnnonce.this.img, FrameAnnonce.this.x, FrameAnnonce.this.y, null);

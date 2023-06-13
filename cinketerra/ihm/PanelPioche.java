@@ -144,8 +144,6 @@ public class PanelPioche extends JPanel
 						img2.paintIcon(this, this.g2, this.calculPosCarteDefausse(cptB%5), PanelPioche.POS_Y_CARTE-10);
 					else
 						img2.paintIcon(this, this.g2, this.calculPosCarteDefausse(cptB%5), PanelPioche.POS_Y_CARTE*3 - 15);
-
-					System.out.println(cptB);
 				}
 
 		// Intitulés

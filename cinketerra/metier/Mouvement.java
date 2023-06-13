@@ -33,10 +33,10 @@ public class Mouvement
 		if (c.getContour() == Color.WHITE) contour = "secondaire";
 
 		//String pour l'historique
-		this.infoString = "La carte " + c.getCouleur() + " " + contour + " à été pioché";
+		this.infoString = "La carte " + c.getCouleur().toLowerCase() + " " + contour + " à été pioché";
 
 		//String pour le fichier
-		this.infoString = c.getCouleur() + '\t' + contour;
+		this.dataString = c.getCouleur() + '\t' + contour;
 	}
 
 	public Mouvement (String infoString, String dataString)

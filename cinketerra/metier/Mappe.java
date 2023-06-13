@@ -530,12 +530,6 @@ public class Mappe
 		}
 
 		this.points = score + "; bonus chemins: " + bonusChemins + "; bonus îles: " + bonusIles;
-
-		
-		System.out.println("Nb Max Iles -> " + nbMaxIles);
-		System.out.println("Nb regions  -> " + lstRegionsParcourues.size());
-		System.out.println("SCORE       -> " + this.points);
-		
 	}
 
 	public String getScore() { return this.points; }

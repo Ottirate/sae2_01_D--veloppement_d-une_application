@@ -172,7 +172,7 @@ public class Controleur implements WindowStateListener
 
 		
 
-		this.ihmMappe1.maj();
+		this.majIHM();
 	}
 
 	public Carte getCarte(int indice)

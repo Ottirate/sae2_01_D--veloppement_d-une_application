@@ -70,13 +70,12 @@ public class PaquetDeCarte
 					c.setCache(false);
 					this.derniereCartePiochee = c;
 					if ( c.getContour().equals(Color.black) ) this.nbNoiresPiochees++;
+					Mappe.addAction(new Mouvement(c));
 					return;
 				}
 
 				cpt++;
 			}
-
-			Mappe.addAction(new Mouvement(c));
 		}
 	}
 
