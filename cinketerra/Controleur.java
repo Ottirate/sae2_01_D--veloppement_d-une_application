@@ -163,7 +163,7 @@ public class Controleur implements WindowStateListener
 			this.ihmMappe2.maj();
 		}
 
-		if (this.getNbCarteTotal() - this.getNbCarteRestante() == Mappe.getTourEvent("Biffurcation"))
+		if (this.getNbCarteTotal() - this.getNbCarteRestante() == Mappe.getTourEvent("Bifurcation"))
 		{
 			JFrame f = new FrameAnnonce( "zeppelin" );
 		}
@@ -230,8 +230,8 @@ public class Controleur implements WindowStateListener
 		if (this.ihmMappe1 != null) this.ihmMappe1.maj();
 		if (this.ihmMappe2 != null) this.ihmMappe2.maj();
 
-		for (Mouvement m : Mappe.getActions())
-			System.out.println(m);
+		//for (Mouvement m : Mappe.getActions())
+			//System.out.println(m);
 	}
 
 	public void initialiserManche ()

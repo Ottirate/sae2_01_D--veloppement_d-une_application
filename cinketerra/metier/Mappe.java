@@ -70,7 +70,7 @@ public class Mappe
 	private String        points;
 
 	/** Evenements */
-	private static int    tourEventBiffurcation;
+	private static int    tourEventBifurcation;
 
 	/**
 	 * Constructeur sans paramètres qui initialise l'objet.
@@ -169,7 +169,7 @@ public class Mappe
 
 		this.estDebutManche = true;
 
-		Mappe.tourEventBiffurcation = (int) ( Math.random() * 11 );
+		Mappe.tourEventBifurcation = (int) ( Math.random() * 11 );
 
 		System.out.println("Nouvelle manche avec coul :" + this.feutre);
 
@@ -178,7 +178,7 @@ public class Mappe
 		this.mancheTermine = true;
 	}
 	
-	public Chemin trouverChemin (Ile i1, Ile i2) 
+	public Chemin trouverChemin (Ile i1, Ile i2)
 	{
 		for (Chemin c1 : i1.getCheminAutour())
 			for (Chemin c2 : i2.getCheminAutour())
@@ -190,7 +190,7 @@ public class Mappe
 
 	public static int getTourEvent(String event)
 	{
-		if (event.equals("Biffurcation")) return Mappe.tourEventBiffurcation;
+		if (event.equals("Bifurcation")) return Mappe.tourEventBifurcation;
 
 		return 0;
 	}
@@ -377,13 +377,15 @@ public class Mappe
 
 
 		/* Si c'est une extrémité ou si la direction est pas une bonne couleur */
-		if (this.cheminsColorieAutour(ileB) && this.bonneCouleur(ileA))
-			return true;
+		if (this.getNbCarteTotal() - this.getNbCarteRestante() == Mappe.getTourEvent("Bifurcation"))
+			return (this.ileAppartientALigne(ileB) && this.bonneCouleur(ileA)) || (this.ileAppartientALigne(ileA) && this.bonneCouleur(ileB));
+		else
+			return (this.cheminsColorieAutour(ileB) && this.bonneCouleur(ileA)) || (this.cheminsColorieAutour(ileA) && this.bonneCouleur(ileB));
 
-		if (this.cheminsColorieAutour(ileA) && this.bonneCouleur(ileB))
-			return true;
+
+			//this.getNbCarteTotal() - this.getNbCarteRestante() ===== le numéro dutour actuel
 			
-		return false;
+		//return false;
 	}
 
 	private boolean cheminsColorieAutour (Ile i)
@@ -395,6 +397,17 @@ public class Mappe
 				nbColorie ++;
 
 		return nbColorie == 1;
+	}
+
+	private boolean ileAppartientALigne(Ile i)
+	{
+		int nbColorie = 0;
+
+		for (Chemin chemin : i.getCheminAutour())
+			if (chemin.getCouleur() == this.feutre)
+				nbColorie ++;
+
+		return nbColorie > 0;
 	}
 
 	private boolean aCycle(Chemin a1)
@@ -455,7 +468,6 @@ public class Mappe
 
 	public void recalculerPoints()
 	{
-		
 		List<Region> lstRegionsParcourues = new ArrayList<>();
 		List<Ile>    lstIlesParcourues    = new ArrayList<>();
 
@@ -493,9 +505,10 @@ public class Mappe
 		}
 
 		int score = nbMaxIles * lstRegionsParcourues.size();
+		System.out.println("score des iles * region = " + score);
 
 		int bonusChemins = 0;
-		int bonusIles = 0;
+		int bonusIles    = 0;
 
 		for (Chemin c : this.lstCheminColorie)
 		{
@@ -529,7 +542,7 @@ public class Mappe
 				bonusIles += 2;
 		}
 
-		this.points = score + "; bonus chemins: " + bonusChemins + "; bonus îles: " + bonusIles;
+		this.points = (score + bonusChemins + bonusIles) + "; bonus chemins: " + bonusChemins + "; bonus îles: " + bonusIles;
 	}
 
 	public String getScore() { return this.points; }
