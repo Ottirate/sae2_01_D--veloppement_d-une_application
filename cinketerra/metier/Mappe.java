@@ -74,8 +74,8 @@ public class Mappe
 	{
 		this.ctrl   = ctrl;
 		this.paquet = p;
-
-		this.points = "0";
+		
+		this.points = "0; bonus chemins: 0; bonus îles: 0";
 		
 		if (Mappe.colors == null)
 			if ((int) (Math.random()*2) == 1) Mappe.colors = new ArrayList<>(Arrays.asList( Color.RED , Color.BLUE));
