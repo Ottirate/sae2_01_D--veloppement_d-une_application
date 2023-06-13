@@ -96,7 +96,8 @@ public class PanelPioche extends JPanel
 		for( int cpt = 0; cpt < this.ctrl.getNbCarteTotal(); cpt++ )
 		{
 			// Images
-			ImageIcon img = new ImageIcon( this.ctrl.getImage(cpt) );
+			ImageIcon img  = new ImageIcon( this.ctrl.getImage         (cpt) );
+			ImageIcon img2 = new ImageIcon( this.ctrl.getImageRetournee(cpt) );
 			
 			//int coefPanel = this.longCarte / this.getHeight;
 
@@ -104,6 +105,12 @@ public class PanelPioche extends JPanel
 			Image reImage = ogImage.getScaledInstance((int)(this.largCarte), (int)(this.longCarte), Image.SCALE_DEFAULT);
 
 			ImageIcon newImage = new ImageIcon(reImage);
+
+			// Scale de la deuxieme image
+			Image ogImage2 = img2.getImage();
+			Image reImage2 = ogImage2.getScaledInstance((int)(this.largCarte), (int)(this.longCarte), Image.SCALE_DEFAULT);
+
+			ImageIcon newImage2 = new ImageIcon(reImage2);
 			
 			// Surélévation de la pioche
 			if ( this.ctrl.carteCachee( cpt ) && cptPioche == this.carteRelevee)
@@ -114,19 +121,20 @@ public class PanelPioche extends JPanel
 			// Pioche
 			else if ( this.ctrl.carteCachee( cpt ) )
 			{
-				newImage.paintIcon(this, this.g2, this.calculPosCartePioche(cptPioche), PanelPioche.POS_Y_CARTE);
+				newImage .paintIcon(this, this.g2, this.calculPosCartePioche  (cptPioche), PanelPioche.POS_Y_CARTE);
+				newImage2.paintIcon(this, this.g2, this.calculPosCarteDefausse(cptPioche+1), PanelPioche.POS_Y_CARTE);
 				//System.out.println( "coord x image " +cptPioche+ " posée : " + this.calculPosCartePioche( cptPioche ) );
 				cptPioche++;
 			}
-			//cas des cartes du tas
-			else if (!this.ctrl.getCarte(cpt).equals(this.ctrl.getDerniereCartePiochee()))
-			{
-				newImage.paintIcon(this, this.g2, this.calculPosCarteDefausse(++cptDefausse), PanelPioche.POS_Y_CARTE);
-			}
+			// // Cartes restantes dans la pioche
+			// else if (!this.ctrl.getCarte(cpt).equals(this.ctrl.getDerniereCartePiochee()))
+			// {
+				
+			// }
 			// Main
 			else
 			{
-				int x = this.calculPosCarteDefausse(this.ctrl.getNbCarteTotal() - this.ctrl.getNbCarteRestante()) - 200;
+				int x = this.calculPosCarteDefausse(this.ctrl.getNbCarteRestante()) - 200;
 				this.g2.drawString("Main :", x, 20);
 				newImage.paintIcon(this, this.g2, x, PanelPioche.POS_Y_CARTE);
 			}

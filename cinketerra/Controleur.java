@@ -134,6 +134,16 @@ public class Controleur implements WindowStateListener
 		return sRet;
 	}
 
+	public String getImageRetournee(int indice)
+	{
+		String sRet = "./resources/cartes/";
+		Carte c = this.metier1.getCarte(indice);
+
+		sRet += (c.getContour().equals(Color.white) ? "blanc_" : "noir_") + c.getCouleur().toLowerCase() + ".png";
+
+		return sRet;
+	}
+
 	public boolean carteCachee(int indice)
 	{
 		if (this.metier1.getCarte(indice) == null) return false;

@@ -18,9 +18,6 @@ import java.awt.event.MouseEvent;
 public class PanelDebut extends JPanel
 {
 	static final String PATH = "resources/images/";
-	
-	// /home/etudiant/vy222194/TP/s2/s2.01_dev_application/sae2_01_D--veloppement_d-une_application/class/cinketerra/ihm/FrameCartes.class
-	// /home/etudiant/vy222194/TP/s2/s2.01_dev_application/sae2_01_D--veloppement_d-une_application/class/resources/images/Cinketera.png
 
 	private Controleur ctrl;
 	private JLabel     lblTexte;
