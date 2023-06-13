@@ -165,9 +165,7 @@ public class Controleur implements WindowStateListener
 
 		if (this.getNbCarteTotal() - this.getNbCarteRestante() == Mappe.getTourEvent("Biffurcation"))
 		{
-			// Montre qu'il y a biffurcation
-			System.out.println("Ah l'batard -> biffurcation");
-			JFrame f = new FrameAnnonce();
+			JFrame f = new FrameAnnonce( "zeppelin" );
 		}
 
 		
