@@ -38,6 +38,7 @@ public class PanelSelection extends JPanel implements ActionListener
 
 
 		/*    Positionnement    */
+		@SuppressWarnings("unused")
 		JPanel pnlTemp = new JPanel( new FlowLayout() );
 
 		this.add( new JLabel("Choix du scénario", SwingConstants.CENTER), BorderLayout.NORTH  );

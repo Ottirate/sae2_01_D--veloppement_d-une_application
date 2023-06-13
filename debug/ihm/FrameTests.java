@@ -18,6 +18,7 @@ import java.awt.BorderLayout;
 public class FrameTests extends JFrame
 {
 	/* Attributs de Classe */
+	@SuppressWarnings("unused")
 	private ControleurTests ctrl;
 	private PanelSelection panelSelection;
 

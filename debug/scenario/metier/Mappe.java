@@ -38,7 +38,7 @@ public class Mappe
 	/*           ATTRIBUTS              */
 	/*----------------------------------*/
 
-	static Controleur ctrl;
+	private Controleur ctrl;
 
 	/* Liste de toutes les îles */
 	private List<Ile>     lstIles;
@@ -51,6 +51,7 @@ public class Mappe
 
 	/** Île de départ */
 	private Ile           ileDeDepart;
+	@SuppressWarnings("unused")
 	private boolean       mancheTermine;
 
 	/** Liste des chemins coloriés */
@@ -74,6 +75,7 @@ public class Mappe
 	{
 		this.ctrl   = ctrl;
 		this.paquet = p;
+		this.paquet.setControleur(ctrl);
 
 		this.points = "0";
 		

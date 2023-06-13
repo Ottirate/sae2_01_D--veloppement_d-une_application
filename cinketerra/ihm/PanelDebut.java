@@ -9,6 +9,7 @@ import java.awt.event.*;
 
 public class PanelDebut extends JPanel implements ActionListener
 {
+	@SuppressWarnings("unused")
 	private Controleur ctrl;
 	private JButton    btn1joueur;
 	private JButton    btn2joueur;
