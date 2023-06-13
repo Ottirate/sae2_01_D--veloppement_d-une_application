@@ -171,6 +171,8 @@ public class Controleur implements WindowStateListener
 			JFrame f = new FrameAnnonce();
 		}
 
+		
+
 		this.ihmMappe1.maj();
 	}
 
@@ -202,8 +204,8 @@ public class Controleur implements WindowStateListener
 
 	public boolean colorier (Chemin c, int id) 
 	{ 
-		if (id == 1) return this.metier1.colorier(c);
-		else         return this.metier2.colorier(c);
+		if (id == 1) return this.metier1.colorier(c, id);
+		else         return this.metier2.colorier(c, id);
 	}
 
 	public boolean estColoriable(Chemin c, int id) 
@@ -230,6 +232,9 @@ public class Controleur implements WindowStateListener
 		if (this.ihmPioche != null) this.ihmPioche.maj();
 		if (this.ihmMappe1 != null) this.ihmMappe1.maj();
 		if (this.ihmMappe2 != null) this.ihmMappe2.maj();
+
+		for (Mouvement m : Mappe.getActions())
+			System.out.println(m);
 	}
 
 	public void initialiserManche ()
@@ -244,6 +249,15 @@ public class Controleur implements WindowStateListener
 		this.ihmMappe1.newManche();
 		if (this.ihmMappe2 != null) this.ihmMappe2.newManche();
 
+	}
+	
+	public String getImageRetournee(Carte c)
+	{
+		String sRet = "./resources/cartes/";
+
+		sRet += (c.getContour().equals(Color.white) ? "blanc_" : "noir_") + c.getCouleur().toLowerCase() + ".png";
+
+		return sRet;
 	}
 
 	public void showButton() {this.ihmPioche.showButton();}

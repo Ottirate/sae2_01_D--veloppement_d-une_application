@@ -4,6 +4,7 @@ package debug.scenario.metier;
 /** Lecture */
 import java.util.Scanner;
 
+import cinketerra.metier.Mouvement;
 import debug.scenario.Controleur;
 
 import java.io.FileInputStream;
@@ -40,6 +41,9 @@ public class Mappe
 
 	private Controleur ctrl;
 
+	/* Mouvement/Action */
+	private List<Mouvement> lstHistorique;
+
 	/* Liste de toutes les îles */
 	private List<Ile>     lstIles;
 
@@ -51,8 +55,6 @@ public class Mappe
 
 	/** Île de départ */
 	private Ile           ileDeDepart;
-	@SuppressWarnings("unused")
-	private boolean       mancheTermine;
 
 	/** Liste des chemins coloriés */
 	private List<Chemin>  lstCheminColorie;
@@ -78,14 +80,6 @@ public class Mappe
 		this.paquet.setControleur(ctrl);
 
 		this.points = "0";
-		
-		if (Mappe.colors == null)
-			Mappe.colors = new ArrayList<>(Arrays.asList( Color.RED , Color.BLUE));
-		else
-			if (Mappe.colors.get(0) == Color.RED) Collections.addAll(Mappe.colors, Color.RED , Color.BLUE);
-			else                                  Collections.addAll(Mappe.colors, Color.BLUE, Color.RED );
-
-		System.out.println(Mappe.colors);
 
 		this.initialise();
 	}
@@ -99,6 +93,12 @@ public class Mappe
 		this.lstIles          = new ArrayList<>();
 		this.lstChemins       = new ArrayList<>();
 		this.lstCheminColorie = new ArrayList<>();
+		
+		if (Mappe.colors != null && Mappe.colors.size() > 0)
+			if (Mappe.colors.get(0) == Color.RED) Collections.addAll(Mappe.colors, Color.RED , Color.BLUE);
+			else                                  Collections.addAll(Mappe.colors, Color.BLUE, Color.RED );
+		else
+			Mappe.colors = new ArrayList<>(Arrays.asList( Color.RED , Color.BLUE));
 		
 		try
 		{
@@ -168,8 +168,6 @@ public class Mappe
 		System.out.println("Nouvelle manche avec coul :" + this.feutre);
 
 		this.ctrl.majIHM();
-
-		this.mancheTermine = true;
 	}
 	
 	public Chemin trouverChemin (Ile i1, Ile i2) 
@@ -565,5 +563,8 @@ public class Mappe
 			}
 		}
 	}
+
+	public void            addAction  (Mouvement mv) { this.lstHistorique.add(mv); }
+	public List<Mouvement> getActions ()             { return this.lstHistorique ; }
 
 }

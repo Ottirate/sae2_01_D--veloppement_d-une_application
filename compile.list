@@ -14,3 +14,4 @@
 ./cinketerra/metier/Mappe.java
 ./cinketerra/metier/PaquetDeCarte.java
 ./cinketerra/metier/Region.java
+./cinketerra/metier/Mouvement.java

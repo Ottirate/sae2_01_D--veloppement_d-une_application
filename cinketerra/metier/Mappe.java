@@ -32,7 +32,9 @@ public class Mappe
 	private static final String      NOM_FICHIER = "./resources/data.csv";
 
 	/** Liste de constantes de couleurs */
-	private static List<Color> colors;
+	private static List<Color>       colors;
+
+	private static List<Mouvement>   lstHistorique;
 
 	/*----------------------------------*/
 	/*           ATTRIBUTS              */
@@ -79,13 +81,6 @@ public class Mappe
 		this.paquet = p;
 		
 		this.points = "0; bonus chemins: 0; bonus îles: 0";
-		
-		if (Mappe.colors == null)
-			if ((int) (Math.random()*2) == 1) Mappe.colors = new ArrayList<>(Arrays.asList( Color.RED , Color.BLUE));
-			else                              Mappe.colors = new ArrayList<>(Arrays.asList( Color.BLUE, Color.RED ));
-		else
-			if (Mappe.colors.get(0) == Color.RED) Collections.addAll(Mappe.colors, Color.RED , Color.BLUE);
-			else                                  Collections.addAll(Mappe.colors, Color.BLUE, Color.RED );
 
 		this.initialise();
 	}
@@ -99,6 +94,15 @@ public class Mappe
 		this.lstIles          = new ArrayList<>();
 		this.lstChemins       = new ArrayList<>();
 		this.lstCheminColorie = new ArrayList<>();
+
+		Mappe.lstHistorique = new ArrayList<>();
+		
+		if (Mappe.colors == null)
+			if ((int) (Math.random()*2) == 1) Mappe.colors = new ArrayList<>(Arrays.asList( Color.RED , Color.BLUE));
+			else                              Mappe.colors = new ArrayList<>(Arrays.asList( Color.BLUE, Color.RED ));
+		else
+			if (Mappe.colors.get(0) == Color.RED) Collections.addAll(Mappe.colors, Color.RED , Color.BLUE);
+			else                                  Collections.addAll(Mappe.colors, Color.BLUE, Color.RED );
 		
 		try
 		{
@@ -308,7 +312,7 @@ public class Mappe
 	 * @return {@code vrai} si il a été colorié, sinon {@code faux}
 	 * @see {@link Mappe#estColoriable(Chemin)}
 	 */
-	public boolean colorier(Chemin c) 
+	public boolean colorier(Chemin c, int id) 
 	{
 		if (!this.estColoriable(c))
 			return false;
@@ -320,7 +324,9 @@ public class Mappe
 		
 		this.aJouer         = true ;
 
+		Mappe.lstHistorique.add(new Mouvement(id, c));
 		this.recalculerPoints();
+
 		this.ctrl.majIHM();
 
 		return true;
@@ -533,5 +539,10 @@ public class Mappe
 	}
 
 	public String getScore() { return this.points; }
+
+	
+
+	public static void            addAction  (Mouvement mv) { Mappe.lstHistorique.add(mv); }
+	public static List<Mouvement> getActions ()             { return Mappe.lstHistorique ; }
 
 }

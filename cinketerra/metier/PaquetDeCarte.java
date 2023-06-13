@@ -47,7 +47,7 @@ public class PaquetDeCarte
 	{
 		if (indice >= 0 && indice < this.ensCarte.size())
 		{
-			Carte c;
+			Carte c = null;;
 
 			/*c = this.ensCarte.get(indice);
 
@@ -78,6 +78,8 @@ public class PaquetDeCarte
 
 				cpt++;
 			}
+
+			Mappe.addAction(new Mouvement(c));
 		}
 	}
 
