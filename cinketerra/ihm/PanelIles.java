@@ -175,8 +175,23 @@ public class PanelIles extends JPanel
 			// Ligne
 			if (c.getCouleur() == null)
 			{
-				for (int i = 0; i <= c.getBonus(); i++)
-					this.dessinerLigneLibre(g2, x1, y1, x2, y2);
+				Stroke  stroke;
+				float[] pointille;
+				if(c.getBonus() == 0)
+				{
+					pointille = new float[]{2f, 2f};
+					stroke = new BasicStroke(3f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, pointille, 2.0f);
+					g2.setColor(new Color (88, 41, 0));
+				}
+				else
+				{
+					pointille = new float[]{5f, 2f};
+					stroke    = new BasicStroke(3f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, pointille, 0.0f);
+					g2.setColor(new Color (52,12,0));
+				}
+
+				g2.setStroke(stroke);
+				g2.drawLine(x1, y1, x2, y2);
 			}
 			else
 			{

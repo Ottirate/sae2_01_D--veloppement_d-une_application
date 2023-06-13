@@ -87,6 +87,8 @@ public class PanelPioche extends JPanel
 
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
+		//System.out.println("Dimension Preferred == " + this.getPreferredSize());
+
 		//dessiner l'ensemble des cartes
 		int cptPioche   = 0;
 		int cptDefausse = 0;
@@ -191,7 +193,6 @@ public class PanelPioche extends JPanel
 				//PanelPioche.this.ctrl.piocher(indice);
 				//Carte c = null;//PanelPioche.this.ctrl.getCarte(indice);
 
-				System.out.println("indice = " + indice);
 				PanelPioche.this.ctrl.piocher(indice);
 				PanelPioche.this.ensCartePioche.remove(PanelPioche.this.ensCartePioche.size() - 1);
 

@@ -6,6 +6,7 @@
 ./cinketerra/ihm/PanelPioche.java
 ./cinketerra/ihm/FrameDebut.java
 ./cinketerra/ihm/PanelDebut.java
+./cinketerra/ihm/FrameAnnonce.java
 
 ./cinketerra/metier/Carte.java
 ./cinketerra/metier/Chemin.java

@@ -1,5 +1,7 @@
 package debug.scenario.metier;
 
+import debug.scenario.Controleur;
+
 import java.util.Collections;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -14,10 +16,13 @@ public class PaquetDeCarte
 	/** Taille maximale d'un paquet */
 	private static final int TAILLE = 10;
 
+	private Controleur ctrl;
+
 	/** Liste des cartes */
 	private List<Carte> ensCarte;
 
 	private boolean forcerPremiereCarte;
+	@SuppressWarnings("unused")
 	private boolean visible;
 
 	/** Nombre de cartes noires piochées */
@@ -30,9 +35,14 @@ public class PaquetDeCarte
 	 */
 	public PaquetDeCarte()
 	{
-		this.ensCarte = new ArrayList<>(Arrays.asList(Carte.values()));
+		this.ensCarte = Arrays.asList(Carte.values());
 		Collections.shuffle(this.ensCarte);
 		this.forcerPremiereCarte = false;
+	}
+
+	public void setControleur(Controleur c)
+	{
+		this.ctrl = c;
 	}
 
 	/*
@@ -173,7 +183,7 @@ public class PaquetDeCarte
 		this.piocher(2);
 		this.piocher(3);
 
-		Mappe.ctrl.piocherForce(4);
+		this.ctrl.piocherForce(4);
 
 		this.forcerPremiereCarte = true;
 	}
@@ -187,7 +197,7 @@ public class PaquetDeCarte
 		this.piocher(2);
 		this.piocher(3);
 
-		Mappe.ctrl.piocherForce(4);
+		this.ctrl.piocherForce(4);
 
 		this.forcerPremiereCarte = true;
 	}

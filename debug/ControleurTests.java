@@ -16,6 +16,7 @@ import debug.scenario.Controleur;
 public class ControleurTests
 {
 	/* Attributs de Classe */
+	@SuppressWarnings("unused")
 	private FrameTests ihm;
 
 

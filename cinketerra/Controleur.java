@@ -5,9 +5,10 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import cinketerra.ihm.FrameAnnonce;
 import cinketerra.ihm.FrameCartes;
-import cinketerra.ihm.FrameGame;
 import cinketerra.ihm.FrameDebut;
+import cinketerra.ihm.FrameGame;
 import cinketerra.metier.*;
 
 import java.awt.Color;
@@ -159,6 +160,13 @@ public class Controleur implements WindowStateListener
 		{
 			this.metier2.piocher();
 			this.ihmMappe2.maj();
+		}
+
+		if (this.getNbCarteTotal() - this.getNbCarteRestante() == Mappe.getTourEvent("Biffurcation"))
+		{
+			// Montre qu'il y a biffurcation
+			System.out.println("Ah l'batard -> biffurcation");
+			JFrame f = new FrameAnnonce();
 		}
 
 		this.ihmMappe1.maj();

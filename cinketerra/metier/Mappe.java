@@ -67,6 +67,9 @@ public class Mappe
 	/** Le nombre de points */
 	private String        points;
 
+	/** Evenements */
+	private static int    tourEventBiffurcation;
+
 	/**
 	 * Constructeur sans paramètres qui initialise l'objet.
 	 */
@@ -83,8 +86,6 @@ public class Mappe
 		else
 			if (Mappe.colors.get(0) == Color.RED) Collections.addAll(Mappe.colors, Color.RED , Color.BLUE);
 			else                                  Collections.addAll(Mappe.colors, Color.BLUE, Color.RED );
-
-		System.out.println(Mappe.colors);
 
 		this.initialise();
 	}
@@ -164,6 +165,8 @@ public class Mappe
 
 		this.estDebutManche = true;
 
+		Mappe.tourEventBiffurcation = (int) ( Math.random() * 11 );
+
 		System.out.println("Nouvelle manche avec coul :" + this.feutre);
 
 		this.ctrl.majIHM();
@@ -179,6 +182,13 @@ public class Mappe
 					return c1;
 
 		return null;
+	}
+
+	public static int getTourEvent(String event)
+	{
+		if (event.equals("Biffurcation")) return Mappe.tourEventBiffurcation;
+
+		return 0;
 	}
 
 	/**
@@ -263,13 +273,12 @@ public class Mappe
 	 */
 	public void piocher(int indice)
 	{
-		this.piocher();
-		
 		if (this.paquet.getNbNoiresPiochees() != 5)
 		{
 			this.paquet.piocher(indice);
 		}
 
+		this.piocher();
 
 		if (this.paquet.getNbCarteRestante() == 0)
 			this.ctrl.showButton();
@@ -485,8 +494,7 @@ public class Mappe
 		for (Chemin c : this.lstCheminColorie)
 		{
 			bonusChemins += c.getBonus();
-			if (c.getBonus() != 0)
-				System.out.println("Bonus: " + c.getBonus());
+			// if (c.getBonus() != 0) System.out.println("Bonus: " + c.getBonus());
 		}
 
 		boolean red = false;
@@ -518,9 +526,9 @@ public class Mappe
 		this.points = score + "; bonus chemins: " + bonusChemins + "; bonus îles: " + bonusIles;
 
 		
-		System.out.println("Nb Max Iles=> " + nbMaxIles);
-		System.out.println("Nb regions=> " + lstRegionsParcourues.size());
-		System.out.println("SCORE=> " + this.points);
+		System.out.println("Nb Max Iles -> " + nbMaxIles);
+		System.out.println("Nb regions  -> " + lstRegionsParcourues.size());
+		System.out.println("SCORE       -> " + this.points);
 		
 	}
 
