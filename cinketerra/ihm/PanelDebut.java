@@ -17,7 +17,8 @@ import java.awt.event.MouseEvent;
 
 public class PanelDebut extends JPanel
 {
-	@SuppressWarnings("unused")
+	static final String PATH = "./resources/images/";
+
 	private Controleur ctrl;
 	private JLabel     lblTexte;
 	private JLabel     lblLogo;

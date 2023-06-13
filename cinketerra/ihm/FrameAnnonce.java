@@ -8,42 +8,90 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class FrameAnnonce extends JFrame
 {
 	private Image img;
+	private int x;
+	private int y;
+	private PanelAnnonce panel;
 
 	public FrameAnnonce()
 	{
-		// Supprime les bords de la JFrame
+		double width  = getToolkit().getScreenSize().getWidth();
+
 		this.setUndecorated(true);
-
-		// Rend la JFrame transparente
-		this.setBackground(new Color(0, 0, 0, 0));
-		//this.setOpacity(0f);
-
-		// Définit une taille pour la JFrame
-		this.setSize(400, 300);
-
-		// Centre la JFrame sur l'écran
+		//this.setBackground(new Color(0, 0, 0, 0));
+		this.setSize((int) width, 233);
 		this.setLocationRelativeTo(null);
-
-		// Quitte l'application lorsque la JFrame est fermée
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		// Ajoute des composants à la JFrame
 		this.img = getToolkit().getImage( "./resources/zeppelin.png" );
 
-		// Rend la JFrame visible
+		Image img = new ImageIcon(this.img).getImage();
+
+		this.img   = img.getScaledInstance(1440 / 2, 467 / 2, Image.SCALE_SMOOTH); // 1440 467
+		this.panel = new PanelAnnonce();
+
+		this.add( this.panel );
 		this.setVisible(true);
+
+		new Animation( this ).start();
 	}
 
-	public void paintComponent(Graphics g)
+	private class Animation extends Thread
 	{
-		super.paintComponents(g);
+		private FrameAnnonce frame;
 
-		Graphics2D g2 = (Graphics2D) g;
+		public Animation(FrameAnnonce frameAnnonce)
+		{
+			this.frame = frameAnnonce;
+		}
 
-		g2.drawImage(this.img, 0, 0, null);
+		public void run()
+		{
+			int time = 5; // Temps en seconde
+
+			double width  = getToolkit().getScreenSize().getWidth();
+			double height = getToolkit().getScreenSize().getHeight();
+
+			double gap  = width / (time * 10);
+
+			try
+			{
+				for (int i = 0; i < (time * 10); i++)
+				{
+					Thread.sleep(100);
+
+					FrameAnnonce.this.x = (int) (i * gap) - 720;
+					FrameAnnonce.this.y = (int) (height / 2);
+
+					//this.frame.setLocation( (int) (i * gap), (int) (height / 2) );
+					FrameAnnonce.this.panel.repaint();
+				}
+
+				this.frame.dispose();
+			}
+			catch (Exception e) {}
+		}
+	}
+
+	private class PanelAnnonce extends JPanel
+	{
+		public PanelAnnonce() {}
+		
+		public void paintComponent(Graphics g)
+		{
+			super.paintComponents(g);
+
+			Graphics2D g2 = (Graphics2D) g;
+
+			System.out.println(FrameAnnonce.this.x + " " + FrameAnnonce.this.y);
+
+// FrameAnnonce.this.x, FrameAnnonce.this.y
+			g2.drawImage(FrameAnnonce.this.img, FrameAnnonce.this.x, FrameAnnonce.this.y, null);
+		}
 	}
 }

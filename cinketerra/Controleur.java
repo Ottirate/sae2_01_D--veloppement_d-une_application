@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 import cinketerra.ihm.FrameAnnonce;
 import cinketerra.ihm.FrameCartes;
+import cinketerra.ihm.FrameDebut;
 import cinketerra.ihm.FrameGame;
 import cinketerra.metier.*;
 

@@ -3,11 +3,9 @@ package cinketerra.ihm;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import cinketerra.Controleur;
-import javax.swing.ImageIcon;
 
 public class FrameDebut extends JFrame
 {
-	@SuppressWarnings("unused")
 	private Controleur ctrl;
 	private PanelDebut panelD;
 	
@@ -15,7 +13,7 @@ public class FrameDebut extends JFrame
 	{
 		this.ctrl = ctrl;
 		this.setTitle("Choix du nombre de joueur");
-		this.setIconImage( new ImageIcon( "l'image" ).getImage() );
+		this.setSize(300,500);
 		this.setLocationRelativeTo(null);
 		this.setIconImage( new ImageIcon(PanelDebut.PATH + "Cinketera.png").getImage() );
 
