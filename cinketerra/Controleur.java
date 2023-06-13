@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 import cinketerra.ihm.FrameCartes;
 import cinketerra.ihm.FrameGame;
+import cinketerra.ihm.FrameDebut;
 import cinketerra.metier.*;
 
 import java.awt.Color;
@@ -17,7 +18,7 @@ import java.awt.Toolkit;
 
 public class Controleur implements WindowStateListener
 {
-	private static int NB_JOUEUR = 2;
+	public static int NB_JOUEUR = 0;
 
 	// Joueur 1
 	private Mappe       metier1;
@@ -32,17 +33,19 @@ public class Controleur implements WindowStateListener
 
 	public Controleur()
 	{
-		String[] options = {"1 joueur", "2 joueurs"};
-
-		int choix = JOptionPane.showOptionDialog(null, "Choisissez le nombre de joueurs", "Choix du nombre de joueurs", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-
-		if (choix == 0)
-			Controleur.NB_JOUEUR = 1;
-		else if (choix == 1)
-			Controleur.NB_JOUEUR = 2;
-		else
-			return;
+		FrameDebut frameD = new FrameDebut(this);
 		
+		boolean debutDePartie = false;
+		while (!debutDePartie)
+		{
+			System.out.print(""); // Pour une raison inconnue, s'il n'est pas là ça ne marche plus ! /!\ TOUCHE PAS
+			if (Controleur.NB_JOUEUR != 0)
+			{
+				debutDePartie = true;
+				frameD.dispose();
+			}
+		}
+
 		PaquetDeCarte p = new PaquetDeCarte();
 
 		this.metier1    = new Mappe(this, p);
