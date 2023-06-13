@@ -311,6 +311,17 @@ public class Controleur implements WindowStateListener
 		}
 	}
 
+	public void hideHistorique (int id) 
+	{
+		// if (id == 1) this.ihmMappe1.hideHistorique();
+		// else         this.ihmMappe2.hideHistorique();
+	}
+	public void showHistorique (int id) 
+	{
+		// if (id == 1) this.ihmMappe1.showHistorique();
+		// else         this.ihmMappe2.showHistorique();
+	}
+
 	public static void main(String[] args)
 	{
 		new Controleur();
