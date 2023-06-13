@@ -12,7 +12,6 @@ import java.awt.event.*;
 
 public class FrameCartes extends JFrame implements ActionListener
 {
-	@SuppressWarnings("unused")
 	private Controleur ctrl;
 
 	private JButton btnManche;

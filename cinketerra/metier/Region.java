@@ -28,6 +28,9 @@ public class Region
 		return this.lstIle.stream()
 			.anyMatch(ile -> ile.equals(i));
 	}
+
+	public List<Ile> getIles() { return this.lstIle; }
+	public String    getNom () { return this.nom;    }
 	
 	public String toString()
 	{

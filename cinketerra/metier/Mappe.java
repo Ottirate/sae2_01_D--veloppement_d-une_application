@@ -87,9 +87,6 @@ public class Mappe
 		System.out.println(Mappe.colors);
 
 		this.initialise();
-
-		for (Chemin c : this.lstChemins)
-			System.out.println(c + " ===> " + c.getBonus());
 	}
 
 	/**
@@ -197,6 +194,8 @@ public class Mappe
 	 * @return la liste des chemins de la mappe
 	 */
 	public List<Chemin> getChemins() { return this.lstChemins; }
+
+	public List<Region> getRegions() { return this.lstRegions; }
 
 	/**
 	 * Retourne un objet {@code Ile} associé à un objet {@code String}.

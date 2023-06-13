@@ -107,6 +107,12 @@ public class Controleur implements WindowStateListener
 		else         return this.ihmMappe2.getHeight();
 	}
 
+	public List<Region> getRegions(int id) 
+	{
+		if (id == 1) return this.metier1.getRegions();
+		else         return this.metier2.getRegions();
+	}
+
 	public int getLargeur(int id) 
 	{
 		if (id == 1) return this.ihmMappe1.getWidth();
