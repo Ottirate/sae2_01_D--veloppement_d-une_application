@@ -143,10 +143,7 @@ public class PanelIles extends JPanel
 
 			this.trierPointsPolygone(points, poly);
 			this.dessinerFondRegion(g2,poly);
-			poly = PanelIles.resizePolygon(poly, 1.2);
-
-			g2.setColor(fondCol[i]);
-			g2.fill(poly);
+			
 		}
 
 		for (Ile i : this.ctrl.getIles(this.id))
@@ -253,42 +250,41 @@ public class PanelIles extends JPanel
 
 	}
 
-	public static Polygon resizePolygon(Polygon poly, double scale) 
+	public static Polygon resizePolygon(Polygon polygon, double scale) 
 	{
-		Polygon polygon = new Polygon();
-		Point center = getPolygonCenter(polygon);
+        Point center = getPolygonCenter(polygon);
 
-		for (int i = 0; i < polygon.npoints; i++) 
+        for (int i = 0; i < polygon.npoints; i++) 
 		{
-			int deltaX = polygon.xpoints[i] - center.x;
-			int deltaY = polygon.ypoints[i] - center.y;
+            int deltaX = polygon.xpoints[i] - center.x;
+            int deltaY = polygon.ypoints[i] - center.y;
 
-			int newX = center.x + (int) (deltaX * scale);
-			int newY = center.y + (int) (deltaY * scale);
+            int newX = center.x + (int) (deltaX * scale);
+            int newY = center.y + (int) (deltaY * scale);
 
-			polygon.xpoints[i] = newX;
-			polygon.ypoints[i] = newY;
-		}
+            polygon.xpoints[i] = newX;
+            polygon.ypoints[i] = newY;
+        }
 
-		return polygon;
-	}
+        return polygon;
+    }
 
 	public static Point getPolygonCenter(Polygon polygon) 
 	{
-		int totalX = 0;
-		int totalY = 0;
+        int totalX = 0;
+        int totalY = 0;
 
-		for (int i = 0; i < polygon.npoints; i++) 
+        for (int i = 0; i < polygon.npoints; i++) 
 		{
-			totalX += polygon.xpoints[i]; //On regarde la largeur  x
-			totalY += polygon.ypoints[i]; //On regarde la longueur y
-		}
+            totalX += polygon.xpoints[i]; //On regarde la largeur  x
+            totalY += polygon.ypoints[i]; //On regarde la longueur y
+        }
 
-		int centerX = totalX / polygon.npoints;
-		int centerY = totalY / polygon.npoints;
+        int centerX = totalX / polygon.npoints;
+        int centerY = totalY / polygon.npoints;
 
-		return new Point(centerX, centerY);
-	}
+        return new Point(centerX, centerY);
+    }
 
 	private void trierPointsPolygone(List<Point> points, Polygon poly)
 	{
