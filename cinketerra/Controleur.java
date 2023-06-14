@@ -165,7 +165,8 @@ public class Controleur implements WindowStateListener
 
 		if (this.getNbCarteTotal() - this.getNbCarteRestante() == Mappe.getTourEvent("Bifurcation"))
 		{
-			JFrame f = new FrameAnnonce( "zeppelin" );
+			JFrame f = new FrameAnnonce( "zeppelin" );			
+			Mappe.addAction(new Mouvement("Bifurcation en cours...", "bifurcation"));
 		}
 
 		

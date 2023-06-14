@@ -19,7 +19,7 @@ public class Mouvement
 		if (c.getCouleur() == Color.BLUE) coul = "bleu" ;
 
 		//String pour l'historique
-		this.infoString = "Le joueur " + id + " à capturer la route de " + nom1 + " à " + nom2 + " en " + coul + ".";
+		this.infoString = "Le joueur " + id + " a capturé la route de " + nom1 + " à " + nom2 + " en " + coul + ".";
 
 		//String pour le fichier
 		this.dataString = ""+ id + '\t' + nom1 + '\t' + nom2 + '\t' + coul;
