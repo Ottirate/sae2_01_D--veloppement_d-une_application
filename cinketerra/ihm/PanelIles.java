@@ -273,10 +273,16 @@ public class PanelIles extends JPanel
 			g2.drawString( i.getNom(), (int) (i.getXNom() * this.coef) , (int) (i.getYNom() * this.coef));
 		}
 
-		//Dessinier le paneau du score
+		//Dessiner le paneau du score
+		ImageIcon imgPanneau = PanelIles.redimensionnerIcon(new ImageIcon("./resources/images/panneau_score.png"), 5 * this.coef / 25);
+
+		int xPanneau = largeur - imgPanneau.getIconWidth();
+		int yPanneau = hauteur - imgPanneau.getIconHeight() - 10;
+
+		imgPanneau.paintIcon(this, g2, xPanneau, yPanneau);
 
 		//Dessiner le logo de l'historique en bas à droite du truc
-		ImageIcon logo = redimensionnerIcon(new ImageIcon("./resources/images/Historique.png"), 5 * this.coef / 50);
+		ImageIcon logo = PanelIles.redimensionnerIcon(new ImageIcon("./resources/images/Historique.png"), 5 * this.coef / 50);
 
 		int x = largeur - logo.getIconWidth();
 		int y = hauteur - logo.getIconHeight() - 10;
@@ -290,7 +296,7 @@ public class PanelIles extends JPanel
 		//Dessiner la carte bonus
 		if ( this.ctrl.getOptionActive() )
 		{
-			ImageIcon imgCarteBonus = redimensionnerIcon(new ImageIcon(this.ctrl.getImageBonus(this.id)), 25*this.coef / 50);
+			ImageIcon imgCarteBonus = PanelIles.redimensionnerIcon(new ImageIcon(this.ctrl.getImageBonus(this.id)), 25*this.coef / 50);
 
 			x = largeur - imgCarteBonus.getIconWidth();
 			y = hauteur - imgCarteBonus.getIconHeight() - this.ctrl.getHauteur(1)/9;
@@ -513,27 +519,41 @@ public class PanelIles extends JPanel
 
 		/**Evement souris. */
 
-		/*
 		public void mouseMoved(MouseEvent e)
 		{
 			int posX = e.getX();
 			int posY = e.getY();
 
 			//changer curseur sur la carte bonus
-			if ( PanelIles.this.ctrl.getOptionActive() )
+			if ( PanelIles.this.ctrl.getOptionActive() && !PanelIles.this.ctrl.bonusAEteActive( PanelIles.this.id ) )
 			{
 				if (PanelIles.this.hitboxCarteBonus.contains(posX, posY))
 				{
-					PanelPioche.this.setCursor( new Cursor( Cursor.HAND_CURSOR ));
-				}
-				else
-				{
-					PanelPioche.this.setCursor( new Cursor( Cursor.DEFAULT_CURSOR   ));
+					PanelIles.this.setCursor( new Cursor( Cursor.HAND_CURSOR ));
+					return;
 				}
 			}
+
+			//changer curseur sur le logo de l'historique
+			if (PanelIles.this.historique.contains(posX, posY))
+			{
+				PanelIles.this.setCursor( new Cursor( Cursor.HAND_CURSOR ));
+				return;
+			}
+
+			//changer curseur sur les iles selectionnees
+			for( Polygon polygon : PanelIles.this.polygons )
+			{
+				if( polygon.contains( posX, posY ) )
+				{
+					PanelIles.this.setCursor( new Cursor( Cursor.HAND_CURSOR ));
+					return;
+				}
+			}
+
+			// sinon on reinitialise le curseur
+			PanelIles.this.setCursor( new Cursor( Cursor.DEFAULT_CURSOR   ));	
 		}
-		
-		*/
 
 		public void mousePressed(MouseEvent e)
 		{
