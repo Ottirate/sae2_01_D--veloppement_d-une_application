@@ -510,7 +510,7 @@ public class PanelIles extends JPanel
 			{
 				PanelIles.this.ile1 = PanelIles.this.ile2 = null;
 			} 
-			else 
+			else
 			{
 				PanelIles.this.ile2 = PanelIles.this.ile1;
 				PanelIles.this.ile1 = i;
