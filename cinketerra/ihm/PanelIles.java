@@ -8,10 +8,8 @@ import cinketerra.metier.*;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
-import java.security.spec.ECFieldF2m;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -257,7 +255,7 @@ public class PanelIles extends JPanel
 
 			// Images100
 			ImageIcon img      = this.lstImgIles.get(lstIles.indexOf(i));
-			redimensionnerIcon(img, this.coef).paintIcon(this, g, (int) (i.getXImages() * this.coef), (int) (i.getYImages()*this.coef));
+			PanelIles.redimensionnerIcon(img, this.coef).paintIcon(this, g, (int) (i.getXImages() * this.coef), (int) (i.getYImages()*this.coef));
 
 			// Noms des iles
 			g2.setColor(Color.BLACK);
@@ -397,7 +395,7 @@ public class PanelIles extends JPanel
 		return (val > 0) ? 1 : 2; // 1 pour sens horaire, 2 pour sens anti-horaire
 	}
 
-	private ImageIcon redimensionnerIcon(ImageIcon img, double coef)
+	public static ImageIcon redimensionnerIcon(ImageIcon img, double coef)
 	{
 		int       larg     = img.getIconWidth();
 		int       lon      = img.getIconHeight();
@@ -537,7 +535,8 @@ public class PanelIles extends JPanel
 			PanelIles.this.repaint();
 
 			
-			if (PanelIles.this.historique.contains(e.getX(), e.getY()))
+			if (PanelIles.this.historique != null && 
+			    PanelIles.this.historique.contains(e.getX(), e.getY()))
 				PanelIles.this.ctrl.showHistorique(PanelIles.this.id);
 			else
 				if (i == null)

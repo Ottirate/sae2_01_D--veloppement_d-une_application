@@ -213,7 +213,10 @@ public class Mappe
 
 	public static int getTourEvent(String event)
 	{
-		if (event.equals("Bifurcation")) return Mappe.tourEventBifurcation;
+		if (event.equals("Bifurcation")) 
+		{
+			return Mappe.tourEventBifurcation;
+		}
 
 		return 0;
 	}

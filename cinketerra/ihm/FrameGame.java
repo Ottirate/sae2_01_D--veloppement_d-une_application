@@ -27,8 +27,10 @@ public class FrameGame extends JFrame
 	private JTextArea    txtHistorique;
 	private JScrollPane  spHistorique;
 
-	private PanelIles   panelIles;
-	private JPanel      panelHistorique;
+	private PanelIles    panelIles;
+	private JPanel       panelHistorique;
+
+	private boolean      historiqueShowed;
 
 	public FrameGame(Controleur ctrl, int id) 
 	{
@@ -83,18 +85,25 @@ public class FrameGame extends JFrame
 
 		this.txtHistorique.setText(historique);
 
+		if (this.historiqueShowed)
+			this.add(this.spHistorique,BorderLayout.EAST);
+		else
+			this.remove(this.spHistorique);
+
+
 		this.revalidate(); 
 	}
 
 	public void hideHistorique () 
 	{ 
-		this.remove(this.spHistorique);
+		this.historiqueShowed = false;
 		this.maj();
 	}
 	public void showHistorique () 
 	{ 
-		this.add   (this.spHistorique,BorderLayout.EAST);
-
+		this.historiqueShowed = true;
 		this.maj();
 	}
+
+
 }
