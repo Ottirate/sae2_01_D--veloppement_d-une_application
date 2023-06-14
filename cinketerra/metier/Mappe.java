@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+
 /** AWT */
 import java.awt.Color;
 import java.awt.geom.Line2D;
@@ -76,6 +77,8 @@ public class Mappe
 	private static CarteBonus    carteBonus;
 	private boolean              carteBonusActive;
 	private boolean              bonusAEteActive;
+	
+	private Region               regionBonus;
 
 	/** Couleur du feutre */
 	private Color         feutre;
@@ -92,6 +95,8 @@ public class Mappe
 		this.paquet = p;
 		
 		this.points = "0; bonus chemins: 0; bonus îles: 0";
+		
+		this.regionBonus = null;
 
 		this.initialise();
 	}
@@ -356,6 +361,12 @@ public class Mappe
 		this.aJouer         = true ;
 
 		Mappe.lstHistorique.add(new Mouvement(id, c));
+		
+		if (this.carteBonusActive)
+		{
+			
+		}
+		
 		this.recalculerPoints();
 
 		if (!this.bonusAEteActive)
