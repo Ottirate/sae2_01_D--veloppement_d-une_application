@@ -226,8 +226,8 @@ public class PanelIles extends JPanel
 		}
 
 		Color colFeutre = this.ctrl.getColFeutre(this.id);
+
 		// Afficher les iles
-		
 		if (this.ile1 != null)
 		{
 			for (Chemin c : this.ile1.getCheminAutour())
@@ -276,17 +276,17 @@ public class PanelIles extends JPanel
 		this.historique = new Ellipse2D.Double(x + 10, y + 10, larg, larg );
 
 		//Dessiner la carte bonus
-		// if (this.ctrl.bonusAEteActive(this.id))
-		// 	imgCarteBonus = redimensionnerIcon(new ImageIcon(this.ctrl.getImageBonus()), 25*this.coef / 50);
+		if ( this.ctrl.getOptionActive() )
+		{
+			ImageIcon imgCarteBonus = redimensionnerIcon(new ImageIcon(this.ctrl.getImageBonus(this.id)), 25*this.coef / 50);
 
-		ImageIcon imgCarteBonus = redimensionnerIcon(new ImageIcon(this.ctrl.getImageBonus(this.id)), 25*this.coef / 50);
+			x = largeur - imgCarteBonus.getIconWidth();
+			y = hauteur - imgCarteBonus.getIconHeight() - this.ctrl.getHauteur(1)/9;
 
-		x = largeur - imgCarteBonus.getIconWidth();
-		y = hauteur - imgCarteBonus.getIconHeight() - this.ctrl.getHauteur(1)/9;
+			this.hitboxCarteBonus = new Rectangle(x, y, imgCarteBonus.getIconWidth(), imgCarteBonus.getIconHeight());
 
-		this.hitboxCarteBonus = new Rectangle(x, y, imgCarteBonus.getIconWidth(), imgCarteBonus.getIconHeight());
-
-		imgCarteBonus.paintIcon(this, g2, x, y);
+			imgCarteBonus.paintIcon(this, g2, x, y);
+		}
 	}
 
 	private void dessinerFondRegion (Graphics2D g2, Polygon p)
@@ -531,9 +531,12 @@ public class PanelIles extends JPanel
 				}
 			}
 
-			if (PanelIles.this.hitboxCarteBonus.contains(posX, posY))
+			if ( PanelIles.this.ctrl.getOptionActive() )
 			{
-				PanelIles.this.ctrl.activerCarteBonus(PanelIles.this.id);
+				if (PanelIles.this.hitboxCarteBonus.contains(posX, posY))
+				{
+					PanelIles.this.ctrl.activerCarteBonus(PanelIles.this.id);
+				}
 			}
 
 			PanelIles.this.repaint();
