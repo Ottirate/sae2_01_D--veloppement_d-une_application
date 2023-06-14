@@ -18,6 +18,8 @@ public class FrameCartes extends JFrame implements ActionListener
 
 	private PanelPioche panelPioche;
 
+	private JPanel panelBtn;
+
 	public FrameCartes(Controleur ctrl) 
 	{
 		this.ctrl = ctrl;
@@ -34,14 +36,16 @@ public class FrameCartes extends JFrame implements ActionListener
 		this.btnManche   = new JButton("Manche suivante");
 		this.panelPioche = new PanelPioche(ctrl);
 
-		JPanel panelTemp = new JPanel();
-		panelTemp.add(this.btnManche);
+		panelBtn = new JPanel();
+		panelBtn.add(this.btnManche);
+		panelBtn.setOpaque(false);
 
-		this.add(this.panelPioche, BorderLayout.CENTER);
-		this.add(panelTemp       , BorderLayout.SOUTH );
+		this.hideButton();
+
+		this.add( this.panelBtn,    BorderLayout.SOUTH  );
+		this.add( this.panelPioche, BorderLayout.CENTER );
 
 		this.btnManche.addActionListener(this);
-		this.hideButton();
 
 		this.setVisible(true);
 	}
@@ -49,8 +53,11 @@ public class FrameCartes extends JFrame implements ActionListener
 	public void initPioche() { this.panelPioche.initPioche(); }
 	public void bloquerPioche(boolean bloque) { this.panelPioche.bloquerPioche(bloque); }
 
-	public void showButton () {this.btnManche.setVisible(true );}
-	public void hideButton () {this.btnManche.setVisible(false);}
+	// public void showButton () { this.btnManche.setVisible(true ); }
+	// public void hideButton () { this.btnManche.setVisible(false); }
+
+	public void showButton () { this.panelBtn.setVisible(true);  }
+	public void hideButton () { this.panelBtn.setVisible(false); }
 
 	public void maj () { this.panelPioche.repaint(); }
 

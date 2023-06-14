@@ -37,6 +37,8 @@ public class PanelPioche extends JPanel
 
 	private boolean isBlocked;
 
+	private double coef;
+
 	private PaquetDeCarte paquetDeBase;
 
 	private final static double COEF_CARTE    = 0.667;
@@ -92,7 +94,19 @@ public class PanelPioche extends JPanel
 
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-		//System.out.println("Dimension Preferred == " + this.getPreferredSize());
+		// Calcul du coefficient
+		int hauteur     = this.ctrl.getHauteurPioche() - 40 ;
+		int largeur     = this.ctrl.getLargeurPioche() - 20 ;
+
+		double coef1    = hauteur * 1.0 / ( this.longCarte * 1.5 );
+		double coef2    = largeur * 1.0 / ( this.largCarte * 1.5 );
+		double lastCoef = this.coef;
+
+		this.coef = Math.min(coef1, coef2);
+
+		if (this.coef < 0.3) this.coef = 0.3;
+		if (this.coef != lastCoef) gs.init();
+
 
 		//dessiner l'ensemble des cartes
 		int cptPioche   = 0;
@@ -135,12 +149,12 @@ public class PanelPioche extends JPanel
 			for (int cptC = 0 ; cptC < this.ctrl.getNbCarteTotal(); cptC++ )
 				if (this.paquetDeBase.getCarte(cptB).equals(this.ctrl.getCarte(cptC)) && this.ctrl.getCarte(cptC).estCache())
 				{
-					img2 = this.redimImage(new ImageIcon( this.ctrl.getImageRetournee(this.paquetDeBase.getCarte(cptB))), (int)(this.largCarte/2), (int)(this.longCarte/2), true);
+					img2 = this.redimImage(new ImageIcon( this.ctrl.getImageRetournee(this.paquetDeBase.getCarte(cptB))), (int)(this.largCarte/2), (int)(this.longCarte/2), false);
 
 					if (cptB < 5)
-						img2.paintIcon(this, this.g2, this.calculPosCarteDefausse(cptB%5), PanelPioche.POS_Y_CARTE-10);
+						img2.paintIcon(this, this.g2, this.calculPosCarteDefausse(cptB%5), PanelPioche.POS_Y_CARTE);
 					else
-						img2.paintIcon(this, this.g2, this.calculPosCarteDefausse(cptB%5), PanelPioche.POS_Y_CARTE*3 - 15);
+						img2.paintIcon(this, this.g2, this.calculPosCarteDefausse(cptB%5), PanelPioche.POS_Y_CARTE + (int) ( (this.longCarte/2 + 10) * this.coef ));
 				}
 
 		// Intitulés
@@ -151,8 +165,15 @@ public class PanelPioche extends JPanel
 		}
 	}
 	
-	public int calculPosCartePioche  ( int indice ){ return PanelPioche.MARGE_X_CARTE + indice*PanelPioche.ESPACEMENT;                                                   }
-	public int calculPosCarteDefausse( int indice ){ return (int)(this.getWidth() - (indice+1)*((this.largCarte/2)+PanelPioche.ESPACEMENT) - PanelPioche.MARGE_X_CARTE); }
+	public int calculPosCartePioche  ( int indice )
+	{
+		return PanelPioche.MARGE_X_CARTE + indice * (int) (PanelPioche.ESPACEMENT * this.coef);
+	}
+
+	public int calculPosCarteDefausse( int indice )
+	{
+		return (int)(this.getWidth() - (indice+1)*(( this.largCarte/2 ) * this.coef + PanelPioche.ESPACEMENT ) - PanelPioche.MARGE_X_CARTE);
+	}
 
 	/**
 	 * Redimensione une image donnée.
@@ -163,24 +184,17 @@ public class PanelPioche extends JPanel
 	 * @param isStatic - si la taille de l'image doit se redimensionner en fonction de la taille de la Frame
 	 * @return la nouvelle image redimensionnée
 	 */
-	private ImageIcon redimImage(ImageIcon img, int width, int height, boolean isStatic)
+	private ImageIcon redimImage(ImageIcon img, double width, double height, boolean isStatic)
 	{
 		if (!isStatic)
 		{
-			int longueur = Math.max(this.ctrl.getHauteurPioche(), this.ctrl.getLargeurPioche() / 6);
-			
-			double coefPanel = (this.longCarte / (longueur * 1.0)) * 2;
-
-			width = (int) (this.largCarte / coefPanel);
-			height = (int) (this.longCarte / coefPanel);
-		} else
-		{
-			width = (int) (width / 1.75);
-			height = (int) (height / 1.75);
+			width  = 1.0 * width  * this.coef;
+			height = 1.0 * height * this.coef;
 		}
 
 		Image ogImage = img.getImage();
-		Image reImage = ogImage.getScaledInstance(width, height, Image.SCALE_DEFAULT);
+		Image reImage = ogImage.getScaledInstance((int) width, (int) height, Image.SCALE_DEFAULT);
+
 		return new ImageIcon(reImage);
 	}
 
@@ -205,7 +219,19 @@ public class PanelPioche extends JPanel
 			PanelPioche.this.ensCartePioche = new ArrayList<>();
 
 			for (int i = 0 ; i < PanelPioche.this.ctrl.getNbCarteTotal() ; i++)
-				PanelPioche.this.ensCartePioche.add(new Rectangle(PanelPioche.this.calculPosCartePioche(i), PanelPioche.POS_Y_CARTE, PanelPioche.this.largCarte, PanelPioche.this.longCarte));
+			{
+				PanelPioche.this.ensCartePioche.add(
+					
+					new Rectangle(
+						PanelPioche.this.calculPosCartePioche(i),
+						PanelPioche.POS_Y_CARTE,
+
+						(int) (PanelPioche.this.largCarte * PanelPioche.this.coef),
+						(int) (PanelPioche.this.longCarte * PanelPioche.this.coef)
+					)
+
+				);
+			}
 		}
 
 		/**
