@@ -364,7 +364,10 @@ public class Mappe
 		
 		if (this.carteBonusActive)
 		{
-			
+			if (c.getIleA().getNbCheminsColorie(this.feutre) == 1)
+				this.regionBonus = c.getIleA().getReg();
+			else
+				this.regionBonus = c.getIleB().getReg();
 		}
 		
 		this.recalculerPoints();
@@ -541,6 +544,9 @@ public class Mappe
 				if (r.contien(i))
 					tempIles++;
 			}
+			
+			if (r.equals(this.regionBonus))
+				tempIles++;
 
 			if (tempIles > nbMaxIles)
 				nbMaxIles = tempIles;
