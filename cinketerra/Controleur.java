@@ -136,7 +136,7 @@ public class Controleur implements WindowStateListener
 	public String getImageBonus()
 	{
 		CarteBonus cb = this.metier1.getCarteBonus();
-		String sRet = "./resources/cartes/";
+		String sRet = "./resources/cartes/bonus_";
 		if (cb != null) sRet += cb.name().toLowerCase() + ".png";
 
 		return sRet;
