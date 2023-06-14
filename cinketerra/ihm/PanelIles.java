@@ -33,6 +33,9 @@ public class PanelIles extends JPanel
 	private double coef;
 	private ArrayList<Polygon> polygons;
 
+	// Carte bonus
+	private Rectangle hitboxCarteBonus;
+
 	private Ellipse2D historique;
 
 	private static final Color BACK_COLOR = new Color( 35,137,218); // 182, 211, 255
@@ -280,9 +283,9 @@ public class PanelIles extends JPanel
 		x = largeur - imgCarteBonus.getIconWidth();
 		y = hauteur - imgCarteBonus.getIconHeight() - this.ctrl.getHauteur(1)/9;
 
+		this.hitboxCarteBonus = new Rectangle(x, y, imgCarteBonus.getIconWidth(), imgCarteBonus.getIconHeight());
+
 		imgCarteBonus.paintIcon(this, g2, x, y);
-
-
 	}
 
 	private void dessinerFondRegion (Graphics2D g2, Polygon p)
@@ -524,6 +527,11 @@ public class PanelIles extends JPanel
 					PanelIles.this.ile2 = null;
 					PanelIles.this.ile1 = i;
 				}
+			}
+
+			if (PanelIles.this.hitboxCarteBonus.contains(posX, posY))
+			{
+				PanelIles.this.ctrl.activerCarteBonus(PanelIles.this.id);
 			}
 
 			PanelIles.this.repaint();

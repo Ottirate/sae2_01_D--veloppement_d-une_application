@@ -73,7 +73,8 @@ public class Mappe
 	private boolean       aJouer;
 
 	/** Carte bonus de la manche */
-	private CarteBonus    carteBonus;
+	private static CarteBonus    carteBonus;
+	private boolean              carteBonusActive;
 
 	/** Couleur du feutre */
 	private Color         feutre;
@@ -81,12 +82,15 @@ public class Mappe
 	/** Le nombre de points */
 	private String        points;
 
+	private int id;
+
 
 	/**
 	 * Constructeur sans paramètres qui initialise l'objet.
 	 */
-	public Mappe(Controleur ctrl, PaquetDeCarte p) 
+	public Mappe(Controleur ctrl, PaquetDeCarte p, int id) 
 	{
+		this.id     = id;
 		this.ctrl   = ctrl;
 		this.paquet = p;
 		
@@ -254,6 +258,8 @@ public class Mappe
 
 	public CarteBonus getCarteBonus() {return this.carteBonus;}
 
+	public void activerCarteBonus() { this.carteBonusActive = true; }
+
 	/**
 	 * Retourne le nombre total de cartes.
 	 * 
@@ -304,6 +310,7 @@ public class Mappe
 		}
 
 		this.piocher();
+		this.carteBonusActive = false;
 
 		if (this.paquet.getNbCarteRestante() == 0)
 			this.ctrl.showButton();
@@ -383,7 +390,13 @@ public class Mappe
 		/* Dans le cas où il s'agit du premier trait */
 
 		/* Si le chemin croise une arête déjà coloriée */
-		if (this.cheminCroise(c)) return false;
+		System.out.println("bBonus " + this.carteBonusActive + " id = " + this.id);
+		System.out.println("ordinal " + this.id + " " + this.carteBonus.ordinal());
+		if (this.cheminCroise(c) && !(this.carteBonusActive && this.carteBonus.ordinal() == 1))
+		{
+			System.out.println("open croisade " + this.id);
+			return false;
+		}
 
 		/* Si le chemin forme un cycle */
 		if (this.aCycle(c)) return false;

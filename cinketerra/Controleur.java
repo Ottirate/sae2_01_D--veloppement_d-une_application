@@ -50,12 +50,12 @@ public class Controleur implements WindowStateListener
 
 		PaquetDeCarte p = new PaquetDeCarte();
 
-		this.metier1    = new Mappe(this, p);
+		this.metier1    = new Mappe(this, p, 1);
 		this.ihmMappe1  = new FrameGame(this, 1);
 
 		if (Controleur.NB_JOUEUR == 2)
 		{
-			this.metier2    = new Mappe    (this, p);
+			this.metier2    = new Mappe    (this, p, 2);
 			this.ihmMappe2  = new FrameGame(this, 2);
 		}
 
@@ -133,6 +133,12 @@ public class Controleur implements WindowStateListener
 	// 	return null;
 	// }
 
+	public void activerCarteBonus(int id)
+	{
+		if (id == 1) this.metier1.activerCarteBonus();
+		else         this.metier2.activerCarteBonus();
+	}
+
 	public String getImageBonus()
 	{
 		CarteBonus cb = this.metier1.getCarteBonus();
@@ -147,10 +153,10 @@ public class Controleur implements WindowStateListener
 		String sRet = "./resources/cartes/";
 		Carte c = this.metier1.getCarte(indice);
 
-		if (c != null && !c.estCache())
+		//if (c != null && !c.estCache())
 			sRet += (c.getContour().equals(Color.white) ? "blanc_" : "noir_") + c.getCouleur().toLowerCase() + ".png";
-		else
-			sRet += "carte_dos.png";
+		//else
+			//sRet += "carte_dos.png";
 
 		return sRet;
 	}
