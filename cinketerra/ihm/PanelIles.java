@@ -87,8 +87,10 @@ public class PanelIles extends JPanel
 	{
 		super.paintComponent(g);
 
-		List<Ile> lstIles = this.ctrl.getIles(this.id);
-		Graphics2D g2 = (Graphics2D) g;
+		List<Ile>     lstIles    = this.ctrl.getIles(this.id);
+		List<Region>  lstRegion  = this.ctrl.getRegions( this.id );
+		List<Polygon> lstPolygon = new ArrayList<>();
+		Graphics2D    g2         = (Graphics2D) g;
 
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
@@ -122,7 +124,7 @@ public class PanelIles extends JPanel
 
 
 		// représenter les régions
-		for (Region r : this.ctrl.getRegions( this.id ))
+		for (Region r : lstRegion)
 		{
 			Polygon     poly   = new Polygon    ();
 			List<Point> points = new ArrayList<>();
@@ -145,7 +147,8 @@ public class PanelIles extends JPanel
 
 			this.trierPointsPolygone(points, poly);
 			this.dessinerFondRegion(g2,poly);
-			
+
+			lstPolygon.add(poly);
 		}
 
 		for (Ile i : this.ctrl.getIles(this.id))
@@ -157,6 +160,22 @@ public class PanelIles extends JPanel
 			g2.setColor(new Color(116,204,244));
 			g2.fill(pResize);
 
+		}
+
+		// Afficher les nom des régions
+		for (Region r : lstRegion)
+		{
+			Polygon poly = lstPolygon.get( lstRegion.indexOf(r) );
+			double x     = poly.getBounds().getMinX();
+			double y     = poly.getBounds().getMinY();
+
+			g2.setColor(Color.BLACK);
+			g2.setFont( boldFont );
+
+			g2.drawString( r.getNom(), (float) x, (float) y);
+			g2.drawLine((int) x, (int) y + 2, (int) x + getFontMetrics(boldFont).stringWidth(r.getNom()), (int) y + 2);
+
+			g2.setFont( dialogFont );
 		}
 
 
@@ -231,7 +250,7 @@ public class PanelIles extends JPanel
 				g2.drawPolygon(p);
 			}
 
-			// Images
+			// Images100
 			ImageIcon img      = this.lstImgIles.get(lstIles.indexOf(i));
 			PanelIles.redimensionnerIcon(img, this.coef).paintIcon(this, g, (int) (i.getXImages() * this.coef), (int) (i.getYImages()*this.coef));
 
@@ -241,8 +260,8 @@ public class PanelIles extends JPanel
 		}
 
 
-		//Déssiner le logo de l'hisorique en bas à droite du truc
-		ImageIcon logo = PanelIles.redimensionnerIcon(new ImageIcon("./resources/images/Historique.png"), 5 * this.coef / 50);
+		//Déssiner le logo de l'historique en bas à droite du truc
+		ImageIcon logo = redimensionnerIcon(new ImageIcon("./resources/images/Historique.png"), 5 * this.coef / 50);
 
 		int x = largeur - logo.getIconWidth();
 		int y = hauteur - logo.getIconHeight() - 10;
@@ -252,6 +271,16 @@ public class PanelIles extends JPanel
 		double larg = logo.getIconWidth() - 20;
 		
 		this.historique = new Ellipse2D.Double(x + 10, y + 10, larg, larg );
+
+		//Dessiner la carte bonus
+		ImageIcon imgCarteBonus = redimensionnerIcon(new ImageIcon(this.ctrl.getImageBonus()), 25*this.coef / 50);
+
+		x = largeur - imgCarteBonus.getIconWidth();
+		y = hauteur - imgCarteBonus.getIconHeight() - this.ctrl.getHauteur(1)/9;
+
+		imgCarteBonus.paintIcon(this, g2, x, y);
+
+
 	}
 
 	private void dessinerFondRegion (Graphics2D g2, Polygon p)

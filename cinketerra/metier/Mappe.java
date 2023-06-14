@@ -40,6 +40,11 @@ public class Mappe
 
 	private static long              debutPartieTemps;
 
+	private static List<CarteBonus>  lstCarteBonus;
+
+	/** Evenements */
+	private static int    tourEventBifurcation;
+
 	/*----------------------------------*/
 	/*           ATTRIBUTS              */
 	/*----------------------------------*/
@@ -67,14 +72,15 @@ public class Mappe
 	private PaquetDeCarte paquet;
 	private boolean       aJouer;
 
+	/** Carte bonus de la manche */
+	private CarteBonus    carteBonus;
+
 	/** Couleur du feutre */
 	private Color         feutre;
 
 	/** Le nombre de points */
 	private String        points;
 
-	/** Evenements */
-	private static int    tourEventBifurcation;
 
 	/**
 	 * Constructeur sans paramètres qui initialise l'objet.
@@ -96,6 +102,10 @@ public class Mappe
 	{
 		Mappe.debutPartieTemps = System.currentTimeMillis();
 		Mappe.lstHistorique    = new ArrayList<>();
+		Mappe.lstCarteBonus    = new ArrayList<>(Arrays.asList(CarteBonus.values()));
+
+		// Mélange de la liste des cartes bonus
+		Collections.shuffle(Mappe.lstCarteBonus);
 		
 		if (Mappe.colors == null)
 			if ((int) (Math.random()*2) == 1) Mappe.colors = new ArrayList<>(Arrays.asList( Color.RED , Color.BLUE));
@@ -141,9 +151,9 @@ public class Mappe
 							Integer.parseInt(ensInfo[2])));
 
 			}
-			
-
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			System.out.println("Nom fichier invalide : " + Mappe.NOM_FICHIER);
 		}
 
@@ -165,9 +175,11 @@ public class Mappe
 		
 		// S'il reste des couleurs disponibles
 		this.paquet.reinitialiser();
-		this.ctrl.bloquerPioche(false);
+		this.ctrl  .bloquerPioche(false);
 
 		this.feutre = Mappe.colors.remove(0);
+
+		this.carteBonus = Mappe.lstCarteBonus.remove(0);
 
 		if (this.feutre.equals(Color.RED))
 			this.ileDeDepart = this.getIleId("Ticó");
@@ -242,6 +254,8 @@ public class Mappe
 	 * @return une {@code Carte}
 	 */
 	public Carte getCarte(int indice) { return this.paquet.getCarte(indice); }
+
+	public CarteBonus getCarteBonus() {return this.carteBonus;}
 
 	/**
 	 * Retourne le nombre total de cartes.
@@ -392,9 +406,6 @@ public class Mappe
 		else
 			return (this.cheminsColorieAutour(ileB) && this.bonneCouleur(ileA)) || (this.cheminsColorieAutour(ileA) && this.bonneCouleur(ileB));
 
-
-			//this.getNbCarteTotal() - this.getNbCarteRestante() ===== le numéro dutour actuel
-			
 		//return false;
 	}
 
@@ -515,7 +526,6 @@ public class Mappe
 		}
 
 		int score = nbMaxIles * lstRegionsParcourues.size();
-		System.out.println("score des iles * region = " + score);
 
 		int bonusChemins = 0;
 		int bonusIles    = 0;

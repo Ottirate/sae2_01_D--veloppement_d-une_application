@@ -49,7 +49,7 @@ public class FrameGame extends JFrame
 		this.lblScore    = new JLabel(this.ctrl.getScore(this.id));
 
 		this.panelHistorique = new JPanel();
-		this.panelHistorique.setBorder(new TitledBorder(new EtchedBorder(), "Display Area"));
+		this.panelHistorique.setBorder(new TitledBorder(new EtchedBorder(), "Historique"));
 
 		// create the middle panel components
 
