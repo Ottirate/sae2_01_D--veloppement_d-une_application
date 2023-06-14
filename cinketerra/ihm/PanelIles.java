@@ -89,8 +89,10 @@ public class PanelIles extends JPanel
 	{
 		super.paintComponent(g);
 
-		List<Ile> lstIles = this.ctrl.getIles(this.id);
-		Graphics2D g2 = (Graphics2D) g;
+		List<Ile>     lstIles    = this.ctrl.getIles(this.id);
+		List<Region>  lstRegion  = this.ctrl.getRegions( this.id );
+		List<Polygon> lstPolygon = new ArrayList<>();
+		Graphics2D    g2         = (Graphics2D) g;
 
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
@@ -124,7 +126,7 @@ public class PanelIles extends JPanel
 
 
 		// représenter les régions
-		for (Region r : this.ctrl.getRegions( this.id ))
+		for (Region r : lstRegion)
 		{
 			Polygon     poly   = new Polygon    ();
 			List<Point> points = new ArrayList<>();
@@ -147,7 +149,8 @@ public class PanelIles extends JPanel
 
 			this.trierPointsPolygone(points, poly);
 			this.dessinerFondRegion(g2,poly);
-			
+
+			lstPolygon.add(poly);
 		}
 
 		for (Ile i : this.ctrl.getIles(this.id))
@@ -159,6 +162,22 @@ public class PanelIles extends JPanel
 			g2.setColor(new Color(116,204,244));
 			g2.fill(pResize);
 
+		}
+
+		// Afficher les nom des régions
+		for (Region r : lstRegion)
+		{
+			Polygon poly = lstPolygon.get( lstRegion.indexOf(r) );
+			double x     = poly.getBounds().getMinX();
+			double y     = poly.getBounds().getMinY();
+
+			g2.setColor(Color.BLACK);
+			g2.setFont( boldFont );
+
+			g2.drawString( r.getNom(), (float) x, (float) y);
+			g2.drawLine((int) x, (int) y + 2, (int) x + getFontMetrics(boldFont).stringWidth(r.getNom()), (int) y + 2);
+
+			g2.setFont( dialogFont );
 		}
 
 

@@ -403,9 +403,6 @@ public class Mappe
 		else
 			return (this.cheminsColorieAutour(ileB) && this.bonneCouleur(ileA)) || (this.cheminsColorieAutour(ileA) && this.bonneCouleur(ileB));
 
-
-			//this.getNbCarteTotal() - this.getNbCarteRestante() ===== le numéro dutour actuel
-			
 		//return false;
 	}
 
