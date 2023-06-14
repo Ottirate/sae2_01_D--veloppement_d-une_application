@@ -1,6 +1,16 @@
+/*
+* Auteur : Équipe 1
+* Date   : juin 2023
+* */
+
+
+/*      Paquetage      */
 package cinketerra.metier;
 
+
+/*       Imports       */
 import java.awt.Color;
+
 
 /**
  * Représentation des cartes avec leurs bordures et leurs couleurs.
@@ -21,21 +31,15 @@ public enum Carte
 	N_JAUNE       ( "Jaune", Color.black ),
 	N_BRUN        ( "Brun" , Color.black );
 
-	/** Couleur de fond de la carte */
+
+	/*      Attributs      */
 	private String  couleur;
-
-	/** Couleur de bordure de la carte */
 	private Color   contour;
-
-	/** État de la carte */
+	
 	private boolean estCache;
 
-	/**
-	 * Constructeur qui définit les cartes avec leurs couleurs et leurs bordures.
-	 * 
-	 * @param couleur - la couleur de fond de la carte
-	 * @param contour - la couleur de la bordure de la carte
-	 */
+	
+	/*    Constructeur     */
 	private Carte(String couleur, Color contour)
 	{
 		this.couleur  = couleur;
@@ -43,44 +47,14 @@ public enum Carte
 		this.estCache = true;
 	}
 
-	/**
-	 * Retourne la couleur de la carte.
-	 * 
-	 * @return la couleur de la carte
-	 */
-	public String getCouleur()
-	{
-		return this.couleur;
-	}
 
-	/**
-	 * Retourne la couleur de la bordure de la carte.
-	 * 
-	 * @return la couleur de la bordure de la carte
-	 */
-	public Color getContour()
-	{
-		return this.contour;
-	}
+	/*     Accesseurs      */
+	public String getCouleur() { return this.couleur; }
+	public Color  getContour() { return this.contour; }
+	
+	public boolean estCache() { return this.estCache; }
 
-	/**
-	 * Retourne un booléen en fonction de l'état de la carte.
-	 * 
-	 * @return {@code vrai} si la carte est cachée, sinon {@code faux}
-	 */
-	public boolean estCache()
-	{
-		return this.estCache;
-	}
-
-	/**
-	 * Définit l'état de la carte en fonction de la valeur de {@code etat}.
-	 * 
-	 * @param etat - le nouvel état de la carte
-	 */
-	public void setCache(boolean etat)
-	{
-		this.estCache = etat;
-	}
-
+	
+	/*     Modifieurs      */
+	public void setCache(boolean etat) { this.estCache = etat; }
 }
