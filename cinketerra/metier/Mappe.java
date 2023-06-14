@@ -40,6 +40,11 @@ public class Mappe
 
 	private static long              debutPartieTemps;
 
+	private static List<CarteBonus>  lstCarteBonus;
+
+	/** Evenements */
+	private static int    tourEventBifurcation;
+
 	/*----------------------------------*/
 	/*           ATTRIBUTS              */
 	/*----------------------------------*/
@@ -67,20 +72,26 @@ public class Mappe
 	private PaquetDeCarte paquet;
 	private boolean       aJouer;
 
+	/** Carte bonus de la manche */
+	private static CarteBonus    carteBonus;
+	private boolean              carteBonusActive;
+	private boolean              bonusAEteActive;
+
 	/** Couleur du feutre */
 	private Color         feutre;
 
 	/** Le nombre de points */
 	private String        points;
 
-	/** Evenements */
-	private static int    tourEventBifurcation;
+	private int id;
+
 
 	/**
 	 * Constructeur sans paramètres qui initialise l'objet.
 	 */
-	public Mappe(Controleur ctrl, PaquetDeCarte p) 
+	public Mappe(Controleur ctrl, PaquetDeCarte p, int id) 
 	{
+		this.id     = id;
 		this.ctrl   = ctrl;
 		this.paquet = p;
 		
@@ -96,6 +107,10 @@ public class Mappe
 	{
 		Mappe.debutPartieTemps = System.currentTimeMillis();
 		Mappe.lstHistorique    = new ArrayList<>();
+		Mappe.lstCarteBonus    = new ArrayList<>(Arrays.asList(CarteBonus.values()));
+
+		// Mélange de la liste des cartes bonus
+		Collections.shuffle(Mappe.lstCarteBonus);
 		
 		if (Mappe.colors == null)
 			if ((int) (Math.random()*2) == 1) Mappe.colors = new ArrayList<>(Arrays.asList( Color.RED , Color.BLUE));
@@ -141,9 +156,9 @@ public class Mappe
 							Integer.parseInt(ensInfo[2])));
 
 			}
-			
-
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			System.out.println("Nom fichier invalide : " + Mappe.NOM_FICHIER);
 		}
 
@@ -165,9 +180,11 @@ public class Mappe
 		
 		// S'il reste des couleurs disponibles
 		this.paquet.reinitialiser();
-		this.ctrl.bloquerPioche(false);
+		this.ctrl  .bloquerPioche(false);
 
 		this.feutre = Mappe.colors.remove(0);
+
+		this.carteBonus = Mappe.lstCarteBonus.remove(0);
 
 		if (this.feutre.equals(Color.RED))
 			this.ileDeDepart = this.getIleId("Ticó");
@@ -197,7 +214,10 @@ public class Mappe
 
 	public static int getTourEvent(String event)
 	{
-		if (event.equals("Bifurcation")) return Mappe.tourEventBifurcation;
+		if (event.equals("Bifurcation")) 
+		{
+			return Mappe.tourEventBifurcation;
+		}
 
 		return 0;
 	}
@@ -239,6 +259,10 @@ public class Mappe
 	 * @return une {@code Carte}
 	 */
 	public Carte getCarte(int indice) { return this.paquet.getCarte(indice); }
+
+	public CarteBonus getCarteBonus() {return this.carteBonus;}
+
+	public void activerCarteBonus() { this.carteBonusActive = !this.carteBonusActive; }
 
 	/**
 	 * Retourne le nombre total de cartes.
@@ -290,6 +314,11 @@ public class Mappe
 		}
 
 		this.piocher();
+
+		if (!this.bonusAEteActive)
+			this.bonusAEteActive = this.carteBonusActive;
+
+		this.carteBonusActive = false;
 
 		if (this.paquet.getNbCarteRestante() == 0)
 			this.ctrl.showButton();
@@ -369,7 +398,11 @@ public class Mappe
 		/* Dans le cas où il s'agit du premier trait */
 
 		/* Si le chemin croise une arête déjà coloriée */
-		if (this.cheminCroise(c)) return false;
+		if (this.cheminCroise(c) && !(this.carteBonusActive && !this.bonusAEteActive && this.carteBonus.ordinal() == 1))
+		{
+			System.out.println("open croisade " + this.id);
+			return false;
+		}
 
 		/* Si le chemin forme un cycle */
 		if (this.aCycle(c)) return false;
@@ -380,8 +413,6 @@ public class Mappe
 				return true;
 			else
 				return false;
-
-
 
 		/* Si c'est une extrémité ou si la direction est pas une bonne couleur */
 		if (this.getNbCarteTotal() - this.getNbCarteRestante() == Mappe.getTourEvent("Bifurcation"))
@@ -508,7 +539,6 @@ public class Mappe
 		}
 
 		int score = nbMaxIles * lstRegionsParcourues.size();
-		System.out.println("score des iles * region = " + score);
 
 		int bonusChemins = 0;
 		int bonusIles    = 0;
@@ -580,7 +610,7 @@ public class Mappe
 
 	private String tempPartie ()
 	{
-		int sec = (int) ((Mappe.debutPartieTemps - System.currentTimeMillis())/1000);
+		int sec = (int) ((System.currentTimeMillis() - Mappe.debutPartieTemps)/1000);
 
 		return sec/60 + ":" + sec%60;
 	}

@@ -50,12 +50,12 @@ public class Controleur implements WindowStateListener
 
 		PaquetDeCarte p = new PaquetDeCarte();
 
-		this.metier1    = new Mappe(this, p);
+		this.metier1    = new Mappe(this, p, 1);
 		this.ihmMappe1  = new FrameGame(this, 1);
 
 		if (Controleur.NB_JOUEUR == 2)
 		{
-			this.metier2    = new Mappe    (this, p);
+			this.metier2    = new Mappe    (this, p, 2);
 			this.ihmMappe2  = new FrameGame(this, 2);
 		}
 
@@ -124,6 +124,30 @@ public class Controleur implements WindowStateListener
 	public int getLargeurPioche() { return this.ihmPioche.getWidth(); }
 	public int getHauteurPioche() { return this.ihmPioche.getHeight(); }
 	
+	// public CarteBonus getCarteBonus(int id)
+	// {
+	// 	if (id == 1) return this.metier1.getCarteBonus();
+
+	// 	if (Controleur.NB_JOUEUR == 2 && id == 2) return this.metier2.getCarteBonus();
+
+	// 	return null;
+	// }
+
+	public void activerCarteBonus(int id)
+	{
+		if (id == 1) this.metier1.activerCarteBonus();
+		else         this.metier2.activerCarteBonus();
+	}
+
+	public String getImageBonus()
+	{
+		CarteBonus cb = this.metier1.getCarteBonus();
+		String sRet = "./resources/cartes/bonus_";
+		if (cb != null) sRet += cb.name().toLowerCase() + ".png";
+
+		return sRet;
+	}
+
 	public String getImage(int indice)
 	{
 		String sRet = "./resources/cartes/";
@@ -132,7 +156,7 @@ public class Controleur implements WindowStateListener
 		//if (c != null && !c.estCache())
 			sRet += (c.getContour().equals(Color.white) ? "blanc_" : "noir_") + c.getCouleur().toLowerCase() + ".png";
 		//else
-		//	sRet += "carte_dos.png";
+			//sRet += "carte_dos.png";
 
 		return sRet;
 	}
@@ -165,7 +189,8 @@ public class Controleur implements WindowStateListener
 
 		if (this.getNbCarteTotal() - this.getNbCarteRestante() == Mappe.getTourEvent("Bifurcation"))
 		{
-			JFrame f = new FrameAnnonce( "zeppelin" );
+			JFrame f = new FrameAnnonce( "zeppelin" );			
+			Mappe.addAction(new Mouvement("Bifurcation en cours...", "bifurcation"));
 		}
 
 		

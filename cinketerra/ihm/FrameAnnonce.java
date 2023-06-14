@@ -56,7 +56,7 @@ public class FrameAnnonce extends JFrame
 
 		public void run()
 		{
-			int time = 7; // Temps en seconde
+			int time = 7;  // Temps en seconde
 			int fps  = 60; // Qualité de l'animation
 
 			double width  = getToolkit().getScreenSize().getWidth();

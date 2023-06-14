@@ -19,7 +19,7 @@ public class Mouvement
 		if (c.getCouleur() == Color.BLUE) coul = "bleu" ;
 
 		//String pour l'historique
-		this.infoString = "Le joueur " + id + " à capturer la route de " + nom1 + " à " + nom2 + " en " + coul + ".";
+		this.infoString = "Le joueur " + id + " a capturé la route de " + nom1 + " à " + nom2 + " en " + coul + ".";
 
 		//String pour le fichier
 		this.dataString = ""+ id + '\t' + nom1 + '\t' + nom2 + '\t' + coul;
@@ -33,7 +33,7 @@ public class Mouvement
 		if (c.getContour() == Color.WHITE) contour = "secondaire";
 
 		//String pour l'historique
-		this.infoString = "La carte " + c.getCouleur().toLowerCase() + " " + contour + " à été pioché";
+		this.infoString = "La carte " + c.getCouleur().toLowerCase() + " " + contour + " a été pioché";
 
 		//String pour le fichier
 		this.dataString = c.getCouleur() + '\t' + contour;
@@ -46,6 +46,6 @@ public class Mouvement
 	}
 
 
-	public String toString() { return this.infoString; }	
+	public String toString() { return this.infoString; }
 	public String toData  () { return this.dataString; }
 }

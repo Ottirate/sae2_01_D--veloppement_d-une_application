@@ -8,10 +8,8 @@ import cinketerra.metier.*;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
-import java.security.spec.ECFieldF2m;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +30,9 @@ public class PanelIles extends JPanel
 	private int maxY;
 	private double coef;
 	private ArrayList<Polygon> polygons;
+
+	// Carte bonus
+	private Rectangle hitboxCarteBonus;
 
 	private Ellipse2D historique;
 
@@ -252,16 +253,17 @@ public class PanelIles extends JPanel
 				g2.drawPolygon(p);
 			}
 
-			// Images
+			// Images100
 			ImageIcon img      = this.lstImgIles.get(lstIles.indexOf(i));
-			redimensionnerIcon(img, this.coef).paintIcon(this, g, (int) (i.getXImages() * this.coef), (int) (i.getYImages()*this.coef));
+			PanelIles.redimensionnerIcon(img, this.coef).paintIcon(this, g, (int) (i.getXImages() * this.coef), (int) (i.getYImages()*this.coef));
 
 			// Noms des iles
 			g2.setColor(Color.BLACK);
 			g2.drawString( i.getNom(), (int) (i.getXNom() * this.coef) , (int) (i.getYNom() * this.coef));
 		}
 
-		//Déssiner le logo de l'hisorique en bas à droite du truc
+
+		//Déssiner le logo de l'historique en bas à droite du truc
 		ImageIcon logo = redimensionnerIcon(new ImageIcon("./resources/images/Historique.png"), 5 * this.coef / 50);
 
 		int x = largeur - logo.getIconWidth();
@@ -272,6 +274,16 @@ public class PanelIles extends JPanel
 		double larg = logo.getIconWidth() - 20;
 		
 		this.historique = new Ellipse2D.Double(x + 10, y + 10, larg, larg );
+
+		//Dessiner la carte bonus
+		ImageIcon imgCarteBonus = redimensionnerIcon(new ImageIcon(this.ctrl.getImageBonus()), 25*this.coef / 50);
+
+		x = largeur - imgCarteBonus.getIconWidth();
+		y = hauteur - imgCarteBonus.getIconHeight() - this.ctrl.getHauteur(1)/9;
+
+		this.hitboxCarteBonus = new Rectangle(x, y, imgCarteBonus.getIconWidth(), imgCarteBonus.getIconHeight());
+
+		imgCarteBonus.paintIcon(this, g2, x, y);
 	}
 
 	private void dessinerFondRegion (Graphics2D g2, Polygon p)
@@ -383,7 +395,7 @@ public class PanelIles extends JPanel
 		return (val > 0) ? 1 : 2; // 1 pour sens horaire, 2 pour sens anti-horaire
 	}
 
-	private ImageIcon redimensionnerIcon(ImageIcon img, double coef)
+	public static ImageIcon redimensionnerIcon(ImageIcon img, double coef)
 	{
 		int       larg     = img.getIconWidth();
 		int       lon      = img.getIconHeight();
@@ -499,7 +511,7 @@ public class PanelIles extends JPanel
 			{
 				PanelIles.this.ile1 = PanelIles.this.ile2 = null;
 			} 
-			else 
+			else
 			{
 				PanelIles.this.ile2 = PanelIles.this.ile1;
 				PanelIles.this.ile1 = i;
@@ -516,10 +528,16 @@ public class PanelIles extends JPanel
 				}
 			}
 
+			if (PanelIles.this.hitboxCarteBonus.contains(posX, posY))
+			{
+				PanelIles.this.ctrl.activerCarteBonus(PanelIles.this.id);
+			}
+
 			PanelIles.this.repaint();
 
 			
-			if (PanelIles.this.historique.contains(e.getX(), e.getY()))
+			if (PanelIles.this.historique != null && 
+			    PanelIles.this.historique.contains(e.getX(), e.getY()))
 				PanelIles.this.ctrl.showHistorique(PanelIles.this.id);
 			else
 				if (i == null)
