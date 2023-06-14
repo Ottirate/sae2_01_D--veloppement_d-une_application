@@ -610,7 +610,7 @@ public class Mappe
 
 	private String tempPartie ()
 	{
-		int sec = (int) ((Mappe.debutPartieTemps - System.currentTimeMillis())/1000);
+		int sec = (int) ((System.currentTimeMillis() - Mappe.debutPartieTemps)/1000);
 
 		return sec/60 + ":" + sec%60;
 	}
