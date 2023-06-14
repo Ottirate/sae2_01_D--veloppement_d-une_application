@@ -243,7 +243,7 @@ public class PanelIles extends JPanel
 		}
 
 
-		//Déssiner le logo de l'hisorique en bas à droite du truc
+		//Déssiner le logo de l'historique en bas à droite du truc
 		ImageIcon logo = redimensionnerIcon(new ImageIcon("./resources/images/Historique.png"), 5 * this.coef / 50);
 
 		int x = largeur - logo.getIconWidth();
@@ -254,6 +254,16 @@ public class PanelIles extends JPanel
 		double larg = logo.getIconWidth() - 20;
 		
 		this.historique = new Ellipse2D.Double(x + 10, y + 10, larg, larg );
+
+		//Dessiner la carte bonus
+		// ImageIcon imgCarteBonus = redimensionnerIcon(new ImageIcon(this.ctrl.getImageBonus()), 5 * this.coef / 50);
+
+		// x = largeur - imgCarteBonus.getIconWidth();
+		// y = hauteur - imgCarteBonus.getIconHeight() - 50;
+
+		// imgCarteBonus.paintIcon(this, g2, x, y);
+
+
 	}
 
 	private void dessinerFondRegion (Graphics2D g2, Polygon p)

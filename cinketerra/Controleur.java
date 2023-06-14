@@ -124,15 +124,33 @@ public class Controleur implements WindowStateListener
 	public int getLargeurPioche() { return this.ihmPioche.getWidth(); }
 	public int getHauteurPioche() { return this.ihmPioche.getHeight(); }
 	
+	// public CarteBonus getCarteBonus(int id)
+	// {
+	// 	if (id == 1) return this.metier1.getCarteBonus();
+
+	// 	if (Controleur.NB_JOUEUR == 2 && id == 2) return this.metier2.getCarteBonus();
+
+	// 	return null;
+	// }
+
+	public String getImageBonus()
+	{
+		CarteBonus cb = this.metier1.getCarteBonus();
+		String sRet = "./resources/cartes/";
+		if (cb != null) sRet += cb.name().toLowerCase() + ".png";
+
+		return sRet;
+	}
+
 	public String getImage(int indice)
 	{
 		String sRet = "./resources/cartes/";
 		Carte c = this.metier1.getCarte(indice);
 
-		//if (c != null && !c.estCache())
+		if (c != null && !c.estCache())
 			sRet += (c.getContour().equals(Color.white) ? "blanc_" : "noir_") + c.getCouleur().toLowerCase() + ".png";
-		//else
-		//	sRet += "carte_dos.png";
+		else
+			sRet += "carte_dos.png";
 
 		return sRet;
 	}
