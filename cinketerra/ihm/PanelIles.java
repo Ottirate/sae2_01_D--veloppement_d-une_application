@@ -526,6 +526,10 @@ public class PanelIles extends JPanel
 				{
 					PanelPioche.this.setCursor( new Cursor( Cursor.HAND_CURSOR ));
 				}
+				else
+				{
+					PanelPioche.this.setCursor( new Cursor( Cursor.DEFAULT_CURSOR   ));
+				}
 			}
 		}
 		
