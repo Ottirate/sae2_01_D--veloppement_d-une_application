@@ -90,8 +90,8 @@ public class Controleur implements WindowStateListener
 		this.ihmPioche.addWindowStateListener(this);
 	}
 
-	public void    setOption(boolean state) {        this.option = state; }
-	public boolean getOption()              { return this.option;         }
+	public void    getOptionActive(boolean state) {        this.option = state; }
+	public boolean getOptionActive()              { return this.option;         }
 
 	public List<Ile> getIles(int id) 
 	{
