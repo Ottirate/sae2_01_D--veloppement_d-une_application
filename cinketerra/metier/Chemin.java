@@ -17,7 +17,8 @@ public class Chemin
 	private int bonus;
 
 	/** La couleur du chemin */
-	private Color color;
+	private Color colorPrim;
+	private Color colorSec;
 
 	/**
 	 * Constructeur qui crée un {@code Chemin} avec une île de départ,
@@ -33,7 +34,7 @@ public class Chemin
 		this.ileB  = ileB ;
 		this.bonus = bonus;
 
-		this.color = null ;
+		this.colorPrim = null ;
 
 		ileA.addChemin(this);
 		ileB.addChemin(this);
@@ -44,9 +45,9 @@ public class Chemin
 	 * 
 	 * @param c - la nouvelle couleur du chemin
 	 */
-	public void setCouleur(Color c)
+	public void setCouleurPrimaire(Color c)
 	{
-		this.color = c;
+		this.colorPrim = c;
 	}
 	
 	/**
@@ -86,7 +87,7 @@ public class Chemin
 	 */
 	public Color getCouleur()
 	{
-		return this.color;
+		return this.colorPrim;
 	}
 
 	/**
@@ -97,7 +98,7 @@ public class Chemin
 	 */
 	public boolean estColorie()
 	{
-		return this.color != null;
+		return this.colorPrim != null;
 	}
 
 	/**
