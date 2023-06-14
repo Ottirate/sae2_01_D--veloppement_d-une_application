@@ -18,6 +18,8 @@ import java.awt.Color;
  */
 public class Ile 
 {
+
+
 	/*      Attributs      */
 	private String nom;
 	private Region reg;
@@ -78,7 +80,6 @@ public class Ile
 	{
 		return (int) this.lstChemins.stream().filter(c -> c.getCouleurPrim() != null && c.getCouleurPrim().equals(color)).count();
 	}
-
 	
 
 	/*     Modifieurs      */

@@ -43,11 +43,6 @@ public class Chemin
 		ileA.addChemin(this);
 		ileB.addChemin(this);
 	}
-
-
-	/*     Modifieurs      */
-	public void setCouleurPrim(Color c) { this.coulrPrim = c; }
-	public void setCouleurSec (Color c) { this.coulSec   = c; }
 	
 	
 	/*     Accesseurs      */
@@ -60,6 +55,11 @@ public class Chemin
 	public Color getCouleurSec () { return this.coulSec  ; }
 
 	public boolean estColorie  () { return this.coulrPrim != null && this.coulSec != null ; }
+
+
+	/*     Modifieurs      */
+	public void setCouleurPrim(Color c) { this.coulrPrim = c; }
+	public void setCouleurSec (Color c) { this.coulSec   = c; }
 
 
 	/*      Méthodes       */

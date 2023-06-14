@@ -1,51 +1,62 @@
+/*
+* Auteur : Équipe 1
+* Date   : juin 2023
+* */
+
+
+/*      Paquetage      */
 package cinketerra.metier;
 
+
+/*       Imports       */
 import java.awt.Color;
 
+
+/**
+ * Représentation des événement/mouvement produit lors de la partie.
+ */
 public class Mouvement 
 {
-	private String infoString;
-	private String dataString;
 
+
+	/*      Attributs      */
+	private String info;
+	private String data;
+
+	
+	/*    Constructeur     */
 	public Mouvement (int id, Chemin c)
 	{
-		//Nom des îles pour pas rappeller deux fois
 		String nom1 =  c.getIleA().getNom();
 		String nom2 =  c.getIleB().getNom();
 
 		String coul = "[inconuue]";
-		//Couleur du feutre
+
 		if (c.getCouleurPrim() == Color.RED ) coul = "rouge";
 		if (c.getCouleurPrim() == Color.BLUE) coul = "bleu" ;
 
-		//String pour l'historique
-		this.infoString = "Le joueur " + id + " a capturé la route de " + nom1 + " à " + nom2 + " en " + coul + ".";
-
-		//String pour le fichier
-		this.dataString = ""+ id + '\t' + nom1 + '\t' + nom2 + '\t' + coul;
+		this.info = "Le joueur " + id + " a capturé la route de " + nom1 + " à " + nom2 + " en " + coul + ".";
+		this.data = ""+ id + '\t' + nom1 + '\t' + nom2 + '\t' + coul;
 	}
 
 	public Mouvement (Carte c)
 	{
-		//Contour de la carte
 		String contour= "";
 		if (c.getContour() == Color.BLACK) contour = "primaire"  ;
 		if (c.getContour() == Color.WHITE) contour = "secondaire";
 
-		//String pour l'historique
-		this.infoString = "La carte " + c.getCouleur().toLowerCase() + " " + contour + " a été pioché";
-
-		//String pour le fichier
-		this.dataString = c.getCouleur() + '\t' + contour;
+		this.info = "La carte " + c.getCouleur().toLowerCase() + " " + contour + " a été pioché";
+		this.data = c.getCouleur() + '\t' + contour;
 	}
 
-	public Mouvement (String infoString, String dataString)
+	public Mouvement (String info, String data)
 	{
-		this.infoString = infoString;
-		this.dataString = dataString;
+		this.info = info;
+		this.data = data;
 	}
 
 
-	public String toString() { return this.infoString; }
-	public String toData  () { return this.dataString; }
+	/*     Accesseurs      */
+	public String toString() { return this.info; }
+	public String toData  () { return this.data; }
 }

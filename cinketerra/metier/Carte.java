@@ -17,6 +17,8 @@ import java.awt.Color;
  */
 public enum Carte
 {
+
+	
 	/* Cartes blanches */
 	B_MULTI_COLOR ( "Multi", Color.white ),
 	B_VERT        ( "Vert" , Color.white ),
