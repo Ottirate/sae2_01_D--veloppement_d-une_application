@@ -75,6 +75,7 @@ public class Mappe
 	/** Carte bonus de la manche */
 	private static CarteBonus    carteBonus;
 	private boolean              carteBonusActive;
+	private boolean              bonusAEteActive;
 
 	/** Couleur du feutre */
 	private Color         feutre;
@@ -261,7 +262,7 @@ public class Mappe
 
 	public CarteBonus getCarteBonus() {return this.carteBonus;}
 
-	public void activerCarteBonus() { this.carteBonusActive = true; }
+	public void activerCarteBonus() { this.carteBonusActive = !this.carteBonusActive; }
 
 	/**
 	 * Retourne le nombre total de cartes.
@@ -313,6 +314,10 @@ public class Mappe
 		}
 
 		this.piocher();
+
+		if (!this.bonusAEteActive)
+			this.bonusAEteActive = this.carteBonusActive;
+
 		this.carteBonusActive = false;
 
 		if (this.paquet.getNbCarteRestante() == 0)
@@ -393,9 +398,7 @@ public class Mappe
 		/* Dans le cas où il s'agit du premier trait */
 
 		/* Si le chemin croise une arête déjà coloriée */
-		System.out.println("bBonus " + this.carteBonusActive + " id = " + this.id);
-		System.out.println("ordinal " + this.id + " " + this.carteBonus.ordinal());
-		if (this.cheminCroise(c) && !(this.carteBonusActive && this.carteBonus.ordinal() == 1))
+		if (this.cheminCroise(c) && !(this.carteBonusActive && !this.bonusAEteActive && this.carteBonus.ordinal() == 1))
 		{
 			System.out.println("open croisade " + this.id);
 			return false;
@@ -410,8 +413,6 @@ public class Mappe
 				return true;
 			else
 				return false;
-
-
 
 		/* Si c'est une extrémité ou si la direction est pas une bonne couleur */
 		if (this.getNbCarteTotal() - this.getNbCarteRestante() == Mappe.getTourEvent("Bifurcation"))
