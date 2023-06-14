@@ -77,6 +77,8 @@ public class Mappe
 	private boolean              carteBonusActive;
 	private boolean              bonusAEteActive;
 
+	private Region               regionBonus;
+
 	/** Couleur du feutre */
 	private Color         feutre;
 
@@ -92,6 +94,8 @@ public class Mappe
 		this.paquet = p;
 		
 		this.points = "0; bonus chemins: 0; bonus îles: 0";
+
+		this.regionBonus = null;
 
 		this.initialise();
 	}
@@ -180,7 +184,9 @@ public class Mappe
 
 		this.feutre = Mappe.colors.remove(0);
 
-		this.carteBonus = Mappe.lstCarteBonus.remove(0);
+		Mappe.carteBonus = Mappe.lstCarteBonus.remove(0);
+		this.carteBonusActive = false;
+		this.bonusAEteActive = false;
 
 		if (this.feutre.equals(Color.RED))
 			this.ileDeDepart = this.getIleId("Ticó");
@@ -348,21 +354,35 @@ public class Mappe
 		if (!this.estColoriable(c))
 			return false;
 
-		c.setCouleurPrim(this.feutre);
+		if (c.getCouleurPrim() == null)
+			c.setCouleurPrim(this.feutre);
+		else
+			c.setCouleurSec(this.feutre);
+			
 		this.lstCheminColorie.add(c);
 
 		this.estDebutManche = false;
 		
-		this.aJouer         = true ;
+		if (!(this.carteBonusActive && !this.bonusAEteActive && Mappe.carteBonus.ordinal() == 0))
+			this.aJouer = true ;
 
 		Mappe.lstHistorique.add(new Mouvement(id, c));
-		this.recalculerPoints();
+
+		if (this.carteBonusActive && Mappe.carteBonus.ordinal() == 3)
+		{
+			if (c.getIleA().getNbCheminsColorie(this.feutre) == 1)
+				this.regionBonus = c.getIleA().getReg();
+			else
+				this.regionBonus = c.getIleB().getReg();
+		}
+
 
 		if (!this.bonusAEteActive)
 			this.bonusAEteActive = this.carteBonusActive;
 
 		this.carteBonusActive = false;
 
+		this.recalculerPoints();
 		this.ctrl.majIHM();
 
 		return true;
@@ -390,7 +410,8 @@ public class Mappe
 		if (c == null || this.aJouer) return false;
 
 		/* Si le chemin est déjà colorié */
-		if (c.getCouleurPrim() != null) return false;
+		if (c.getCouleurPrim() != null && !(this.carteBonusActive && !this.bonusAEteActive && Mappe.carteBonus.ordinal() == 2)) 
+			return false;
 
 		Ile ileA = c.getIleA();
 		Ile ileB = c.getIleB();
@@ -398,7 +419,7 @@ public class Mappe
 		/* Dans le cas où il s'agit du premier trait */
 
 		/* Si le chemin croise une arête déjà coloriée */
-		if (this.cheminCroise(c) && !(this.carteBonusActive && !this.bonusAEteActive && this.carteBonus.ordinal() == 1))
+		if (this.cheminCroise(c) && !(this.carteBonusActive && !this.bonusAEteActive && Mappe.carteBonus.ordinal() == 1))
 			return false;
 
 		/* Si le chemin forme un cycle */
@@ -530,6 +551,9 @@ public class Mappe
 				if (r.contien(i))
 					tempIles++;
 			}
+
+			if (r.equals(this.regionBonus))
+				tempIles++;
 
 			if (tempIles > nbMaxIles)
 				nbMaxIles = tempIles;

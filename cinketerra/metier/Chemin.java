@@ -35,6 +35,7 @@ public class Chemin
 		this.bonus = bonus;
 
 		this.colorPrim = null ;
+		this.colorSec  = null ;
 
 		ileA.addChemin(this);
 		ileB.addChemin(this);
@@ -48,6 +49,11 @@ public class Chemin
 	public void setCouleurPrim(Color c)
 	{
 		this.colorPrim = c;
+	}
+
+	public void setCouleurSec (Color c)
+	{
+		this.colorSec = c;
 	}
 	
 	/**
@@ -88,6 +94,10 @@ public class Chemin
 	public Color getCouleurPrim()
 	{
 		return this.colorPrim;
+	}
+	public Color getCouleurSec()
+	{
+		return this.colorSec;
 	}
 
 	/**
