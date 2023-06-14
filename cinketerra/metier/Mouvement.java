@@ -15,8 +15,8 @@ public class Mouvement
 
 		String coul = "[inconuue]";
 		//Couleur du feutre
-		if (c.getCouleur() == Color.RED ) coul = "rouge";
-		if (c.getCouleur() == Color.BLUE) coul = "bleu" ;
+		if (c.getCouleurPrim() == Color.RED ) coul = "rouge";
+		if (c.getCouleurPrim() == Color.BLUE) coul = "bleu" ;
 
 		//String pour l'historique
 		this.infoString = "Le joueur " + id + " a capturé la route de " + nom1 + " à " + nom2 + " en " + coul + ".";

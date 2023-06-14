@@ -348,7 +348,7 @@ public class Mappe
 		if (!this.estColoriable(c))
 			return false;
 
-		c.setCouleur(this.feutre);
+		c.setCouleurPrim(this.feutre);
 		this.lstCheminColorie.add(c);
 
 		this.estDebutManche = false;
@@ -390,7 +390,7 @@ public class Mappe
 		if (c == null || this.aJouer) return false;
 
 		/* Si le chemin est déjà colorié */
-		if (c.getCouleur() != null) return false;
+		if (c.getCouleurPrim() != null) return false;
 
 		Ile ileA = c.getIleA();
 		Ile ileB = c.getIleB();
@@ -425,7 +425,7 @@ public class Mappe
 		int nbColorie = 0;
 
 		for (Chemin chemin : i.getCheminAutour())
-			if (chemin.getCouleur() == this.feutre)
+			if (chemin.getCouleurPrim() == this.feutre)
 				nbColorie ++;
 
 		return nbColorie == 1;
@@ -436,7 +436,7 @@ public class Mappe
 		int nbColorie = 0;
 
 		for (Chemin chemin : i.getCheminAutour())
-			if (chemin.getCouleur() == this.feutre)
+			if (chemin.getCouleurPrim() == this.feutre)
 				nbColorie ++;
 
 		return nbColorie > 0;
@@ -446,9 +446,9 @@ public class Mappe
 	{ 
 	
 		for (Chemin a : a1.getIleA().getCheminAutour())
-			if ( this.feutre.equals(a.getCouleur()) )
+			if ( this.feutre.equals(a.getCouleurPrim()) )
 				for (Chemin a2 : a1.getIleB().getCheminAutour())
-					if ( this.feutre.equals(a2.getCouleur()) ) return true;
+					if ( this.feutre.equals(a2.getCouleurPrim()) ) return true;
 
 		return false;
 	}
@@ -462,7 +462,7 @@ public class Mappe
 
 		for (Chemin c2 : this.lstChemins) 
 		{
-			if (c2.getCouleur() != null && !c1.ileIdentique(c2)) 
+			if (c2.getCouleurPrim() != null && !c1.ileIdentique(c2)) 
 			{
 				int x3 = c2.getIleA().getXPoint();
 				int y3 = c2.getIleA().getYPoint();
@@ -561,10 +561,10 @@ public class Mappe
 				if (!c.estColorie())
 					continue;
 
-				if (c.getCouleur().equals(Color.RED))
+				if (c.getCouleurPrim().equals(Color.RED))
 					red = true;
 				
-				if (c.getCouleur().equals(Color.BLUE))
+				if (c.getCouleurPrim().equals(Color.BLUE))
 					blue = true;
 			}
 

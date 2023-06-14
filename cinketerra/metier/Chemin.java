@@ -45,7 +45,7 @@ public class Chemin
 	 * 
 	 * @param c - la nouvelle couleur du chemin
 	 */
-	public void setCouleurPrimaire(Color c)
+	public void setCouleurPrim(Color c)
 	{
 		this.colorPrim = c;
 	}
@@ -85,7 +85,7 @@ public class Chemin
 	 * 
 	 * @return la couleur du chemin
 	 */
-	public Color getCouleur()
+	public Color getCouleurPrim()
 	{
 		return this.colorPrim;
 	}

@@ -197,7 +197,7 @@ public class PanelIles extends JPanel
 			int y2 = (int) (i2.getYPoint() * this.coef);
 
 			// Ligne
-			if (c.getCouleur() == null)
+			if (c.getCouleurPrim() == null)
 			{
 				Stroke  stroke;
 				float[] pointille;
@@ -219,7 +219,7 @@ public class PanelIles extends JPanel
 			}
 			else
 			{
-				g2.setColor(c.getCouleur());
+				g2.setColor(c.getCouleurPrim());
 				g2.setStroke(new BasicStroke(5f));
 				g2.drawLine(x1, y1, x2, y2);
 			}
