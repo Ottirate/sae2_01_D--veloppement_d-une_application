@@ -661,7 +661,7 @@ public class PanelIles extends JPanel
 			PanelIles.this.repaint();
 		}
 
-		/**Cherche l'ile clique. */
+		//Cherche l'ile clique.
 		private Ile trouverIle(int x, int y)
 		{
 			for (Polygon p : PanelIles.this.polygons)
