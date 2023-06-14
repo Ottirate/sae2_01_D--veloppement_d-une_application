@@ -100,6 +100,9 @@ public class PanelIles extends JPanel
 		Font boldFont   = new Font("BoldFont"  , Font.BOLD , 12);
 		Font dialogFont = new Font("DialogFont", Font.PLAIN, 12);
 
+		// Retourne une police dévirée avec uniquement la taille de changée
+		// dialogFont.deriveFont(15);
+
 		/*                               */
 		/* CALCUL DU COEF DE PROPORTIONS */
 		/*                               */
