@@ -1,5 +1,14 @@
+/*
+* Auteur : Équipe 1
+* Date   : juin 2023
+* */
+
+
+/*      Paquetage      */
 package cinketerra.ihm;
 
+
+/*       Imports       */
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -14,8 +23,15 @@ import cinketerra.metier.Mouvement;
 
 import java.awt.BorderLayout;
 
+
+/**
+ * Frame avec la map et l'historique
+ */
 public class FrameGame extends JFrame 
 {
+
+
+	/*      Attributs      */
 	private Controleur ctrl;
 
 	private int    id;
@@ -28,12 +44,14 @@ public class FrameGame extends JFrame
 
 	private boolean      historiqueShowed;
 
+
+	/*    Constructeur     */
 	public FrameGame(Controleur ctrl, int id) 
 	{
 		this.ctrl = ctrl;
 		this.id   = id;
 
-		// Info de base
+		//Paramètre de base
 		this.setTitle("CinkeTerra (Joueur " + id + ")" );
 		this.setSize(1280, 925);
 		this.setLocationRelativeTo(null);
@@ -41,12 +59,11 @@ public class FrameGame extends JFrame
 
 		this.setLayout(new BorderLayout());
 
+		//Création des composants
 		this.panelIles   = new PanelIles(ctrl,id);
 
 		this.panelHistorique = new JPanel();
 		this.panelHistorique.setBorder(new TitledBorder(new EtchedBorder(), "Journal de bord"));
-
-		// create the middle panel components
 
 		this.txtHistorique = new JTextArea();
 		this.txtHistorique.setColumns(30);
@@ -55,16 +72,20 @@ public class FrameGame extends JFrame
 		this.spHistorique = new JScrollPane(this.panelHistorique);
 		this.spHistorique.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-		//Add Textarea in to middle panel
+		//Ajout des composants
 		this.panelHistorique.add(this.txtHistorique);
-
 		this.add(this.panelIles, BorderLayout.CENTER);
 
+		//Visible
 		this.setVisible(true);
 	}
 
+
+	/*      Méthodes       */
+	// Manche
 	public void newManche () { this.panelIles.newManche(); }
 
+	// Maj
 	public void maj () 
 	{ 
 		this.panelIles.repaint();
@@ -84,6 +105,7 @@ public class FrameGame extends JFrame
 		this.revalidate(); 
 	}
 
+	//Historique
 	public void hideHistorique () 
 	{ 
 		this.historiqueShowed = false;

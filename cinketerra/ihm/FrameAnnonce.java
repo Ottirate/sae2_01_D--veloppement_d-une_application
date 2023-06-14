@@ -34,6 +34,10 @@ public class FrameAnnonce extends JFrame
 	{
 		double width  = getToolkit().getScreenSize().getWidth();
 
+		this.img  = getToolkit().getImage( String.format("./resources/images/%s.png", imgName) );
+		Image img = new ImageIcon(this.img).getImage();
+		this.img  = img.getScaledInstance(1440 / 2, 467 / 2, Image.SCALE_SMOOTH); 
+
 		//Paramètre de base
 		this.setSize((int) width, 233);
 		this.setUndecorated(true);
@@ -45,18 +49,13 @@ public class FrameAnnonce extends JFrame
 		this.setBackground(new Color(0, 0, 0, 0));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		//Création des attributs
-		this.img  = getToolkit().getImage( String.format("./resources/images/%s.png", imgName) );
-		Image img = new ImageIcon(this.img).getImage();
-		this.img  = img.getScaledInstance(1440 / 2, 467 / 2, Image.SCALE_SMOOTH); 
-
 		//Visible + Animation
 		this.setVisible(true);
 		new Animation( this ).start();
 	}
 
 
-	/*      Affichage      */
+	/*     Paint/Draw      */
 	public void paint(Graphics g)
 	{
 		super.paint(g);

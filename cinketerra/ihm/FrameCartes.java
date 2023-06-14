@@ -21,7 +21,7 @@ import java.awt.event.*;
 
 
 /**
- * Frame qui contient la mappe et l'historique
+ * Frame qui contient la pioche
  */
 public class FrameCartes extends JFrame implements ActionListener
 {
@@ -50,7 +50,7 @@ public class FrameCartes extends JFrame implements ActionListener
 
 		this.setSize(1280, 350);
 
-		//Création des attributs
+		//Création des composants
 		this.btnManche   = new JButton("Manche suivante");
 		this.panelPioche = new PanelPioche(ctrl);
 
@@ -71,19 +71,24 @@ public class FrameCartes extends JFrame implements ActionListener
 		this.setVisible(true);
 	}
 
-	public void initPioche() { this.panelPioche.initPioche(); }
-	public void bloquerPioche(boolean bloque) { this.panelPioche.bloquerPioche(bloque); }
 
+	/*      Méthodes       */
+	// Pioche
+	public void initPioche()  { this.panelPioche.initPioche(); }
+	public void bloquerPioche(boolean bloque) { this.panelPioche.bloquerPioche(bloque); }
+	
+	//Boutton manche
 	public void showButton () { this.panelBtn.setVisible(true);  }
 	public void hideButton () { this.panelBtn.setVisible(false); }
-
+	
+	// Maj
 	public void maj () { this.panelPioche.repaint(); }
 
+
+	/*       Action        */
 	public void actionPerformed(ActionEvent e)
 	{
 		this.ctrl     .initialiserManche ()               ;
 		this.btnManche.setText           ("Fin de partie");
 	}
-
-
 }

@@ -1,5 +1,16 @@
+/*
+* Auteur : Équipe 1
+* Date   : juin 2023
+* */
+
+
+/*      Paquetage      */
 package cinketerra.ihm;
 
+
+
+
+/*       Imports       */
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
@@ -13,50 +24,69 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
+
+/**
+ * Panel affichant la map (iles, chemin, etc...)
+ */
 public class PanelIles extends JPanel
 {
+
+
+
+
+	/* Attributs de Classe */
+	/*      Constants      */
+	public  static final String NOM_CHEMIN = "./resources/iles/";
+	private static final Color  BACK_COLOR = new Color( 35,137,218); // 182, 211, 255
+
+
+
+
+	/*      Attributs      */
 	private int id;
 
 	private boolean estNouvelleManche;	
 	private Ile ile1;
 	private Ile ile2;
 
-	public static String NOM_CHEMIN = "./resources/iles/";
-	private List<ImageIcon> lstImgIles;
-
 	private Controleur ctrl;
 
 	private int maxX;
 	private int maxY;
 	private double coef;
+	
+	private List<ImageIcon> lstImgIles;
+
 	private List<Polygon> polygons;
-
-	// Carte bonus
 	private Rectangle hitboxCarteBonus;
-
 	private Ellipse2D historique;
 
-	private static final Color BACK_COLOR = new Color( 35,137,218); // 182, 211, 255
 
+
+
+	/*    Constructeur     */
 	public PanelIles(Controleur ctrl, int id) 
 	{
 		this.ctrl = ctrl;
 		this.id   = id;
 		this.estNouvelleManche = true;
-
-		this.setBackground( PanelIles.BACK_COLOR );
-
-		//Création des images
 		this.declarerImage();
 
+		//Paramètre de base
+		this.setBackground( PanelIles.BACK_COLOR );
 
-		/*     Activation      */
+		//Action
 		GereSouris gereSouris = new GereSouris();
-
 		this.addMouseListener(gereSouris);
 		this.addMouseMotionListener(gereSouris);
 	}
 
+
+
+
+	/*      Méthodes       */
 	private void declarerImage()
 	{
 		this.lstImgIles = new ArrayList<>();
@@ -82,10 +112,10 @@ public class PanelIles extends JPanel
 	}
 
 
-	/*-----------------------------------*/
-	/*      DESSINS DES COMPOSANTS       */
-	/*-----------------------------------*/
+
 	
+	/*     Paint/Draw      */
+	//"Main"
 	public void paintComponent(Graphics g) 
 	{
 		super.paintComponent(g);
@@ -100,13 +130,8 @@ public class PanelIles extends JPanel
 		Font boldFont   = new Font("BoldFont"  , Font.BOLD , 12);
 		Font dialogFont = new Font("DialogFont", Font.PLAIN, 12);
 
-		// Retourne une police dévirée avec uniquement la taille de changée
-		// dialogFont.deriveFont(15);
 
-		/*                               */
-		/* CALCUL DU COEF DE PROPORTIONS */
-		/*                               */
-		
+		//Calcul du coef
 		int hauteur    = this.ctrl.getHauteur(this.id) - 40 ;
 		int largeur    = this.ctrl.getLargeur(this.id) - 20 ;
 		
@@ -120,16 +145,16 @@ public class PanelIles extends JPanel
 
 		if ( oldCoef != this.coef ) this.updateShape();
 
+
 		//Afficher l'ile de début en surligné pour savoir ou on commence
 		if (this.estNouvelleManche)
 		{
 			this.ile1 = this.ctrl.getIleDebut(this.id);
 		}
-
 		this.estNouvelleManche = false;
 
 
-		// représenter les régions
+		//Représenter les régions
 		for (Region r : lstRegion)
 		{
 			Polygon     poly   = new Polygon    ();
@@ -157,6 +182,8 @@ public class PanelIles extends JPanel
 			lstPolygon.add(poly);
 		}
 
+
+		//Déssiner bordure îles
 		for (Ile i : this.ctrl.getIles(this.id))
 		{
 			Polygon p = this.trouverPolygon(i);
@@ -167,6 +194,7 @@ public class PanelIles extends JPanel
 			g2.fill(pResize);
 
 		}
+
 
 		// Afficher les nom des régions
 		for (Region r : lstRegion)
@@ -239,7 +267,9 @@ public class PanelIles extends JPanel
 			}
 		}
 
+
 		Color colFeutre = this.ctrl.getColFeutre(this.id);
+
 
 		// Afficher les iles
 		if (this.ile1 != null)
@@ -276,6 +306,7 @@ public class PanelIles extends JPanel
 			g2.drawString( i.getNom(), (int) (i.getXNom() * this.coef) , (int) (i.getYNom() * this.coef));
 		}
 
+
 		//Afficher le paneau du score
 		ImageIcon imgPanneau = PanelIles.redimensionnerIcon(new ImageIcon("./resources/images/panneau_score.png"), this.coef/2);
 
@@ -284,6 +315,7 @@ public class PanelIles extends JPanel
 
 		imgPanneau.paintIcon(this, g2, xPanneau, yPanneau);
 
+
 		//Afficher le score
 		g2.setColor(Color.WHITE);
 		String[] ensS = PanelIles.this.ctrl.getScore(this.id).split(";");
@@ -291,7 +323,8 @@ public class PanelIles extends JPanel
 		g2.drawString( " -"+ensS[1], xPanneau+30, yPanneau + (int)(imgPanneau.getIconHeight()/2+15) );
 		g2.drawString( " -"+ensS[2], xPanneau+30, yPanneau + (int)(imgPanneau.getIconHeight()/2+30) );
 
-		//Dessiner le logo de l'historique en bas à droite du truc
+
+		//Dessiner le logo de l'historique en bas à droite
 		ImageIcon logo = PanelIles.redimensionnerIcon(new ImageIcon("./resources/images/Historique.png"), 5 * this.coef / 50);
 
 		int x = largeur - logo.getIconWidth();
@@ -302,6 +335,7 @@ public class PanelIles extends JPanel
 		double larg = logo.getIconWidth() - 20;
 		
 		this.historique = new Ellipse2D.Double(x + 10, y + 10, larg, larg );
+
 
 		//Dessiner la carte bonus
 		if ( this.ctrl.getOptionActive() )
@@ -317,6 +351,7 @@ public class PanelIles extends JPanel
 		}
 	}
 
+	//Dessiner le dégrader des régions
 	private void dessinerFondRegion (Graphics2D g2, Polygon p)
 	{
 		double[] echelle = { 1.2, 0.8};
@@ -330,10 +365,10 @@ public class PanelIles extends JPanel
 			g2.setColor(fondCol[i]);
 			g2.fill(poly);
 		}
-
 	}
 
-	public static Polygon resizePolygon(Polygon polygon, double scale) 
+	//Permet de redimensionner les polygons avec un coef donné
+	public static Polygon resizePolygon(Polygon polygon, double coef) 
 	{
 		Point center = getPolygonCenter(polygon);
 
@@ -342,8 +377,8 @@ public class PanelIles extends JPanel
 			int deltaX = polygon.xpoints[i] - center.x;
 			int deltaY = polygon.ypoints[i] - center.y;
 
-			int newX = center.x + (int) (deltaX * scale);
-			int newY = center.y + (int) (deltaY * scale);
+			int newX = center.x + (int) (deltaX * coef);
+			int newY = center.y + (int) (deltaY * coef);
 
 			polygon.xpoints[i] = newX;
 			polygon.ypoints[i] = newY;
@@ -352,6 +387,7 @@ public class PanelIles extends JPanel
 		return polygon;
 	}
 
+	//Recupère le centre du polygon
 	public static Point getPolygonCenter(Polygon polygon) 
 	{
 		int totalX = 0;
@@ -369,6 +405,7 @@ public class PanelIles extends JPanel
 		return new Point(centerX, centerY);
 	}
 
+	//Trie les points pour garder les points exterieur
 	private void trierPointsPolygone(List<Point> points, Polygon poly)
 	{
 		int n = points.size();
@@ -416,7 +453,7 @@ public class PanelIles extends JPanel
 		for ( Point p : polygoneTri ) poly.addPoint( (int) (p.getX() * this.coef), (int) (p.getY() * this.coef) );
 	}
 
-
+	//Savoir dans quel orientation vas le trait
 	private static int orientation(Point p, Point q, Point r)
 	{
 		int val = (int) ( (q.getY() - p.getY()) * (r.getX() - q.getX()) - (q.getX() - p.getX()) * (r.getY() - q.getY()) );
@@ -426,6 +463,7 @@ public class PanelIles extends JPanel
 		return (val > 0) ? 1 : 2; // 1 pour sens horaire, 2 pour sens anti-horaire
 	}
 
+	//Redimensionne les images
 	public static ImageIcon redimensionnerIcon(ImageIcon img, double coef)
 	{
 		int       larg     = img.getIconWidth();
@@ -435,6 +473,7 @@ public class PanelIles extends JPanel
 		return new ImageIcon(reImage);
 	}
 
+	//Déssiner le contours des îles si ont peut les colorier
 	private void drawPolygonePossible(Ile i, Graphics2D g2)
 	{
 		Polygon p = this.trouverPolygon(i);
@@ -454,7 +493,7 @@ public class PanelIles extends JPanel
 	} 
 
 
-	/**Mise a jour des polygones des iles. */
+	//Remet à jour le contour des îles
 	public void updateShape()
 	{
 		this.polygons = new ArrayList<>();
@@ -505,20 +544,24 @@ public class PanelIles extends JPanel
 		}
 	}
 
-
+	//Retrouver l'île correspondant au polygon
 	public Polygon trouverPolygon(Ile i)
 	{
 		return this.polygons.get( this.ctrl.getIles(this.id).indexOf( i ) );
 	}
 
 
-	
-	/*-----------------------------------*/
-	/*       GESTIONS DE LA SOURIS       */
-	/*-----------------------------------*/
+
+
+	/**
+	* Classe Privée : 
+	*     - Gestion de la souris
+	*/
 	private class GereSouris extends MouseAdapter
 	{
-		/**Constructeur. */
+
+
+		/*    Constructeur     */
 		public GereSouris()
 		{
 			super();
@@ -527,8 +570,8 @@ public class PanelIles extends JPanel
 			PanelIles.this.polygons = polygons;
 		}
 
-		/**Evement souris. */
 
+		/*     Activation      */
 		public void mouseMoved(MouseEvent e)
 		{
 			int posX = e.getX();
@@ -567,10 +610,26 @@ public class PanelIles extends JPanel
 
 		public void mousePressed(MouseEvent e)
 		{
-			//PanelIles.this.ctrl.test();
 
 			int posX = e.getX();
 			int posY = e.getY();
+
+			//PanelIles.this.ctrl.test();
+			if (PanelIles.this.historique.contains(posX, posY))
+			{
+				PanelIles.this.ctrl.showHistorique(PanelIles.this.id);
+				return;
+			}
+
+			if ( PanelIles.this.ctrl.getOptionActive() )
+			{
+				if (PanelIles.this.hitboxCarteBonus.contains(posX, posY))
+				{
+					PanelIles.this.ctrl.activerCarteBonus(PanelIles.this.id);
+					PanelIles.this.repaint();
+					return;
+				}
+			}
 
 			Ile i = trouverIle( posX, posY );
 			Controleur ctrl =  PanelIles.this.ctrl; // raccourci inhumain de l'argumentation
@@ -596,24 +655,10 @@ public class PanelIles extends JPanel
 				}
 			}
 
-			if ( PanelIles.this.ctrl.getOptionActive() )
-			{
-				if (PanelIles.this.hitboxCarteBonus.contains(posX, posY))
-				{
-					PanelIles.this.ctrl.activerCarteBonus(PanelIles.this.id);
-				}
-			}
+			if (i == null)
+				PanelIles.this.ctrl.hideHistorique(PanelIles.this.id);
 
 			PanelIles.this.repaint();
-
-			
-			if (PanelIles.this.historique != null && 
-			    PanelIles.this.historique.contains(e.getX(), e.getY()))
-				PanelIles.this.ctrl.showHistorique(PanelIles.this.id);
-			else
-				if (i == null)
-					PanelIles.this.ctrl.hideHistorique(PanelIles.this.id);
-		
 		}
 
 		/**Cherche l'ile clique. */

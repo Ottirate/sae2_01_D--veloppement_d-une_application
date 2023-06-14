@@ -32,8 +32,7 @@ public class Controleur implements WindowStateListener
 
 
 	/* Attributs de Classe */
-	/*      Constants      */
-	public static  final int NB_JOUEUR = 2;
+	public static int NB_JOUEUR = 0;
 
 
 	/*      Attributs      */

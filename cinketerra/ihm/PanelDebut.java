@@ -1,26 +1,40 @@
+/*
+* Auteur : Équipe 1
+* Date   : juin 2023
+* */
+
+
+/*      Paquetage      */
 package cinketerra.ihm;
 
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.border.Border;
-import javax.swing.ImageIcon;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
+
+/*       Imports       */
 import cinketerra.Controleur;
+
+import javax.swing.*;
+
 import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
+
+/**
+ * Panel écran titre
+ */
 public class PanelDebut extends JPanel
 {
+	
+
+	/* Attributs de Classe */
+	/*      Constants      */
 	static final String PATH = "./resources/images/";
 
+
+	/*      Attributs      */
 	private Controleur ctrl;
 	private JLabel     lblTexte;
 	private JLabel     lblLogo;
@@ -34,25 +48,28 @@ public class PanelDebut extends JPanel
 	private int        redimY1 = 100;
 	private int        redimX2 = 100;
 	private int        redimY2 = 100;
+
 	private int        posX1   = 50;
 	private int        posX2   = 155;
 	private int        posY1   = 335;
 	private int        posY2   = 335;
-	
 
+
+	/*    Constructeur     */
 	public PanelDebut(Controleur ctrl)
 	{
 		this.ctrl = ctrl;
 		this.imgUnJoueur    = new ImageIcon(PanelDebut.PATH + "UnJoueur.png");
 		this.imgDeuxJoueurs = new ImageIcon(PanelDebut.PATH + "DeuxJoueurs.png");
 
+		//Paramètre de base
 		this.setLayout(new BorderLayout());
 
+		//Création des composants
 		this.lblTexte   = new JLabel ("Choisissez le type de partie", SwingConstants.CENTER);
 
-		Image img = new ImageIcon(PanelDebut.PATH + "Cinketera.png").getImage();
+		Image img       = new ImageIcon(PanelDebut.PATH + "Cinketera.png").getImage();
 		Image scaledImg = img.getScaledInstance(300, 200, Image.SCALE_SMOOTH);
-
 		this.lblLogo    = new JLabel(new ImageIcon(scaledImg));
 
 		this.cbPouvoir  = new JCheckBox("Activer les pouvoirs", false);
@@ -61,25 +78,27 @@ public class PanelDebut extends JPanel
 		panelTmp.setPreferredSize(new Dimension(300, 200));
 		panelTmp.setOpaque(false);
 
+		//Ajout des composants
 		this.add(this.lblLogo,  BorderLayout.NORTH);
 		this.add(this.lblTexte, BorderLayout.CENTER);
 		this.add(panelTmp,      BorderLayout.SOUTH);
 
 		panelTmp.add(this.cbPouvoir, BorderLayout.NORTH);
 
+		//Action
 		GereSouris gs = new GereSouris();
-		
 		this.addMouseListener      (gs);
 		this.addMouseMotionListener(gs);
 
+		//Visible
 		this.repaint();
 	}
 
+
+	/*     Paint/Draw      */
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-
-		//Graphics2D g2 = (Graphics2D) g;
 
 		// Affichage du mode 1 joueur
 		Image     reImage  = this.imgUnJoueur.getImage().getScaledInstance(this.redimX1, this.redimY1, Image.SCALE_SMOOTH);
@@ -97,19 +116,28 @@ public class PanelDebut extends JPanel
 		g.drawString("2 joueurs", 175, 455);
 	}
 
-	/*-----------------------------------*/
-	/*       GESTIONS DE LA SOURIS       */
-	/*-----------------------------------*/
+
+	/**
+	* Classe Privée : 
+	*     - Gestion de la souris
+	*/
 	public class GereSouris extends MouseAdapter
 	{
+
+
+		/*      Attributs      */
 		private Rectangle[] ensRect = {new Rectangle(50, 335,  75, 100),
 			                           new Rectangle(155, 335, 100, 100)};
 
+
+		/*    Constructeur     */
 		public GereSouris()
 		{
 			super();
 		}
 
+
+		/*     Activation      */
 		public void mouseMoved(MouseEvent e)
 		{
 	 		int posX = e.getX();
