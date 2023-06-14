@@ -2,11 +2,20 @@ package cinketerra.ihm;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 import cinketerra.Controleur;
+import cinketerra.metier.Mappe;
+import cinketerra.metier.Mouvement;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 
 public class FrameGame extends JFrame 
 {
@@ -15,7 +24,11 @@ public class FrameGame extends JFrame
 	private JLabel lblScore;
 	private int    id;
 
+	private JTextArea    txtHistorique;
+	private JScrollPane  spHistorique;
+
 	private PanelIles   panelIles;
+	private JPanel      panelHistorique;
 
 	public FrameGame(Controleur ctrl, int id) 
 	{
@@ -33,6 +46,21 @@ public class FrameGame extends JFrame
 		this.panelIles   = new PanelIles(ctrl,id);
 		this.lblScore    = new JLabel(this.ctrl.getScore(this.id));
 
+		this.panelHistorique = new JPanel();
+		this.panelHistorique.setBorder(new TitledBorder(new EtchedBorder(), "Display Area"));
+
+		// create the middle panel components
+
+		this.txtHistorique = new JTextArea();
+		this.txtHistorique.setColumns(30);
+		this.txtHistorique.setEditable(false);
+
+		this.spHistorique = new JScrollPane(this.panelHistorique);
+		this.spHistorique.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+		//Add Textarea in to middle panel
+		this.panelHistorique.add(this.txtHistorique);
+
 		this.lblScore.setOpaque(true);
 		this.lblScore.setBackground(new Color(182, 211, 250).darker());
 
@@ -47,6 +75,26 @@ public class FrameGame extends JFrame
 	public void maj () 
 	{ 
 		this.lblScore.setText(this.ctrl.getScore(this.id));
-		this.panelIles.repaint(); 
+		this.panelIles.repaint();
+
+		String historique = "";
+		for (Mouvement mv : Mappe.getActions())
+			historique += mv.toString() + '\n';
+
+		this.txtHistorique.setText(historique);
+
+		this.revalidate(); 
+	}
+
+	public void hideHistorique () 
+	{ 
+		this.remove(this.spHistorique);
+		this.maj();
+	}
+	public void showHistorique () 
+	{ 
+		this.add   (this.spHistorique,BorderLayout.EAST);
+
+		this.maj();
 	}
 }

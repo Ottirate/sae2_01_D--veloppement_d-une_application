@@ -103,10 +103,7 @@ public class PanelPioche extends JPanel
 		for( int cpt = 0; cpt < this.ctrl.getNbCarteTotal(); cpt++ )
 		{
 			// Image
-			img  = this.redimImage(new ImageIcon( this.ctrl.getImage(cpt)), (int)(this.largCarte), (int)(this.longCarte));
-
-			
-			//int coefPanel = this.longCarte / this.getHeight;
+			img  = this.redimImage(new ImageIcon( this.ctrl.getImage(cpt)), (int)(this.largCarte), (int)(this.longCarte), false);
 
 			// Surélévation de la pioche
 			if ( this.ctrl.carteCachee( cpt ) && cptPioche == this.carteRelevee)
@@ -138,7 +135,7 @@ public class PanelPioche extends JPanel
 			for (int cptC = 0 ; cptC < this.ctrl.getNbCarteTotal(); cptC++ )
 				if (this.paquetDeBase.getCarte(cptB).equals(this.ctrl.getCarte(cptC)) && this.ctrl.getCarte(cptC).estCache())
 				{
-					img2 = this.redimImage(new ImageIcon( this.ctrl.getImageRetournee(this.paquetDeBase.getCarte(cptB))), (int)(this.largCarte/2), (int)(this.longCarte/2));
+					img2 = this.redimImage(new ImageIcon( this.ctrl.getImageRetournee(this.paquetDeBase.getCarte(cptB))), (int)(this.largCarte/2), (int)(this.longCarte/2), true);
 
 					if (cptB < 5)
 						img2.paintIcon(this, this.g2, this.calculPosCarteDefausse(cptB%5), PanelPioche.POS_Y_CARTE-10);
@@ -157,9 +154,31 @@ public class PanelPioche extends JPanel
 	public int calculPosCartePioche  ( int indice ){ return PanelPioche.MARGE_X_CARTE + indice*PanelPioche.ESPACEMENT;                                                   }
 	public int calculPosCarteDefausse( int indice ){ return (int)(this.getWidth() - (indice+1)*((this.largCarte/2)+PanelPioche.ESPACEMENT) - PanelPioche.MARGE_X_CARTE); }
 
-	// Méthode redimensionnant une image (paramètres : l'image, la longueur et la hauteur)
-	private ImageIcon redimImage(ImageIcon img, int width, int height)
+	/**
+	 * Redimensione une image donnée.
+	 * 
+	 * @param img - l'image à redimensionner
+	 * @param width - la largeur l'image
+	 * @param height - la longueur de l'image
+	 * @param isStatic - si la taille de l'image doit se redimensionner en fonction de la taille de la Frame
+	 * @return la nouvelle image redimensionnée
+	 */
+	private ImageIcon redimImage(ImageIcon img, int width, int height, boolean isStatic)
 	{
+		if (!isStatic)
+		{
+			int longueur = Math.max(this.ctrl.getHauteurPioche(), this.ctrl.getLargeurPioche() / 6);
+			
+			double coefPanel = (this.longCarte / (longueur * 1.0)) * 2;
+
+			width = (int) (this.largCarte / coefPanel);
+			height = (int) (this.longCarte / coefPanel);
+		} else
+		{
+			width = (int) (width / 1.75);
+			height = (int) (height / 1.75);
+		}
+
 		Image ogImage = img.getImage();
 		Image reImage = ogImage.getScaledInstance(width, height, Image.SCALE_DEFAULT);
 		return new ImageIcon(reImage);

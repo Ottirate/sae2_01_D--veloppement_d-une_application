@@ -7,6 +7,8 @@ import java.util.Scanner;
 import cinketerra.Controleur;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
 /** Listes */
@@ -14,7 +16,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-
+import java.util.Date;
 /** AWT */
 import java.awt.Color;
 import java.awt.geom.Line2D;
@@ -29,12 +31,14 @@ public class Mappe
 	/*----------------------------------*/
 
 	/** Chemin relatif du fichier de données */
-	private static final String      NOM_FICHIER = "./resources/data.csv";
+	private static final String      NOM_FICHIER = "./resources/";
 
 	/** Liste de constantes de couleurs */
 	private static List<Color>       colors;
 
 	private static List<Mouvement>   lstHistorique;
+
+	private static long              debutPartieTemps;
 
 	/*----------------------------------*/
 	/*           ATTRIBUTS              */
@@ -90,12 +94,8 @@ public class Mappe
 	 */
 	public void initialise()
 	{
-		this.lstRegions       = new ArrayList<>();
-		this.lstIles          = new ArrayList<>();
-		this.lstChemins       = new ArrayList<>();
-		this.lstCheminColorie = new ArrayList<>();
-
-		Mappe.lstHistorique = new ArrayList<>();
+		Mappe.debutPartieTemps = System.currentTimeMillis();
+		Mappe.lstHistorique    = new ArrayList<>();
 		
 		if (Mappe.colors == null)
 			if ((int) (Math.random()*2) == 1) Mappe.colors = new ArrayList<>(Arrays.asList( Color.RED , Color.BLUE));
@@ -103,10 +103,17 @@ public class Mappe
 		else
 			if (Mappe.colors.get(0) == Color.RED) Collections.addAll(Mappe.colors, Color.RED , Color.BLUE);
 			else                                  Collections.addAll(Mappe.colors, Color.BLUE, Color.RED );
+
+
+
+		this.lstRegions       = new ArrayList<>();
+		this.lstIles          = new ArrayList<>();
+		this.lstChemins       = new ArrayList<>();
+		this.lstCheminColorie = new ArrayList<>();
 		
 		try
 		{
-			Scanner scan = new Scanner(new FileInputStream(Mappe.NOM_FICHIER), StandardCharsets.UTF_8);
+			Scanner scan = new Scanner(new FileInputStream(Mappe.NOM_FICHIER + "data.csv"), StandardCharsets.UTF_8);
 
 			while (scan.hasNextLine()) {
 				String s = scan.nextLine();
@@ -548,5 +555,35 @@ public class Mappe
 
 	public static void            addAction  (Mouvement mv) { Mappe.lstHistorique.add(mv); }
 	public static List<Mouvement> getActions ()             { return Mappe.lstHistorique ; }
+
+	public void enregistrerMouvement(Integer score1, Integer score2)
+	{
+		try
+		{
+			PrintWriter pw = new PrintWriter( new FileOutputStream(Mappe.NOM_FICHIER + "journal.csv") );
+
+			pw.println ("[" + new Date().toString() + "]" );
+			pw.println ("(" + this.tempPartie() + ")" );
+			
+			if (score2 == null)
+				pw.println (score1);
+			else
+				pw.println(score1 + "/" + score2);
+
+			for (Mouvement mv : Mappe.lstHistorique)
+				pw.println(mv.toData());
+
+			pw.close();
+		}
+		catch (Exception e){ e.printStackTrace(); }
+
+	}
+
+	private String tempPartie ()
+	{
+		int sec = (int) ((Mappe.debutPartieTemps - System.currentTimeMillis())/1000);
+
+		return sec/60 + ":" + sec%60;
+	}
 
 }

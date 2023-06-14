@@ -22,7 +22,7 @@ public class Mouvement
 		this.infoString = "Le joueur " + id + " à capturer la route de " + nom1 + " à " + nom2 + " en " + coul + ".";
 
 		//String pour le fichier
-		this.dataString = id + '\t' + nom1 + '\t' + nom2 + '\t' + coul;
+		this.dataString = ""+ id + '\t' + nom1 + '\t' + nom2 + '\t' + coul;
 	}
 
 	public Mouvement (Carte c)

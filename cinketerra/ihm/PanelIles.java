@@ -318,7 +318,7 @@ public class PanelIles extends JPanel
 			return;
 		}
 
-		ArrayList<Point> polygoneTri = new ArrayList<>();
+		List<Point> polygoneTri = new ArrayList<>();
 
 		// Trouver le point le plus à gauche
 		int pointGaucheIndex = 0;
@@ -371,9 +371,7 @@ public class PanelIles extends JPanel
 		int       lon      = img.getIconHeight();
 		Image     reImage  = img.getImage().getScaledInstance((int) (larg*coef), (int) (lon*coef), Image.SCALE_DEFAULT);
 
-		ImageIcon newImage = new ImageIcon(reImage);
-
-		return newImage;
+		return new ImageIcon(reImage);
 	}
 
 	private void drawPolygonePossible(Ile i, Graphics2D g2)
@@ -503,11 +501,10 @@ public class PanelIles extends JPanel
 
 			
 			if (PanelIles.this.historique.contains(e.getX(), e.getY()))
-				System.out.println("Rentrez");
-				// PanelIles.this.ctrl.showHistorique(PanelIles.this.id);
+				PanelIles.this.ctrl.showHistorique(PanelIles.this.id);
 			else
-				// PanelIles.this.ctrl.hideHistorique(PanelIles.this.id);
-				System.out.println("Pas dedans");
+				if (i == null)
+					PanelIles.this.ctrl.hideHistorique(PanelIles.this.id);
 		
 		}
 
