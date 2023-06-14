@@ -1,5 +1,14 @@
+/*
+* Auteur : Équipe 1
+* Date   : juin 2023
+* */
+
+
+/*      Paquetage      */
 package cinketerra.ihm;
 
+
+/*       Imports       */
 import java.awt.BorderLayout;
 
 import javax.swing.JButton;
@@ -10,21 +19,29 @@ import cinketerra.Controleur;
 
 import java.awt.event.*;
 
+
+/**
+ * Frame qui contient la mappe et l'historique
+ */
 public class FrameCartes extends JFrame implements ActionListener
 {
+
+
+	/*      Attributs      */
 	private Controleur ctrl;
+
+	private PanelPioche panelPioche;
+	private JPanel      panelBtn;
 
 	private JButton btnManche;
 
-	private PanelPioche panelPioche;
 
-	private JPanel panelBtn;
-
+	/*    Constructeur     */
 	public FrameCartes(Controleur ctrl) 
 	{
 		this.ctrl = ctrl;
 
-		// Info de base
+		//Paramètre de base
 		this.setTitle("Pioche");
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
@@ -33,28 +50,29 @@ public class FrameCartes extends JFrame implements ActionListener
 
 		this.setSize(1280, 350);
 
+		//Création des attributs
 		this.btnManche   = new JButton("Manche suivante");
 		this.panelPioche = new PanelPioche(ctrl);
 
 		panelBtn = new JPanel();
-		panelBtn.add(this.btnManche);
 		panelBtn.setOpaque(false);
 
-		this.hideButton();
+		//Ajout des composants
+		panelBtn.add(this.btnManche);
 
 		this.add( this.panelBtn,    BorderLayout.SOUTH  );
 		this.add( this.panelPioche, BorderLayout.CENTER );
 
+		//Activation
+		this.hideButton();
 		this.btnManche.addActionListener(this);
 
+		//Visible
 		this.setVisible(true);
 	}
 
 	public void initPioche() { this.panelPioche.initPioche(); }
 	public void bloquerPioche(boolean bloque) { this.panelPioche.bloquerPioche(bloque); }
-
-	// public void showButton () { this.btnManche.setVisible(true ); }
-	// public void hideButton () { this.btnManche.setVisible(false); }
 
 	public void showButton () { this.panelBtn.setVisible(true);  }
 	public void hideButton () { this.panelBtn.setVisible(false); }
