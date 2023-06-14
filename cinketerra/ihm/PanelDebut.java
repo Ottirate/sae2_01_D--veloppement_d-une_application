@@ -172,7 +172,7 @@ public class PanelDebut extends JPanel
 			if (value == 1)
 				Controleur.NB_JOUEUR = 2;
 
-			PanelDebut.this.ctrl.setOption( PanelDebut.this.cbPouvoir.isSelected() );
+			PanelDebut.this.ctrl.setOptionActive( PanelDebut.this.cbPouvoir.isSelected() );
 		}
 
 		public Integer trouverRect(int posX, int posY)
