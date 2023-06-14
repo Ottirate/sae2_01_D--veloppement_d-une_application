@@ -33,7 +33,7 @@ public class Controleur implements WindowStateListener
 
 	/* Attributs de Classe */
 	/*      Constants      */
-	public static  final int NB_JOUEUR = 2;
+	private static int NB_JOUEUR = -1;
 
 
 	/*      Attributs      */
@@ -53,18 +53,32 @@ public class Controleur implements WindowStateListener
 	{
 		FrameDebut frameD = new FrameDebut(this);
 		
-		boolean debutDePartie = false;
+		/*boolean debutDePartie = false;
 		while (!debutDePartie)
 		{
 			System.out.print(""); // Pour une raison inconnue, s'il n'est pas là ça ne marche plus ! /!\ NE PAS TOUCHER
-			                        // UPDATE: Uniquement sous Linux
+			                      // UPDATE: Uniquement sous Linux
 
 			if (Controleur.NB_JOUEUR != 0)
 			{
 				debutDePartie = true;
 				frameD.dispose();
 			}
+		}*/
+
+		/*
+				--->  A TESTER SUR LINUX ET WINDOWS  <---
+
+			je vous explique demain
+			- Clément
+		*/
+
+		while (Controleur.NB_JOUEUR == -1)
+		{
+			try { Thread.sleep(100); } catch (Exception e) {}
 		}
+
+		frameD.dispose();
 
 		PaquetDeCarte p = new PaquetDeCarte();
 
@@ -245,7 +259,8 @@ public class Controleur implements WindowStateListener
 
 
 	/*     Modifieurs      */
-	public void    setOptionActive(boolean state) {        this.option = state; }
+	public        void setOptionActive( boolean state ) { this.option          = state ; }
+	public static void setNbJoueur    ( int     nb    ) { Controleur.NB_JOUEUR = nb    ; }
 
 
 

@@ -2,7 +2,6 @@ package cinketerra.ihm;
 
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -11,7 +10,6 @@ import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
@@ -166,11 +164,8 @@ public class PanelDebut extends JPanel
 
 			int value = this.trouverRect(posX, posY);
 
-			if (value == 0)
-				Controleur.NB_JOUEUR = 1;
-
-			if (value == 1)
-				Controleur.NB_JOUEUR = 2;
+			if (value == 1) Controleur.setNbJoueur(2);
+			else            Controleur.setNbJoueur(1); // si value == 0
 
 			PanelDebut.this.ctrl.setOptionActive( PanelDebut.this.cbPouvoir.isSelected() );
 		}
