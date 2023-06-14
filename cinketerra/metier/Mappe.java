@@ -418,11 +418,10 @@ public class Mappe
 	{ 
 	
 		for (Chemin a : a1.getIleA().getCheminAutour())
-				if ( this.feutre.equals(a.getCouleur()) )
-					for (Chemin a2 : a1.getIleB().getCheminAutour())
-						if ( this.feutre.equals(a2.getCouleur()) ) return true;
+			if ( this.feutre.equals(a.getCouleur()) )
+				for (Chemin a2 : a1.getIleB().getCheminAutour())
+					if ( this.feutre.equals(a2.getCouleur()) ) return true;
 
-						
 		return false;
 	}
 

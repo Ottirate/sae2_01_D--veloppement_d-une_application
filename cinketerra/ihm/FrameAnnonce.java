@@ -38,7 +38,8 @@ public class FrameAnnonce extends JFrame
 		new Animation( this ).start();
 	}
 
-	public void paint(Graphics g) {
+	public void paint(Graphics g)
+	{
 		super.paint(g);
 
 		g.drawImage(this.img, this.x, 0, null);
