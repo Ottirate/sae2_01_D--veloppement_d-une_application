@@ -129,10 +129,10 @@ public class Controleur implements WindowStateListener
 		String sRet = "./resources/cartes/";
 		Carte c = this.metier1.getCarte(indice);
 
-		if (c != null && !c.estCache())
+		//if (c != null && !c.estCache())
 			sRet += (c.getContour().equals(Color.white) ? "blanc_" : "noir_") + c.getCouleur().toLowerCase() + ".png";
-		else
-			sRet += "carte_dos.png";
+		//else
+		//	sRet += "carte_dos.png";
 
 		return sRet;
 	}
@@ -257,6 +257,7 @@ public class Controleur implements WindowStateListener
 		Color c1 = this.getColFeutre(1);
 
 		String[] tabScore1 = this.metier1.getScore().split("; ");
+		String[] tabScore2 = new String[1];
 		
 		// Score du joueur 1
 		
@@ -270,7 +271,7 @@ public class Controleur implements WindowStateListener
 		{
 			Color c2 = this.getColFeutre(2);
 			// Score du joueur 2
-			String[] tabScore2 = this.metier2.getScore().split("; ");
+			tabScore2 = this.metier2.getScore().split("; ");
 
 			mess += "<br>Point du <font style='color: rgb(" + c2.getRed() + ", " + c2.getGreen() + ", " + c2.getBlue() + ")'>Joueur 2 : " + tabScore2[0] + " points</font> <br><ul>";
 			mess +=   "<font style='color: rgb(" + c2.getRed() + ", " + c2.getGreen() + ", " + c2.getBlue() + ")'> " + tabScore2[1].substring(15) + " points</font> (" + tabScore2[1].substring(0,13) + ")<br>";
@@ -279,6 +280,11 @@ public class Controleur implements WindowStateListener
 
 		JOptionPane.showConfirmDialog( null, mess+"</html>" , "Fin de la partie", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
 		
+		if (Controleur.NB_JOUEUR == 1)
+			this.metier1.enregistrerMouvement(Integer.parseInt(tabScore1[0]), null);
+		else
+			this.metier1.enregistrerMouvement(Integer.parseInt(tabScore1[0]), Integer.parseInt(tabScore2[0]));
+
 		if (this.ihmMappe2 != null) this.ihmMappe2.dispose();
 
 		this.ihmMappe1.dispose();
@@ -291,7 +297,6 @@ public class Controleur implements WindowStateListener
 		else         return this.metier2.getScore();
 	}
 
-	@Override
 	public void windowStateChanged(WindowEvent e)
 	{
 		if (JFrame.class.cast(e.getSource()).getState() == JFrame.ICONIFIED) {
@@ -311,13 +316,13 @@ public class Controleur implements WindowStateListener
 
 	public void hideHistorique (int id) 
 	{
-		// if (id == 1) this.ihmMappe1.hideHistorique();
-		// else         this.ihmMappe2.hideHistorique();
+		if (id == 1) this.ihmMappe1.hideHistorique();
+		else         this.ihmMappe2.hideHistorique();
 	}
 	public void showHistorique (int id) 
 	{
-		// if (id == 1) this.ihmMappe1.showHistorique();
-		// else         this.ihmMappe2.showHistorique();
+		if (id == 1) this.ihmMappe1.showHistorique();
+		else         this.ihmMappe2.showHistorique();
 	}
 
 	public static void main(String[] args)
