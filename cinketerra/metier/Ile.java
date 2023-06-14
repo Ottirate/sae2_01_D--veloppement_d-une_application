@@ -56,7 +56,17 @@ public class Ile
 
 	public void addChemin (Chemin c) { this.lstChemins.add(c); }
 	public List<Chemin> getCheminAutour () { return this.lstChemins; }
-
+	
+	public int getNbCheminsColorie()
+	{
+		return this.lstChemins.stream().filter(c -> c.estColorie()).count();
+	}
+	
+	public int getNbCheminsColorie(Color color)
+	{
+		return this.lstChemins.stream().filter(c -> c.getCouleurPrim().equals(color)).count();
+	}
+	
 	public String toString ()
 	{
 		return String.format("%-15s", this.nom    ) +
