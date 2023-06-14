@@ -22,14 +22,14 @@ public class PanelIles extends JPanel
 	private Ile ile2;
 
 	public static String NOM_CHEMIN = "./resources/iles/";
-	private ArrayList<ImageIcon> lstImgIles;
+	private List<ImageIcon> lstImgIles;
 
 	private Controleur ctrl;
 
 	private int maxX;
 	private int maxY;
 	private double coef;
-	private ArrayList<Polygon> polygons;
+	private List<Polygon> polygons;
 
 	// Carte bonus
 	private Rectangle hitboxCarteBonus;
