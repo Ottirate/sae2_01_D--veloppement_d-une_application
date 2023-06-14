@@ -3,6 +3,8 @@ package cinketerra.metier;
 import java.util.List;
 import java.util.ArrayList;
 
+import java.awt.Color;
+
 public class Ile 
 {
 	private String nom;
@@ -56,6 +58,11 @@ public class Ile
 
 	public void addChemin (Chemin c) { this.lstChemins.add(c); }
 	public List<Chemin> getCheminAutour () { return this.lstChemins; }
+
+	public int getNbCheminsColorie(Color color)
+	{
+		return (int) this.lstChemins.stream().filter(c -> c.getCouleurPrim() != null && c.getCouleurPrim().equals(color)).count();
+	}
 
 	public String toString ()
 	{

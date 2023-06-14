@@ -222,6 +222,17 @@ public class PanelIles extends JPanel
 				g2.setColor(c.getCouleurPrim());
 				g2.setStroke(new BasicStroke(5f));
 				g2.drawLine(x1, y1, x2, y2);
+
+				if (c.getCouleurSec() != null)
+				{
+					float[] pointille = {2f, 2f};
+					g2.setColor(c.getCouleurSec());
+					g2.setStroke(new BasicStroke(5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, pointille , 2.0f));
+					g2.drawLine(x1, y1, x2, y2);
+
+					System.out.println("Deux couleurs bitches");
+				}
+
 			}
 		}
 
@@ -262,8 +273,9 @@ public class PanelIles extends JPanel
 			g2.drawString( i.getNom(), (int) (i.getXNom() * this.coef) , (int) (i.getYNom() * this.coef));
 		}
 
+		//Dessinier le paneau du score
 
-		//Déssiner le logo de l'historique en bas à droite du truc
+		//Dessiner le logo de l'historique en bas à droite du truc
 		ImageIcon logo = redimensionnerIcon(new ImageIcon("./resources/images/Historique.png"), 5 * this.coef / 50);
 
 		int x = largeur - logo.getIconWidth();
@@ -500,6 +512,25 @@ public class PanelIles extends JPanel
 		}
 
 		/**Evement souris. */
+
+		/*
+		public void mouseMoved(MouseEvent e)
+		{
+			int posX = e.getX();
+			int posY = e.getY();
+
+			//changer curseur sur la carte bonus
+			if ( PanelIles.this.ctrl.getOptionActive() )
+			{
+				if (PanelIles.this.hitboxCarteBonus.contains(posX, posY))
+				{
+					PanelPioche.this.setCursor( new Cursor( Cursor.HAND_CURSOR ));
+				}
+			}
+		}
+		
+		*/
+
 		public void mousePressed(MouseEvent e)
 		{
 			//PanelIles.this.ctrl.test();

@@ -1,4 +1,4 @@
-package cinketerra;
+ package cinketerra;
 
 import java.util.List;
 import java.util.Arrays;
@@ -45,6 +45,8 @@ public class Controleur implements WindowStateListener
 		while (!debutDePartie)
 		{
 			System.out.print(""); // Pour une raison inconnue, s'il n'est pas là ça ne marche plus ! /!\ TOUCHE PAS
+			// UPDATE: Uniquement sous Linux
+
 			if (Controleur.NB_JOUEUR != 0)
 			{
 				debutDePartie = true;
