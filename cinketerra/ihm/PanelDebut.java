@@ -9,9 +9,9 @@ package cinketerra.ihm;
 
 
 /*       Imports       */
-import cinketerra.Controleur;
-
 import javax.swing.*;
+
+import cinketerra.Controleur;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
@@ -194,11 +194,8 @@ public class PanelDebut extends JPanel
 
 			int value = this.trouverRect(posX, posY);
 
-			if (value == 0)
-				Controleur.NB_JOUEUR = 1;
-
-			if (value == 1)
-				Controleur.NB_JOUEUR = 2;
+			if (value == 1) Controleur.setNbJoueur(2);
+			else            Controleur.setNbJoueur(1); // si value == 0
 
 			PanelDebut.this.ctrl.setOptionActive( PanelDebut.this.cbPouvoir.isSelected() );
 		}
