@@ -1,24 +1,46 @@
-[Wed Jun 14 16:04:29 CEST 2023]
-(0:44)
-5
-Vert	secondaire
-Jaune	secondaire
-Brun	secondaire
-Rouge	secondaire
+[Wed Jun 14 17:56:17 CEST 2023]
+(5:5)
+37/39
 Jaune	primaire
+1	Ticó	Laçao	rouge
+2	Mutaa	Milaù	bleu
 Brun	primaire
-Multi	primaire
-Multi	secondaire
+2	Milaù	Khont-Rolah	bleu
+Vert	secondaire
 bifurcation
-Rouge	primaire
-Vert	primaire
+1	Kita	Ticó	rouge
+2	Kita	Khont-Rolah	bleu
+Rouge	secondaire
+2	Massao	Mutaa	bleu
+Multi	secondaire
+1	Laçao	Milaù	rouge
+2	Maÿa	Massao	bleu
 Jaune	secondaire
-1	Tiamù	Ticó	rouge
+1	Kosa	Kita	rouge
+2	Kosa	Kita	bleu
 Rouge	primaire
-1	Tavula	Tiamù	rouge
-Vert	secondaire
-1	Tavula	Tokha	rouge
-Jaune	primaire
+1	Milaù	Massao	rouge
 Vert	primaire
+1	Massao	Mutaa	rouge
+Brun	secondaire
+1	Mutaa	Khont-Rolah	rouge
+2	Maÿa	Mokah	bleu
 Multi	primaire
+1	Khont-Rolah	Fuego	rouge
+2	Mokah	Fissah	bleu
+Rouge	primaire
+Multi	secondaire
+1	Mokah	Mutaa	bleu
+2	Ticó	Laçao	rouge
 Brun	primaire
+1	Mokah	Fissah	bleu
+Jaune	primaire
+1	Finista	Fissah	bleu
+2	Laçao	Milaù	rouge
+Vert	primaire
+1	Fama	Finista	bleu
+2	Kita	Ticó	rouge
+Brun	secondaire
+Multi	primaire
+1	Mutaa	Maÿa	bleu
+2	Milaù	Massao	rouge

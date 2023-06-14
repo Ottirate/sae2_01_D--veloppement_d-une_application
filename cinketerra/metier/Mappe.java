@@ -77,6 +77,10 @@ public class Mappe
 	private boolean              carteBonusActive;
 	private boolean              bonusAEteActive;
 
+	/** Bonus BIS */
+	private String               colBonus;
+	private boolean              bonusBis;
+
 	private Region               regionBonus;
 
 	/** Couleur du feutre */
@@ -359,12 +363,32 @@ public class Mappe
 		else
 			c.setCouleurSec(this.feutre);
 			
+		if (this.bonusBis) this.bonusBis = false;
+
+		if (this.carteBonusActive && !this.bonusAEteActive && Mappe.carteBonus.ordinal() == 0)
+		{
+			if (!this.ileAppartientALigne(c.getIleA()))
+				this.colBonus = c.getIleA().getCoul();
+
+			if (!this.ileAppartientALigne(c.getIleB()))
+				this.colBonus = c.getIleB().getCoul();
+
+			System.out.println("L'ile " + c.getIleA().getCoul() + "appartient ? " + this.ileAppartientALigne(c.getIleA()));
+			System.out.println("L'ile " + c.getIleB().getCoul() + "appartient ? " + this.ileAppartientALigne(c.getIleB()));
+
+			System.out.println("colBonus " + this.colBonus);
+
+			this.bonusBis = true;
+			//(this.carteBonusActive && !this.bonusAEteActive && Mappe.carteBonus.ordinal() == 0)
+		}
+
 		this.lstCheminColorie.add(c);
+
 
 		this.estDebutManche = false;
 		
-		if (!(this.carteBonusActive && !this.bonusAEteActive && Mappe.carteBonus.ordinal() == 0))
-			this.aJouer = true ;
+		this.aJouer = true ;
+		
 
 		Mappe.lstHistorique.add(new Mouvement(id, c));
 
@@ -406,8 +430,9 @@ public class Mappe
 	 */
 	public boolean estColoriable(Chemin c) 
 	{
+		if (c == null) return false;
 		/* Si le chemin n'existe pas ou que on peut pas jouer de carte */
-		if (c == null || this.aJouer) return false;
+		if ((this.aJouer) ^ this.bonusBis) return false;
 
 		/* Si le chemin est déjà colorié */
 		if (c.getCouleurPrim() != null && !(this.carteBonusActive && !this.bonusAEteActive && Mappe.carteBonus.ordinal() == 2)) 
@@ -415,6 +440,15 @@ public class Mappe
 
 		Ile ileA = c.getIleA();
 		Ile ileB = c.getIleB();
+
+		/* Si le bonus BIS est actif */
+		if (this.bonusBis)
+		{
+			System.out.println("ileA coul = " + ileA.getCoul() + " ileB coul = " + ileB.getCoul());
+			System.out.println("ileA appartient " + this.ileAppartientALigne(ileA) + "  -  ileB appartient " + this.ileAppartientALigne(ileB));
+
+			if (!((!this.ileAppartientALigne(ileA) && ileA.getCoul().equals(this.colBonus)) || (!this.ileAppartientALigne(ileB) && ileB.getCoul().equals(this.colBonus)))) return false;
+		}
 
 		/* Dans le cas où il s'agit du premier trait */
 
@@ -454,13 +488,10 @@ public class Mappe
 
 	private boolean ileAppartientALigne(Ile i)
 	{
-		int nbColorie = 0;
-
 		for (Chemin chemin : i.getCheminAutour())
-			if (chemin.getCouleurPrim() == this.feutre)
-				nbColorie ++;
+			if (this.lstCheminColorie.contains(chemin)) return true;
 
-		return nbColorie > 0;
+		return i.equals(this.ileDeDepart);
 	}
 
 	private boolean aCycle(Chemin a1)
