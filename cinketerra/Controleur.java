@@ -165,10 +165,10 @@ public class Controleur implements WindowStateListener
 		String sRet = "./resources/cartes/bonus_" + Mappe.getCarteBonus().name().toLowerCase();
 
 		if (id == 1 && this.metier1.bonusAEteActive())
-			return sRet + "_decoupe.png";
+			return sRet + "_dechire.png";
 
 		if (id == 2 && this.metier2.bonusAEteActive())
-			return sRet + "_decoupe.png";
+			return sRet + "_dechire.png";
 
 		if (id == 1 && this.metier1.carteBonusEstActive())
 			return sRet + "_select.png";

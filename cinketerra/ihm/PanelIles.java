@@ -279,6 +279,8 @@ public class PanelIles extends JPanel
 		// if (this.ctrl.bonusAEteActive(this.id))
 		// 	imgCarteBonus = redimensionnerIcon(new ImageIcon(this.ctrl.getImageBonus()), 25*this.coef / 50);
 
+		System.out.println(this.ctrl.getImageBonus(this.id));
+
 		ImageIcon imgCarteBonus = redimensionnerIcon(new ImageIcon(this.ctrl.getImageBonus(this.id)), 25*this.coef / 50);
 
 		x = largeur - imgCarteBonus.getIconWidth();
