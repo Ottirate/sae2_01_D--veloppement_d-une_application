@@ -1,7 +1,6 @@
 package cinketerra.ihm;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -14,14 +13,11 @@ import cinketerra.metier.Mappe;
 import cinketerra.metier.Mouvement;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 
 public class FrameGame extends JFrame 
 {
 	private Controleur ctrl;
 
-	private JLabel lblScore;
 	private int    id;
 
 	private JTextArea    txtHistorique;
@@ -46,7 +42,6 @@ public class FrameGame extends JFrame
 		this.setLayout(new BorderLayout());
 
 		this.panelIles   = new PanelIles(ctrl,id);
-		this.lblScore    = new JLabel(this.ctrl.getScore(this.id));
 
 		this.panelHistorique = new JPanel();
 		this.panelHistorique.setBorder(new TitledBorder(new EtchedBorder(), "Historique"));
@@ -63,11 +58,7 @@ public class FrameGame extends JFrame
 		//Add Textarea in to middle panel
 		this.panelHistorique.add(this.txtHistorique);
 
-		this.lblScore.setOpaque(true);
-		this.lblScore.setBackground(new Color(182, 211, 250).darker());
-
 		this.add(this.panelIles, BorderLayout.CENTER);
-		this.add(this.lblScore , BorderLayout.SOUTH );
 
 		this.setVisible(true);
 	}
@@ -76,7 +67,6 @@ public class FrameGame extends JFrame
 
 	public void maj () 
 	{ 
-		this.lblScore.setText(this.ctrl.getScore(this.id));
 		this.panelIles.repaint();
 
 		String historique = "";

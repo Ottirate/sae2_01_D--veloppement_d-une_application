@@ -273,13 +273,20 @@ public class PanelIles extends JPanel
 			g2.drawString( i.getNom(), (int) (i.getXNom() * this.coef) , (int) (i.getYNom() * this.coef));
 		}
 
-		//Dessiner le paneau du score
-		ImageIcon imgPanneau = PanelIles.redimensionnerIcon(new ImageIcon("./resources/images/panneau_score.png"), 5 * this.coef / 25);
+		//Afficher le paneau du score
+		ImageIcon imgPanneau = PanelIles.redimensionnerIcon(new ImageIcon("./resources/images/panneau_score.png"), this.coef/2);
 
 		int xPanneau = largeur - imgPanneau.getIconWidth();
-		int yPanneau = hauteur - imgPanneau.getIconHeight() - 10;
+		int yPanneau = 0;
 
 		imgPanneau.paintIcon(this, g2, xPanneau, yPanneau);
+
+		//Afficher le score
+		g2.setColor(Color.WHITE);
+		String[] ensS = PanelIles.this.ctrl.getScore(this.id).split(";");
+		g2.drawString( "Total : "+ensS[0], xPanneau+30, yPanneau + (int)(imgPanneau.getIconHeight()/2) );
+		g2.drawString( " -"+ensS[1], xPanneau+30, yPanneau + (int)(imgPanneau.getIconHeight()/2+15) );
+		g2.drawString( " -"+ensS[2], xPanneau+30, yPanneau + (int)(imgPanneau.getIconHeight()/2+30) );
 
 		//Dessiner le logo de l'historique en bas à droite du truc
 		ImageIcon logo = PanelIles.redimensionnerIcon(new ImageIcon("./resources/images/Historique.png"), 5 * this.coef / 50);
