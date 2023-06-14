@@ -631,9 +631,10 @@ public class Mappe
 
 	private String tempPartie ()
 	{
-		int sec = (int) ((System.currentTimeMillis() - Mappe.debutPartieTemps)/1000);
+		long duree = System.currentTimeMillis() - Mappe.debutPartieTemps;
+		int  sec   = (int) ( duree / 1000 );
 
-		return sec/60 + ":" + sec%60;
+		return String.format("%02d:%02d:%03d", sec/60, sec%60, duree%1000);
 	}
 
 }

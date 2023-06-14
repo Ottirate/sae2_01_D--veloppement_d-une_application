@@ -44,7 +44,7 @@ public class FrameGame extends JFrame
 		this.panelIles   = new PanelIles(ctrl,id);
 
 		this.panelHistorique = new JPanel();
-		this.panelHistorique.setBorder(new TitledBorder(new EtchedBorder(), "Historique"));
+		this.panelHistorique.setBorder(new TitledBorder(new EtchedBorder(), "Journal de bord"));
 
 		// create the middle panel components
 
