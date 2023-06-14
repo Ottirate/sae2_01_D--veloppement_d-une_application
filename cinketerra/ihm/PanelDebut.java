@@ -2,7 +2,9 @@ package cinketerra.ihm;
 
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import cinketerra.Controleur;
 import java.awt.BorderLayout;
@@ -22,8 +24,12 @@ public class PanelDebut extends JPanel
 	private Controleur ctrl;
 	private JLabel     lblTexte;
 	private JLabel     lblLogo;
+
 	private ImageIcon  imgUnJoueur;
 	private ImageIcon  imgDeuxJoueurs;
+
+	private JCheckBox  cbPouvoir;
+
 	private int        redimX1 = 75;
 	private int        redimY1 = 100;
 	private int        redimX2 = 100;
@@ -49,13 +55,17 @@ public class PanelDebut extends JPanel
 
 		this.lblLogo    = new JLabel(new ImageIcon(scaledImg));
 
+		this.cbPouvoir  = new JCheckBox("Activer les pouvoirs", false);
+
 		JPanel panelTmp = new JPanel();
-		panelTmp.setPreferredSize(new Dimension(300, 100));
+		panelTmp.setPreferredSize(new Dimension(300, 200));
 		panelTmp.setOpaque(false);
 
 		this.add(this.lblLogo,  BorderLayout.NORTH);
 		this.add(this.lblTexte, BorderLayout.CENTER);
 		this.add(panelTmp,      BorderLayout.SOUTH);
+
+		panelTmp.add(this.cbPouvoir, BorderLayout.NORTH);
 
 		GereSouris gs = new GereSouris();
 		
@@ -161,6 +171,8 @@ public class PanelDebut extends JPanel
 
 			if (value == 1)
 				Controleur.NB_JOUEUR = 2;
+
+			PanelDebut.this.ctrl.setOption( PanelDebut.this.cbPouvoir.isSelected() );
 		}
 
 		public Integer trouverRect(int posX, int posY)
