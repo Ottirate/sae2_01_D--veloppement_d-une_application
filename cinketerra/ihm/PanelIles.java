@@ -476,7 +476,8 @@ public class PanelIles extends JPanel
 			this.polygons.add(p);
 		}
 	}
-	
+
+
 	public Polygon trouverPolygon(Ile i)
 	{
 		return this.polygons.get( this.ctrl.getIles(this.id).indexOf( i ) );

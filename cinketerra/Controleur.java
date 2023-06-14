@@ -20,7 +20,11 @@ import java.awt.Toolkit;
 
 public class Controleur implements WindowStateListener
 {
+	// Nombre de joueurs
 	public static int NB_JOUEUR = 0;
+
+	//Activer ou non les options
+	private boolean option = false;
 
 	// Joueur 1
 	private Mappe       metier1;
@@ -85,6 +89,9 @@ public class Controleur implements WindowStateListener
 		this.ihmMappe1.addWindowStateListener(this);
 		this.ihmPioche.addWindowStateListener(this);
 	}
+
+	public void    setOption(boolean state) {        this.option = state; }
+	public boolean getOption()              { return this.option;         }
 
 	public List<Ile> getIles(int id) 
 	{
