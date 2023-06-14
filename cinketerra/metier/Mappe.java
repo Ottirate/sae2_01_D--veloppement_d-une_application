@@ -83,15 +83,11 @@ public class Mappe
 	/** Le nombre de points */
 	private String        points;
 
-	private int id;
-
-
 	/**
 	 * Constructeur sans paramètres qui initialise l'objet.
 	 */
-	public Mappe(Controleur ctrl, PaquetDeCarte p, int id) 
+	public Mappe(Controleur ctrl, PaquetDeCarte p) 
 	{
-		this.id     = id;
 		this.ctrl   = ctrl;
 		this.paquet = p;
 		
@@ -258,11 +254,15 @@ public class Mappe
 	 * @param indice - l'indice associé à une carte
 	 * @return une {@code Carte}
 	 */
-	public Carte getCarte(int indice) { return this.paquet.getCarte(indice); }
+	public Carte   getCarte(int indice) { return this.paquet.getCarte(indice); }
 
-	public CarteBonus getCarteBonus() {return this.carteBonus;}
+	public static  CarteBonus getCarteBonus() {return Mappe.carteBonus;}
 
-	public void activerCarteBonus() { this.carteBonusActive = !this.carteBonusActive; }
+	public void    activerCarteBonus()   { this.carteBonusActive = !this.carteBonusActive; }
+
+	public boolean carteBonusEstActive() { return this.carteBonusActive;                   }
+
+	public boolean bonusAEteActive()     { return this.bonusAEteActive;                    }
 
 	/**
 	 * Retourne le nombre total de cartes.
@@ -315,11 +315,6 @@ public class Mappe
 
 		this.piocher();
 
-		if (!this.bonusAEteActive)
-			this.bonusAEteActive = this.carteBonusActive;
-
-		this.carteBonusActive = false;
-
 		if (this.paquet.getNbCarteRestante() == 0)
 			this.ctrl.showButton();
 	}
@@ -363,6 +358,11 @@ public class Mappe
 		Mappe.lstHistorique.add(new Mouvement(id, c));
 		this.recalculerPoints();
 
+		if (!this.bonusAEteActive)
+			this.bonusAEteActive = this.carteBonusActive;
+
+		this.carteBonusActive = false;
+
 		this.ctrl.majIHM();
 
 		return true;
@@ -399,10 +399,7 @@ public class Mappe
 
 		/* Si le chemin croise une arête déjà coloriée */
 		if (this.cheminCroise(c) && !(this.carteBonusActive && !this.bonusAEteActive && this.carteBonus.ordinal() == 1))
-		{
-			System.out.println("open croisade " + this.id);
 			return false;
-		}
 
 		/* Si le chemin forme un cycle */
 		if (this.aCycle(c)) return false;

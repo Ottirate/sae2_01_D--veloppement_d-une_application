@@ -276,7 +276,10 @@ public class PanelIles extends JPanel
 		this.historique = new Ellipse2D.Double(x + 10, y + 10, larg, larg );
 
 		//Dessiner la carte bonus
-		ImageIcon imgCarteBonus = redimensionnerIcon(new ImageIcon(this.ctrl.getImageBonus()), 25*this.coef / 50);
+		// if (this.ctrl.bonusAEteActive(this.id))
+		// 	imgCarteBonus = redimensionnerIcon(new ImageIcon(this.ctrl.getImageBonus()), 25*this.coef / 50);
+
+		ImageIcon imgCarteBonus = redimensionnerIcon(new ImageIcon(this.ctrl.getImageBonus(this.id)), 25*this.coef / 50);
 
 		x = largeur - imgCarteBonus.getIconWidth();
 		y = hauteur - imgCarteBonus.getIconHeight() - this.ctrl.getHauteur(1)/9;

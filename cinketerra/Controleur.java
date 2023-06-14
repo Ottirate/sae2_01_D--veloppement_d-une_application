@@ -50,12 +50,12 @@ public class Controleur implements WindowStateListener
 
 		PaquetDeCarte p = new PaquetDeCarte();
 
-		this.metier1    = new Mappe(this, p, 1);
+		this.metier1    = new Mappe(this, p);
 		this.ihmMappe1  = new FrameGame(this, 1);
 
 		if (Controleur.NB_JOUEUR == 2)
 		{
-			this.metier2    = new Mappe    (this, p, 2);
+			this.metier2    = new Mappe    (this, p);
 			this.ihmMappe2  = new FrameGame(this, 2);
 		}
 
@@ -139,13 +139,37 @@ public class Controleur implements WindowStateListener
 		else         this.metier2.activerCarteBonus();
 	}
 
-	public String getImageBonus()
+	public boolean carteBonusEstActive(int id)
 	{
-		CarteBonus cb = this.metier1.getCarteBonus();
-		String sRet = "./resources/cartes/bonus_";
-		if (cb != null) sRet += cb.name().toLowerCase() + ".png";
+		if (id == 1) return this.metier1.carteBonusEstActive();
+		else         return this.metier2.carteBonusEstActive();
+	}
 
-		return sRet;
+	public boolean bonusAEteActive(int id)
+	{
+		if (id == 1) return this.metier1.bonusAEteActive();
+		else         return this.metier2.bonusAEteActive();
+	}
+
+
+	public String getImageBonus(int id)
+	{
+		CarteBonus cb;
+		String sRet = "./resources/cartes/bonus_" + Mappe.getCarteBonus().name().toLowerCase();
+
+		if (id == 1 && this.metier1.bonusAEteActive())
+			return sRet + "_decoupe.png";
+
+		if (id == 2 && this.metier2.bonusAEteActive())
+			return sRet + "_decoupe.png";
+
+		if (id == 1 && this.metier1.carteBonusEstActive())
+			return sRet + "_select.png";
+			
+		if (id == 2 && this.metier2.carteBonusEstActive())
+			return sRet + "_select.png";
+
+		return sRet + ".png";
 	}
 
 	public String getImage(int indice)
