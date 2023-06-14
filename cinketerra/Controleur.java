@@ -1,15 +1,20 @@
- package cinketerra;
+/*
+* Auteur : Équipe 1
+* Date   : juin 2023
+* */
 
+
+/*      Paquetage      */
+package cinketerra;
+
+
+/*       Imports       */
 import java.util.List;
-import java.util.Arrays;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import cinketerra.ihm.FrameAnnonce;
-import cinketerra.ihm.FrameCartes;
-import cinketerra.ihm.FrameDebut;
-import cinketerra.ihm.FrameGame;
+import cinketerra.ihm.*;
 import cinketerra.metier.*;
 
 import java.awt.Color;
@@ -18,25 +23,32 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
 import java.awt.Toolkit;
 
+
+/**
+ * Controlleur de l'application, sert majoriterement de passerelle.
+ */
 public class Controleur implements WindowStateListener
 {
-	// Nombre de joueurs
-	public static int NB_JOUEUR = 0;
 
-	//Activer ou non les options
+
+	/* Attributs de Classe */
+	/*      Constants      */
+	public static  final int NB_JOUEUR = 2;
+
+
+	/*      Attributs      */
 	private boolean option = false;
 
-	// Joueur 1
 	private Mappe       metier1;
 	private FrameGame   ihmMappe1;
 
-	// Joueur 2
 	private Mappe       metier2;
 	private FrameGame   ihmMappe2;
 
-	//Pioche Commune
 	private FrameCartes ihmPioche;
 
+
+	/*    Constructeur     */
 	public Controleur()
 	{
 		FrameDebut frameD = new FrameDebut(this);
@@ -44,8 +56,8 @@ public class Controleur implements WindowStateListener
 		boolean debutDePartie = false;
 		while (!debutDePartie)
 		{
-			System.out.print(""); // Pour une raison inconnue, s'il n'est pas là ça ne marche plus ! /!\ TOUCHE PAS
-			// UPDATE: Uniquement sous Linux
+			System.out.print(""); // Pour une raison inconnue, s'il n'est pas là ça ne marche plus ! /!\ NE PAS TOUCHER
+			                        // UPDATE: Uniquement sous Linux
 
 			if (Controleur.NB_JOUEUR != 0)
 			{
@@ -92,18 +104,21 @@ public class Controleur implements WindowStateListener
 		this.ihmPioche.addWindowStateListener(this);
 	}
 
-	public void    setOptionActive(boolean state) {        this.option = state; }
-	public boolean getOptionActive()              { return this.option;         }
 
-	public List<Ile> getIles(int id) 
+
+
+	/*     Accesseurs      */
+
+
+	//Controleur
+	public boolean getOptionActive() { return this.option ;}
+	
+
+	//Mappe - Metier
+	public List<Ile>    getIles(int id) 
 	{
 		if (id == 1) return this.metier1.getIles();
 		else         return this.metier2.getIles();
-	}
-
-	public List<Carte> getCartes()
-	{
-		return this.metier1.getCartes(); //Le paquet est commun, on prend donc celui du joueur 1
 	}
 
 	public List<Chemin> getChemins(int id) 
@@ -112,42 +127,33 @@ public class Controleur implements WindowStateListener
 		else         return this.metier2.getChemins();
 	}
 
-	public int getHauteur(int id) 
-	{
-		if (id == 1) return this.ihmMappe1.getHeight();
-		else         return this.ihmMappe2.getHeight();
-	}
-
 	public List<Region> getRegions(int id) 
 	{
 		if (id == 1) return this.metier1.getRegions();
 		else         return this.metier2.getRegions();
 	}
 
-	public int getLargeur(int id) 
-	{
-		if (id == 1) return this.ihmMappe1.getWidth();
-		else         return this.ihmMappe2.getWidth();
-	}
-	
-	public int getLargeurPioche() { return this.ihmPioche.getWidth(); }
-	public int getHauteurPioche() { return this.ihmPioche.getHeight(); }
-	
-	// public CarteBonus getCarteBonus(int id)
-	// {
-	// 	if (id == 1) return this.metier1.getCarteBonus();
-
-	// 	if (Controleur.NB_JOUEUR == 2 && id == 2) return this.metier2.getCarteBonus();
-
-	// 	return null;
-	// }
-
-	public void activerCarteBonus(int id)
-	{
-		if (id == 1) this.metier1.activerCarteBonus();
-		else         this.metier2.activerCarteBonus();
+	public Color   getColFeutre(int id) 
+	{ 
+		if (id == 1) return this.metier1.getColFeutre();
+		else         return this.metier2.getColFeutre();
 	}
 
+	public Ile getIleDebut(int id) 
+	{
+		if (id == 1) return this.metier1.getIleDebut();
+		else         return this.metier2.getIleDebut();
+	}
+
+	public String getScore (int id)
+	{
+		if (id == 1) return this.metier1.getScore();
+		else         return this.metier2.getScore();
+	}
+
+
+	//Cartes - Metier
+	public List<Carte> getCartes() { return this.metier1.getCartes(); } //Le paquet est commun, on prend donc celui du joueur 1
 	public boolean carteBonusEstActive(int id)
 	{
 		if (id == 1) return this.metier1.carteBonusEstActive();
@@ -160,6 +166,38 @@ public class Controleur implements WindowStateListener
 		else         return this.metier2.bonusAEteActive();
 	}
 
+
+	//Mappe - IHM
+	public int getHauteur(int id) 
+	{
+		if (id == 1) return this.ihmMappe1.getHeight();
+		else         return this.ihmMappe2.getHeight();
+	}
+
+	public int getLargeur(int id) 
+	{
+		if (id == 1) return this.ihmMappe1.getWidth();
+		else         return this.ihmMappe2.getWidth();
+	}
+
+
+	//Pioche - IHM
+	public int getLargeurPioche() { return this.ihmPioche.getWidth() ; }
+	public int getHauteurPioche() { return this.ihmPioche.getHeight(); }
+
+
+	//Carte - Metier
+	public Carte getCarte     (int indice) { return this.metier1.getCarte(indice); }
+
+	public int   getNbCarteTotal        () { return this.metier1.getNbCarteTotal        (); }
+	public Carte getDerniereCartePiochee() { return this.metier1.getDerniereCartePiochee(); }
+	public int   getNbCarteRestante     () { return this.metier1.getNbCarteRestante     (); }
+
+	public boolean carteCachee(int indice)
+	{
+		if (this.metier1.getCarte(indice) == null) return false;
+		return this.metier1.getCarte(indice).estCache();
+	}
 
 	public String getImageBonus(int id)
 	{
@@ -203,11 +241,22 @@ public class Controleur implements WindowStateListener
 		return sRet;
 	}
 
-	public boolean carteCachee(int indice)
-	{
-		if (this.metier1.getCarte(indice) == null) return false;
 
-		return this.metier1.getCarte(indice).estCache();
+
+
+	/*     Modifieurs      */
+	public void    setOptionActive(boolean state) {        this.option = state; }
+
+
+
+
+	/*      Méthodes       */
+
+	// Cartes - Metier
+	public void activerCarteBonus(int id)
+	{
+		if (id == 1) this.metier1.activerCarteBonus();
+		else         this.metier2.activerCarteBonus();
 	}
 
 	public void piocher( int indice )
@@ -226,31 +275,11 @@ public class Controleur implements WindowStateListener
 			Mappe.addAction(new Mouvement("Bifurcation en cours...", "bifurcation"));
 		}
 
-		
-
 		this.majIHM();
 	}
 
-	public Carte getCarte(int indice)
-	{
-		return this.metier1.getCarte(indice);
-	}
 
-	public int getNbCarteTotal()
-	{
-		return this.metier1.getNbCarteTotal();
-	}
-
-	public Carte getDerniereCartePiochee()
-	{
-		return this.metier1.getDerniereCartePiochee();
-	}
-
-	public int getNbCarteRestante()
-	{
-		return this.metier1.getNbCarteRestante();
-	}
-
+	//Mappe - Metier
 	public Chemin  trouverChemin (Ile i1, Ile i2, int id) 
 	{
 		if (id == 1) return this.metier1.trouverChemin(i1,i2);
@@ -269,36 +298,39 @@ public class Controleur implements WindowStateListener
 		else         return this.metier2.estColoriable(c);
 	}
 
-	public Color   getColFeutre(int id) 
-	{ 
-		if (id == 1) return this.metier1.getColFeutre();
-		else         return this.metier2.getColFeutre();
-	}
 
-	public Ile getIleDebut(int id) 
-	{
-		if (id == 1) return this.metier1.getIleDebut();
-		else         return this.metier2.getIleDebut();
-	}
-
-
+	// IHM
 	public void majIHM ()
 	{
 		if (this.ihmPioche != null) this.ihmPioche.maj();
 		if (this.ihmMappe1 != null) this.ihmMappe1.maj();
 		if (this.ihmMappe2 != null) this.ihmMappe2.maj();
+	}
+	
+	public void windowStateChanged(WindowEvent e)
+	{
+		if (JFrame.class.cast(e.getSource()).getState() == JFrame.ICONIFIED) {
+			this.ihmMappe1.setState(JFrame.ICONIFIED);
+			if (this.ihmMappe2 != null)
+				this.ihmMappe2.setState(JFrame.ICONIFIED);
+			this.ihmPioche.setState(JFrame.ICONIFIED);
+		}
 
-		//for (Mouvement m : Mappe.getActions())
-			//System.out.println(m);
+		if (JFrame.class.cast(e.getSource()).getState() == JFrame.NORMAL) {
+			this.ihmMappe1.setState(JFrame.NORMAL);
+			if (this.ihmMappe2 != null)
+				this.ihmMappe2.setState(JFrame.NORMAL);
+			this.ihmPioche.setState(JFrame.NORMAL);
+		}
 	}
 
+
+	// Controleur
 	public void initialiserManche ()
 	{
-		//Metier
 		this.metier1.initialiserManche();
 		if (this.metier2 != null) this.metier2.initialiserManche();
 
-		//IHM
 		this.ihmPioche.hideButton();
 		this.ihmPioche.initPioche();
 		this.ihmMappe1.newManche();
@@ -306,6 +338,8 @@ public class Controleur implements WindowStateListener
 
 	}
 
+
+	// IHM - Pioche
 	public void showButton() {this.ihmPioche.showButton();}
 	public void bloquerPioche(boolean bloque) { if (this.ihmPioche != null) this.ihmPioche.bloquerPioche(bloque); }
 
@@ -349,29 +383,8 @@ public class Controleur implements WindowStateListener
 		this.ihmPioche.dispose();
 	}
 
-	public String getScore (int id)
-	{
-		if (id == 1) return this.metier1.getScore();
-		else         return this.metier2.getScore();
-	}
 
-	public void windowStateChanged(WindowEvent e)
-	{
-		if (JFrame.class.cast(e.getSource()).getState() == JFrame.ICONIFIED) {
-			this.ihmMappe1.setState(JFrame.ICONIFIED);
-			if (this.ihmMappe2 != null)
-				this.ihmMappe2.setState(JFrame.ICONIFIED);
-			this.ihmPioche.setState(JFrame.ICONIFIED);
-		}
-
-		if (JFrame.class.cast(e.getSource()).getState() == JFrame.NORMAL) {
-			this.ihmMappe1.setState(JFrame.NORMAL);
-			if (this.ihmMappe2 != null)
-				this.ihmMappe2.setState(JFrame.NORMAL);
-			this.ihmPioche.setState(JFrame.NORMAL);
-		}
-	}
-
+	// IHM - Historique
 	public void hideHistorique (int id) 
 	{
 		if (id == 1) this.ihmMappe1.hideHistorique();
@@ -383,6 +396,8 @@ public class Controleur implements WindowStateListener
 		else         this.ihmMappe2.showHistorique();
 	}
 
+
+	// Main
 	public static void main(String[] args)
 	{
 		new Controleur();
