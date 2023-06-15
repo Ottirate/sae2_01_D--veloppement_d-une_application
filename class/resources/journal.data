@@ -1,33 +1,35 @@
-[Thu Jun 15 16:04:49 CEST 2023]
-(00:17:970)
-10/7
+[Thu Jun 15 20:07:34 CEST 2023]
+(00:34:344)
+8/9
 Croisement
-Vert	primaire
-1	Kita	TicÃ³	rouge
-1	Croisement
+Rouge	secondaire
+1	Tavula	Ticó	rouge
+2	Massao	Mutaa	bleu
 Jaune	secondaire
-1	TicÃ³	LaÃ§ao	rouge
-1	Croisement
-Brun	secondaire
+1	Tavula	Tiamù	rouge
+2	Milaù	Massao	bleu
+Multi	secondaire
 2	Mutaa	Khont-Rolah	bleu
-2	Croisement
-Jaune	primaire
-1	LaÃ§ao	MilaÃ¹	rouge
+1	Tokha	Tiamù	rouge
 1	Croisement
-2	Kosa	Khont-Rolah	bleu
-2	Croisement
+Multi	primaire
+1	Kita	Ticó	rouge
+2	Kiola	Khont-Rolah	bleu
 Brun	primaire
-2	Kosa	Kiola	bleu
-2	Croisement
-1	MilaÃ¹	Khont-Rolah	rouge
-1	Croisement
-Vert	secondaire
-Rouge	primaire
-Multi	primaire
-Croisement
-Croisement
-Multi	primaire
-Jaune	primaire
+bifurcation
+2	Mokah	Mutaa	bleu
 Vert	primaire
+Jaune	primaire
 Rouge	primaire
+Croisement
+CompteDouble
+Multi	primaire
+Rouge	secondaire
+Multi	secondaire
+Rouge	primaire
+Vert	primaire
+bifurcation
+Jaune	primaire
+Brun	secondaire
+Jaune	secondaire
 Brun	primaire
