@@ -192,21 +192,18 @@ public class Mappe
 		this.paquet.reinitialiser();
 		this.ctrl  .bloquerPioche(false);
 
-		if (Mappe.carteBonus == null)
+		this.definirFeutre();
+
+		if (Mappe.carteBonus == null || Mappe.colors.size() == 0)
 			Mappe.carteBonus = Mappe.lstCarteBonus.remove(0);
 
 		this.carteBonusActive = false;
 		this.bonusAEteActive  = false;
 
-		this.definirFeutre();
-
 		this.estDebutManche = true;
 
 		if (Mappe.tourEventBifurcation == -1)
 			Mappe.tourEventBifurcation = (int) ( Math.random() * 11 );
-
-		System.out.println("Nouvelle manche avec coul :" + this.feutre);
-
 
 		Mappe.addAction(new Mouvement("La carte bonus " + Mappe.carteBonus + " a été pioché.",
 			                           Mappe.carteBonus + ""));
@@ -375,8 +372,6 @@ public class Mappe
 		if (!this.estColoriable(c))
 			return false;
 
-		System.out.println("CEST COLORIABLE ALORS COLORIE FDP");
-
 		if (c.getCouleurPrim() == null)
 			c.setCouleurPrim(this.feutre);
 		else
@@ -391,11 +386,6 @@ public class Mappe
 
 			if (!this.ileAppartientALigne(c.getIleB()))
 				this.colBonus = c.getIleB().getCoul();
-
-			System.out.println("L'ile " + c.getIleA().getCoul() + "appartient ? " + this.ileAppartientALigne(c.getIleA()));
-			System.out.println("L'ile " + c.getIleB().getCoul() + "appartient ? " + this.ileAppartientALigne(c.getIleB()));
-
-			System.out.println("colBonus " + this.colBonus);
 
 			this.bonusBis = true;
 			//(this.carteBonusActive && !this.bonusAEteActive && Mappe.carteBonus.ordinal() == 0)
@@ -421,11 +411,11 @@ public class Mappe
 
 
 		if (!this.bonusAEteActive)
-		{
 			this.bonusAEteActive = this.carteBonusActive;
-			Mappe.addAction(new Mouvement("Le joueur " + this.id + " a utiliser son pouvoir " + Mappe.carteBonus,
+
+		if (this.bonusAEteActive && this.carteBonusActive)
+			Mappe.addAction(new Mouvement("Le joueur " + this.id + " a utilisé son pouvoir " + Mappe.carteBonus,
 			                               this.id + "\t" + Mappe.carteBonus));
-		}
 
 		this.carteBonusActive = false;
 
@@ -468,9 +458,6 @@ public class Mappe
 		/* Si le bonus BIS est actif */
 		if (this.bonusBis)
 		{
-			System.out.println("ileA coul = " + ileA.getCoul() + " ileB coul = " + ileB.getCoul());
-			System.out.println("ileA appartient " + this.ileAppartientALigne(ileA) + "  -  ileB appartient " + this.ileAppartientALigne(ileB));
-
 			if ( !( (!this.ileAppartientALigne(ileA) && ileA.getCoul().equals(this.colBonus) ) ||
 			        (!this.ileAppartientALigne(ileB) && ileB.getCoul().equals(this.colBonus) ) ) )
 				return false;
@@ -492,8 +479,6 @@ public class Mappe
 			else
 				return false;
 		
-		System.out.println("G");
-
 		/* Si c'est une extrémité ou si la direction est pas une bonne couleur */
 		if (this.getNbCarteTotal() - this.getNbCarteRestante() == Mappe.getTourEvent("Bifurcation"))
 			return (this.ileAppartientALigne(ileB) && this.bonneCouleur(ileA)) || (this.ileAppartientALigne(ileA) && this.bonneCouleur(ileB));
@@ -626,7 +611,6 @@ public class Mappe
 		for (Chemin c : this.lstCheminColorie)
 		{
 			bonusChemins += c.getBonus();
-			// if (c.getBonus() != 0) System.out.println("Bonus: " + c.getBonus());
 		}
 
 		boolean red = false;
@@ -713,5 +697,6 @@ public class Mappe
 	public static void forceCarteBonus(CarteBonus cb)
 	{
 		Mappe.carteBonus = cb;
+		//Mappe.lstCarteBonus.remove(cb);
 	}
 }

@@ -59,6 +59,7 @@ public class PanelDebut extends JPanel implements ActionListener
 	private boolean    debug;
 
 	private JCheckBox         cbCarteCachee;
+	private JCheckBox         cbOptionPouvoir;
 	private JComboBox<String> ddlstTest;
 	private JButton           btnCommencer;
 
@@ -82,7 +83,7 @@ public class PanelDebut extends JPanel implements ActionListener
 		Image scaledImg = img.getScaledInstance(300, 200, Image.SCALE_SMOOTH);
 		this.lblLogo    = new JLabel(new ImageIcon(scaledImg));
 
-		this.cbPouvoir  = new JCheckBox("Activer les pouvoirs", false);
+		this.cbPouvoir       = new JCheckBox("Activer les pouvoirs", false);
 
 		JPanel panelTmp = new JPanel();
 		panelTmp.setPreferredSize(new Dimension(300, 200));
@@ -98,18 +99,28 @@ public class PanelDebut extends JPanel implements ActionListener
 		{
 			JPanel panelDebug = new JPanel( new GridLayout(7, 1) );
 
-			String[] ensTest  = new String[] {"Premières cartes noires","Premières cartes blanches","Intersections", "Cycle", "Scénario libre"};
+			String[] ensTest  = new String[] {
+				"Scénario libre (1 joueur)",
+				"Croisements & Cycles",
+				"Deux joueurs & Bifurcation",
+				"Journal de bord",
+				"Rebond & Carte unique",
+				"Score & Compte double",
+				"Double passage & Chemin unique"
+			};
 
 			this.cbCarteCachee = new JCheckBox("Montrer les cartes", true);
 			this.ddlstTest     = new JComboBox<String>(ensTest);
 			this.btnCommencer  = new JButton("Commencer");
 
-			panelDebug.add( cbCarteCachee );
-			panelDebug.add( ddlstTest     );
-			panelDebug.add( btnCommencer  );
+			panelDebug.add( this.cbCarteCachee );
+			panelDebug.add( this.cbPouvoir     );
+			panelDebug.add( this.ddlstTest     );
+			panelDebug.add( this.btnCommencer  );
 
 			/*     Activation      */
 			this.btnCommencer.addActionListener(this);
+			this.ddlstTest.addActionListener(this);
 
 			panelTmp.add(panelDebug, BorderLayout.NORTH);
 		}
@@ -129,21 +140,31 @@ public class PanelDebut extends JPanel implements ActionListener
 
 	public void actionPerformed( ActionEvent e )
 	{
-		if (this.debug)
+		if (e.getSource() == this.ddlstTest)
 		{
-			int indiceScenario = ddlstTest.getSelectedIndex();
-
-			if (indiceScenario != 0)
+			if ( this.ddlstTest.getSelectedIndex() == 0 ) this.cbPouvoir.setEnabled(true );
+			else                                          this.cbPouvoir.setEnabled(false);
+		}
+		else if (e.getSource() == this.btnCommencer)
+		{
+			if (this.debug)
 			{
-				Controleur.cacherCarte          (this.cbCarteCachee.isSelected());
-				Controleur.prendreOptionScenario(indiceScenario);
+				int indiceScenario = ddlstTest.getSelectedIndex();
 
-				this.ctrl.numScenario = indiceScenario;
-			}
-			else
-			{
-				Controleur.setNbJoueur(1);
-				Controleur.debug = false;
+				Controleur.cacherCarte(this.cbCarteCachee.isSelected());
+
+				if (indiceScenario != 0)
+				{
+					Controleur.prendreOptionScenario(indiceScenario);
+
+					this.ctrl.numScenario = indiceScenario;
+				}
+				else
+				{
+					Controleur.setOptionActive( PanelDebut.this.cbPouvoir.isSelected() );
+					Controleur.debug = false;
+					Controleur.setNbJoueur(1);
+				}
 			}
 		}
 	}
@@ -254,7 +275,7 @@ public class PanelDebut extends JPanel implements ActionListener
 			if (value == 1) Controleur.setNbJoueur(2);
 			else            Controleur.setNbJoueur(1); // si value == 0
 
-			PanelDebut.this.ctrl.setOptionActive( PanelDebut.this.cbPouvoir.isSelected() );
+			Controleur.setOptionActive( PanelDebut.this.cbPouvoir.isSelected() );
 		}
 
 		public Integer trouverRect(int posX, int posY)

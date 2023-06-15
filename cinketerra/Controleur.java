@@ -65,7 +65,7 @@ public class Controleur implements WindowStateListener
 	{
 		Controleur.debug = debug;
 
-		FrameDebut frameD = new FrameDebut(this, debug);
+		FrameDebut frameD = new FrameDebut(this, Controleur.debug);
 
 		while (Controleur.NB_JOUEUR == -1)
 		{
@@ -111,8 +111,7 @@ public class Controleur implements WindowStateListener
 		this.ihmMappe1.addWindowStateListener(this);
 		this.ihmPioche.addWindowStateListener(this);
 
-		if (debug)
-			this.lancerScenario( this.numScenario );
+		if (Controleur.debug) this.lancerScenario( this.numScenario );
 	}
 
 
@@ -299,8 +298,8 @@ public class Controleur implements WindowStateListener
 
 	public boolean colorier (Chemin c, int id) 
 	{ 
-		if (id == 1){System.out.println("Joueur " + id + " joue " + c); return this.metier1.colorier(c, id); }
-		else        {System.out.println("Joueur " + id + " joue " + c); return this.metier2.colorier(c, id); }
+		if (id == 1) return this.metier1.colorier(c, id); 
+		else         return this.metier2.colorier(c, id);
 	}
 
 	public boolean estColoriable(Chemin c, int id) 
@@ -488,19 +487,18 @@ public class Controleur implements WindowStateListener
 						Ile    ileB      = this.metier1.getIleId     (ensInfo[2]);
 						Chemin c         = this.metier1.trouverChemin(ileA, ileB);
 
-						// System.out.println(c);
-
 						this.metier1.colorier(c, 1);
 					}	
 					else
 					{
-						Ile    ileA      = this.metier2.getIleId     (ensInfo[1]);
-						Ile    ileB      = this.metier2.getIleId     (ensInfo[2]);
-						Chemin c         = this.metier2.trouverChemin(ileA, ileB);
+						if (this.metier2 != null)
+						{
+							Ile    ileA      = this.metier2.getIleId     (ensInfo[1]);
+							Ile    ileB      = this.metier2.getIleId     (ensInfo[2]);
+							Chemin c         = this.metier2.trouverChemin(ileA, ileB);
 
-						// System.out.println(c);
-
-						this.metier2.colorier(c, 2);
+							this.metier2.colorier(c, 2);
+						}
 					}
 				}
 
@@ -513,7 +511,10 @@ public class Controleur implements WindowStateListener
 					{
 						for (CarteBonus cb : CarteBonus.values())
 							if (cb.name().equals(ensInfo[0]))
+							{
 								Mappe.forceCarteBonus(cb);
+								System.out.println(ensInfo[0]);
+							}
 					}
 				}
 
@@ -544,15 +545,13 @@ public class Controleur implements WindowStateListener
 				if (cb.name().equals(ensInfo[3]))
 					Mappe.forceCarteBonus(cb);
 
-			String color = ensInfo[4];
-
-			if (color.equals("red")) Mappe.colors = new ArrayList<>(Arrays.asList( Color.RED , Color.BLUE));
-			else                     Mappe.colors = new ArrayList<>(Arrays.asList( Color.BLUE, Color.RED ));
+			if (ensInfo[4].equals("rouge")) Mappe.colors = new ArrayList<>(Arrays.asList( Color.RED , Color.BLUE));
+			else                            Mappe.colors = new ArrayList<>(Arrays.asList( Color.BLUE, Color.RED ));
 
 			if (Integer.parseInt(ensInfo[0]) == 2)
 			{
-				if (Mappe.colors.get(0) == Color.RED) Collections.addAll(Mappe.colors, Color.RED , Color.BLUE);
-				else                                  Collections.addAll(Mappe.colors, Color.BLUE, Color.RED );
+				if (Mappe.colors.get(0) == Color.BLUE) Collections.addAll(Mappe.colors, Color.RED , Color.BLUE);
+				else                                   Collections.addAll(Mappe.colors, Color.BLUE, Color.RED );
 			}
 
 			Controleur.setNbJoueur    (Integer.parseInt(ensInfo[0]));

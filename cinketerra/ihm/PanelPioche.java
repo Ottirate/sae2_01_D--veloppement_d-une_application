@@ -191,10 +191,6 @@ public class PanelPioche extends JPanel
 			this.g2.drawString("Cartes restantes : ", this.calculPosCarteDefausse(4), 20);
 			this.g2.drawString("Pioche : "          , this.calculPosCartePioche  (0        ), 20);
 		}
-
-		for (Rectangle rectangle : ensCartePioche) {
-			g2.draw(rectangle);
-		}
 	}
 	
 	public int calculPosCartePioche  ( int indice )
