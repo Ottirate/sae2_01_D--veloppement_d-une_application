@@ -43,4 +43,4 @@ Avec ce mode de jeux, vous aruez la possibilité de voir et donc de choisir vos 
 
 Il peut s'avérer compliqué de penser à toute les combinaisons que le joueur peut faire et qui pourrait mener à un bug. C'est pour cela qu'il existe, en plus de nos scénario proposés, un mode libre qui vous permettra de jouer en choissisant les cartes que vous voulez jouer.
 
-https://docs.google.com/document/d/161Mv8-FECVl0T5Z2e_yBtuw_mj4pEO3O6XGItGFr3u4/edit#heading=h.er4552uix4i2[google]
+[Google Doc](https://docs.google.com/document/d/161Mv8-FECVl0T5Z2e_yBtuw_mj4pEO3O6XGItGFr3u4/edit#heading=h.er4552uix4i2)
