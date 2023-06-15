@@ -1,14 +1,5 @@
-/*
-* Auteur : Équipe 1
-* Date   : juin 2023
-* */
-
-
-/*      Paquetage      */
 package cinketerra.ihm;
 
-
-/*       Imports       */
 import java.awt.BorderLayout;
 
 import javax.swing.JButton;
@@ -19,15 +10,19 @@ import cinketerra.Controleur;
 
 import java.awt.event.*;
 
-
 /**
- * Frame qui contient la pioche
+ * Frame qui contient la pioche.
+ * 
+ * @author Équipe 1
+ * @date juin 2023
  */
 public class FrameCartes extends JFrame implements ActionListener
 {
 
-
+	/*---------------------*/
 	/*      Attributs      */
+	/*---------------------*/
+	
 	private Controleur ctrl;
 
 	private PanelPioche panelPioche;
@@ -36,38 +31,54 @@ public class FrameCartes extends JFrame implements ActionListener
 	private JButton btnManche;
 
 
-	/*    Constructeur     */
+	/**
+	 * Constructeur qui prend un objet {@code Controleur} en paramètre.
+	 * 
+	 * @param ctrl le controleur
+	 */
 	public FrameCartes(Controleur ctrl) 
 	{
 		this.ctrl = ctrl;
 
-		//Paramètre de base
+		/*---------------------*/
+		/*  Paramètre de base  */
+		/*---------------------*/
+
 		this.setTitle("Pioche");
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 
-		this.setLayout(new BorderLayout());
-
 		this.setSize(1280, 350);
 
-		//Création des composants
+
+		/*---------------------------*/
+		/*  Création des composants  */
+		/*---------------------------*/
+
 		this.btnManche   = new JButton("Manche suivante");
 		this.panelPioche = new PanelPioche(ctrl);
 
-		panelBtn = new JPanel();
-		panelBtn.setOpaque(false);
+		this.panelBtn = new JPanel();
+		this.panelBtn.setOpaque(false);
 
-		//Ajout des composants
-		panelBtn.add(this.btnManche);
+
+		/*------------------------*/
+		/*  Ajout des composants  */
+		/*------------------------*/
+
+		this.panelBtn.add(this.btnManche);
 
 		this.add( this.panelBtn,    BorderLayout.SOUTH  );
 		this.add( this.panelPioche, BorderLayout.CENTER );
 
-		//Activation
+		
+		/*----------------------*/
+		/*      Activation      */
+		/*----------------------*/
+
 		this.hideButton();
 		this.btnManche.addActionListener(this);
 
-		//Visible
 		this.setVisible(true);
 	}
 

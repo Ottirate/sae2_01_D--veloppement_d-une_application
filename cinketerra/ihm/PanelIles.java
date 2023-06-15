@@ -24,17 +24,11 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
-
 /**
  * Panel affichant la map (iles, chemin, etc...)
  */
 public class PanelIles extends JPanel
 {
-
-
-
 
 	/* Attributs de Classe */
 	/*      Constants      */
@@ -66,7 +60,9 @@ public class PanelIles extends JPanel
 
 
 
-	/*    Constructeur     */
+	/**
+	 * Constructeur.
+	 */
 	public PanelIles(Controleur ctrl, int id) 
 	{
 		this.ctrl = ctrl;
@@ -317,11 +313,15 @@ public class PanelIles extends JPanel
 
 
 		//Afficher le score
-		g2.setColor(Color.WHITE);
+		g2.setColor(Color.BLACK);
+		g2.setFont( boldFont );
+
 		String[] ensS = PanelIles.this.ctrl.getScore(this.id).split(";");
 		g2.drawString( "Total : "+ensS[0], xPanneau+30, yPanneau + (int)(imgPanneau.getIconHeight()/2) );
-		g2.drawString( " -"+ensS[1], xPanneau+30, yPanneau + (int)(imgPanneau.getIconHeight()/2+15) );
-		g2.drawString( " -"+ensS[2], xPanneau+30, yPanneau + (int)(imgPanneau.getIconHeight()/2+30) );
+
+		g2.setColor(new Color(61,26,0));
+		g2.drawString( " -"      +ensS[1], xPanneau+30, yPanneau + (int)(imgPanneau.getIconHeight()/2+15)    );
+		g2.drawString( " -"      +ensS[2], xPanneau+30, yPanneau + (int)(imgPanneau.getIconHeight()/2+30)    );
 
 
 		//Dessiner le logo de l'historique en bas à droite

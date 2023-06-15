@@ -132,7 +132,7 @@ public class Mappe
 		
 		try
 		{
-			Scanner scan = new Scanner(new FileInputStream(Mappe.NOM_FICHIER + "data.csv"), StandardCharsets.UTF_8);
+			Scanner scan = new Scanner(new FileInputStream(Mappe.NOM_FICHIER + "data.data"), StandardCharsets.UTF_8);
 
 			while (scan.hasNextLine()) {
 				String s = scan.nextLine();
@@ -480,7 +480,7 @@ public class Mappe
 		int nbColorie = 0;
 
 		for (Chemin chemin : i.getCheminAutour())
-			if (chemin.getCouleurPrim() == this.feutre)
+			if (chemin.getCouleurPrim() == this.feutre || chemin.getCouleurSec() == this.feutre)
 				nbColorie ++;
 
 		return nbColorie == 1;
@@ -641,7 +641,7 @@ public class Mappe
 	{
 		try
 		{
-			PrintWriter pw = new PrintWriter( new FileOutputStream(Mappe.NOM_FICHIER + "journal.csv") );
+			PrintWriter pw = new PrintWriter( new FileOutputStream(Mappe.NOM_FICHIER + "journal.data") );
 
 			pw.println ("[" + new Date().toString() + "]" );
 			pw.println ("(" + this.tempPartie() + ")" );
