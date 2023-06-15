@@ -7,34 +7,7 @@ Multi	secondaire
 1	CompteDouble
 2	Milaù	Laçao	bleu
 Vert	primaire
-bifurcation
 2	Laçao	Tokha
 Jaune	secondaire
 1	Tokha	Tiamù	bleu
-Jaune	primaire
 Rouge	secondaire
-
-/*
-2	Kita	Ticó	rouge
-
-1	Massao	Mutaa	bleu
-2	Tavula	Ticó	rouge
-Multi	primaire
-1	Milaù	Massao	bleu
-2	Tavula	Tokha	rouge
-Vert	secondaire
-
-2	Tokha	Laçao	rouge
-2	Laçao	Milaù	rouge
-1	Laçao	Milaù	bleu
-
-2	Milaù	Massao	rouge
-1	Loà	Laçao	bleu
-
-2	Maÿa	Massao	rouge
-
-2	Maÿa	Mokah	rouge
-1	Bis
-1	Mokah	Mutaa	bleu
-1	Mokah	Fissah	bleu
-*/
