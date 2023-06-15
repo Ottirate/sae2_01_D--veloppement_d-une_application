@@ -51,26 +51,6 @@ public class Controleur implements WindowStateListener
 	public Controleur()
 	{
 		FrameDebut frameD = new FrameDebut(this);
-		
-		/*boolean debutDePartie = false;
-		while (!debutDePartie)
-		{
-			System.out.print(""); // Pour une raison inconnue, s'il n'est pas là ça ne marche plus ! /!\ NE PAS TOUCHER
-			                      // UPDATE: Uniquement sous Linux
-
-			if (Controleur.NB_JOUEUR != 0)
-			{
-				debutDePartie = true;
-				frameD.dispose();
-			}
-		}*/
-
-		/*
-				--->  A TESTER SUR LINUX ET WINDOWS  <---
-
-			je vous explique demain
-			- Clément
-		*/
 
 		while (Controleur.NB_JOUEUR == -1)
 		{
