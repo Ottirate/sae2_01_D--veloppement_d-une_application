@@ -133,8 +133,18 @@ public class PanelDebut extends JPanel implements ActionListener
 		{
 			int indiceScenario = ddlstTest.getSelectedIndex();
 
-			Controleur.cacherCarte( this.cbCarteCachee.isSelected() );
-			Mappe.prendreOptionScenario(indiceScenario);
+			if (indiceScenario != 0)
+			{
+				Controleur.cacherCarte          (this.cbCarteCachee.isSelected());
+				Controleur.prendreOptionScenario(indiceScenario);
+
+				this.ctrl.numScenario = indiceScenario;
+			}
+			else
+			{
+				Controleur.setNbJoueur(1);
+				Controleur.debug = false;
+			}
 		}
 	}
 

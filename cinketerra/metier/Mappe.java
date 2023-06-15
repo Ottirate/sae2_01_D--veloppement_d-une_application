@@ -34,7 +34,7 @@ public class Mappe
 	public  static final String      NOM_FICHIER = "./resources/";
 
 	/** Liste de constantes de couleurs */
-	private static List<Color>       colors;
+	public  static List<Color>       colors;
 
 	private static List<Mouvement>   lstHistorique;
 
@@ -120,13 +120,16 @@ public class Mappe
 
 		// Mélange de la liste des cartes bonus
 		Collections.shuffle(Mappe.lstCarteBonus);
-		
-		if (Mappe.colors == null)
-			if ((int) (Math.random()*2) == 1) Mappe.colors = new ArrayList<>(Arrays.asList( Color.RED , Color.BLUE));
-			else                              Mappe.colors = new ArrayList<>(Arrays.asList( Color.BLUE, Color.RED ));
-		else
-			if (Mappe.colors.get(0) == Color.RED) Collections.addAll(Mappe.colors, Color.RED , Color.BLUE);
-			else                                  Collections.addAll(Mappe.colors, Color.BLUE, Color.RED );
+
+		if (!Controleur.debug)
+		{
+			if (Mappe.colors == null)
+				if ((int) (Math.random()*2) == 1) Mappe.colors = new ArrayList<>(Arrays.asList( Color.RED , Color.BLUE));
+				else                              Mappe.colors = new ArrayList<>(Arrays.asList( Color.BLUE, Color.RED ));
+			else
+				if (Mappe.colors.get(0) == Color.RED) Collections.addAll(Mappe.colors, Color.RED , Color.BLUE);
+				else                                  Collections.addAll(Mappe.colors, Color.BLUE, Color.RED );
+		}
 
 		this.lstRegions       = new ArrayList<>();
 		this.lstIles          = new ArrayList<>();
@@ -697,34 +700,6 @@ public class Mappe
 	/**               Forcage              */
 	/**                                    */
 
-	public static void prendreOptionScenario(int num)
-	{
-		try
-		{
-			Scanner scan = new Scanner(new FileInputStream(Mappe.NOM_FICHIER + "scenarios/scenario_" + num + ".data"), StandardCharsets.UTF_8);
-
-			String   s       = scan.nextLine();
-			String[] ensInfo = s.split("\t");
-
-			if (ensInfo[1].equals("true")) Controleur.setOptionActive(true) ;
-			else                           Controleur.setOptionActive(false);
-
-			Controleur.setNbJoueur    (Integer.parseInt(ensInfo[0]));
-
-			for (CarteBonus cb : CarteBonus.values())
-				if (cb.name().equals(ensInfo[3]))
-					Mappe.forceCarteBonus(cb);
-
-			scan.close();
-			System.out.println(s);
-		}
-		catch (Exception e)
-		{
-			System.out.println("Nom fichier invalide : " + Mappe.NOM_FICHIER + "scenarios/scenario_" + num + ".data");
-			e.printStackTrace();
-		}
-	}
-
 	public void melangerPioche(boolean etat)
 	{
 		this.piocheMelangee = etat;
@@ -738,21 +713,5 @@ public class Mappe
 	public static void forceCarteBonus(CarteBonus cb)
 	{
 		Mappe.carteBonus = cb;
-	}
-
-	public void forcerCouleur(Color c)
-	{
-		if (this.id == 1)
-			if (c.equals(Color.BLUE))
-				Mappe.colors = new ArrayList<>(Arrays.asList(Color.BLUE, Color.RED));
-			else
-				Mappe.colors = new ArrayList<>(Arrays.asList(Color.RED , Color.BLUE));
-		else
-			if (Mappe.colors.get(0) == Color.RED) Collections.addAll(Mappe.colors, Color.RED , Color.BLUE);
-			else                                  Collections.addAll(Mappe.colors, Color.BLUE, Color.RED );
-
-
-		this.definirFeutre();
-		System.out.println("Refaire feutre");
 	}
 }

@@ -8,6 +8,9 @@
 package cinketerra;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 /*       Imports       */
 import java.util.List;
 import java.util.Scanner;
@@ -51,7 +54,10 @@ public class Controleur implements WindowStateListener
 
 	private FrameCartes ihmPioche;
 
+	/**   Scénarios    */
 	public static boolean debug;
+	public        int     numScenario;
+
 
 
 	/*    Constructeur     */
@@ -106,7 +112,7 @@ public class Controleur implements WindowStateListener
 		this.ihmPioche.addWindowStateListener(this);
 
 		if (debug)
-			this.lancerScenario( 0 );
+			this.lancerScenario( this.numScenario );
 	}
 
 
@@ -442,17 +448,6 @@ public class Controleur implements WindowStateListener
 
 			Mappe.setTourEventBifurcation(Integer.parseInt(ensInfo[2]));
 
-			// Si c'est le joueur 1, on lui met sa couleur
-			if (ensInfo[4].equals("rouge")) this.metier1.forcerCouleur(Color.RED );
-			else                            this.metier1.forcerCouleur(Color.BLUE);
-			//Sinon, on met la couleur opposé
-			
-			if (this.metier2 != null)
-				if (ensInfo[4].equals("rouge")) this.metier2.forcerCouleur(Color.BLUE);
-				else                            this.metier2.forcerCouleur(Color.RED );
-
-			
-
 			scan.nextLine();
 
 
@@ -485,13 +480,28 @@ public class Controleur implements WindowStateListener
 				// Si il y a les infos d'une prise de chemin
 				if (ensInfo.length == 4)
 				{
-					int    numJoueur = Integer.parseInt (ensInfo[0]);
-					Ile    ileA      = this.metier1.getIleId(ensInfo[1]);
-					Ile    ileB      = this.metier1.getIleId(ensInfo[2]);
-					Chemin c         = this.metier1.trouverChemin(ileA, ileB);
+					int    numJoueur = Integer.parseInt     (ensInfo[0]);
+					
+					if (numJoueur == 1)
+					{
+						Ile    ileA      = this.metier1.getIleId     (ensInfo[1]);
+						Ile    ileB      = this.metier1.getIleId     (ensInfo[2]);
+						Chemin c         = this.metier1.trouverChemin(ileA, ileB);
 
-					if (numJoueur == 1) this.metier1.setColor(c);
-					else                this.metier2.colorier(c, numJoueur);
+						// System.out.println(c);
+
+						this.metier1.colorier(c, 1);
+					}	
+					else
+					{
+						Ile    ileA      = this.metier2.getIleId     (ensInfo[1]);
+						Ile    ileB      = this.metier2.getIleId     (ensInfo[2]);
+						Chemin c         = this.metier2.trouverChemin(ileA, ileB);
+
+						// System.out.println(c);
+
+						this.metier2.colorier(c, 2);
+					}
 				}
 
 				//Evennement
@@ -508,6 +518,44 @@ public class Controleur implements WindowStateListener
 				}
 
 			}
+
+			scan.close();
+		}
+		catch (Exception e)
+		{
+			System.out.println("Nom fichier invalide : " + Mappe.NOM_FICHIER + "scenarios/scenario_" + num + ".data");
+			e.printStackTrace();
+		}
+	}
+
+	public static void prendreOptionScenario(int num)
+	{
+		try
+		{
+			Scanner scan = new Scanner(new FileInputStream(Mappe.NOM_FICHIER + "scenarios/scenario_" + num + ".data"), StandardCharsets.UTF_8);
+
+			String   s       = scan.nextLine();
+			String[] ensInfo = s.split("\t");
+
+			if (ensInfo[1].equals("true")) Controleur.setOptionActive(true) ;
+			else                           Controleur.setOptionActive(false);
+
+			for (CarteBonus cb : CarteBonus.values())
+				if (cb.name().equals(ensInfo[3]))
+					Mappe.forceCarteBonus(cb);
+
+			String color = ensInfo[4];
+
+			if (color.equals("red")) Mappe.colors = new ArrayList<>(Arrays.asList( Color.RED , Color.BLUE));
+			else                     Mappe.colors = new ArrayList<>(Arrays.asList( Color.BLUE, Color.RED ));
+
+			if (Integer.parseInt(ensInfo[0]) == 2)
+			{
+				if (Mappe.colors.get(0) == Color.RED) Collections.addAll(Mappe.colors, Color.RED , Color.BLUE);
+				else                                  Collections.addAll(Mappe.colors, Color.BLUE, Color.RED );
+			}
+
+			Controleur.setNbJoueur    (Integer.parseInt(ensInfo[0]));
 
 			scan.close();
 		}
