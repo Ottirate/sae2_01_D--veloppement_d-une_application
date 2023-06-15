@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 import cinketerra.Controleur;
+import cinketerra.metier.Carte;
 import cinketerra.metier.PaquetDeCarte;
 
 import java.awt.Graphics;
@@ -190,6 +191,10 @@ public class PanelPioche extends JPanel
 			this.g2.drawString("Cartes restantes : ", this.calculPosCarteDefausse(4), 20);
 			this.g2.drawString("Pioche : "          , this.calculPosCartePioche  (0        ), 20);
 		}
+
+		for (Rectangle rectangle : ensCartePioche) {
+			g2.draw(rectangle);
+		}
 	}
 	
 	public int calculPosCartePioche  ( int indice )
@@ -219,13 +224,22 @@ public class PanelPioche extends JPanel
 	/*      Scénario       */
 
 	// Forcer la pioche
-	public void forcePioche( int indice )
+	public void forcePioche( Carte c )
 	{
-		this.ctrl.piocher(indice);
+		List<Carte> lstCachee = new ArrayList<>();
 
-		this.ensCartePioche.remove(this.ensCartePioche.size() - 1);
+		for (Carte carte : this.ctrl.getCartes()) if (carte.estCache()) lstCachee.add(carte);
 
-		this.repaint();
+		int indice = lstCachee.indexOf(c);
+
+		if (indice >= 0)
+		{
+			this.ctrl.piocher(indice);
+
+			this.gs.init();
+
+			this.repaint();
+		}
 	}
 
 
@@ -252,19 +266,24 @@ public class PanelPioche extends JPanel
 			//liste de carte
 			PanelPioche.this.ensCartePioche = new ArrayList<>();
 
-			for (int i = 0 ; i < PanelPioche.this.ctrl.getNbCarteTotal() ; i++)
+			for (int i = 0, cpt = 0 ; i < PanelPioche.this.ctrl.getNbCarteTotal() ; i++)
 			{
-				PanelPioche.this.ensCartePioche.add(
-					
-					new Rectangle(
-						PanelPioche.this.calculPosCartePioche(i),
-						PanelPioche.POS_Y_CARTE,
+				if (PanelPioche.this.ctrl.getCarte(i).estCache())
+				{
+					PanelPioche.this.ensCartePioche.add(
+						
+						new Rectangle(
+							PanelPioche.this.calculPosCartePioche(cpt),
+							PanelPioche.POS_Y_CARTE,
 
-						(int) (PanelPioche.this.largCarte * PanelPioche.this.coef),
-						(int) (PanelPioche.this.longCarte * PanelPioche.this.coef)
-					)
+							(int) (PanelPioche.this.largCarte * PanelPioche.this.coef),
+							(int) (PanelPioche.this.longCarte * PanelPioche.this.coef)
+						)
 
-				);
+					);
+
+					cpt++;
+				}
 			}
 		}
 

@@ -12,7 +12,7 @@ package cinketerra.ihm;
 import javax.swing.*;
 
 import cinketerra.Controleur;
-import debug.scenario.metier.Mappe;
+import cinketerra.metier.Mappe;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
@@ -58,6 +58,7 @@ public class PanelDebut extends JPanel implements ActionListener
 
 	private boolean    debug;
 
+	private JCheckBox         cbCarteCachee;
 	private JComboBox<String> ddlstTest;
 	private JButton           btnCommencer;
 
@@ -99,11 +100,13 @@ public class PanelDebut extends JPanel implements ActionListener
 
 			String[] ensTest  = new String[] {"Premières cartes noires","Premières cartes blanches","Intersections", "Cycle", "Scénario libre"};
 
-			this.ddlstTest    = new JComboBox<String>(ensTest);
-			this.btnCommencer = new JButton("Commencer");
+			this.cbCarteCachee = new JCheckBox("Montrer les cartes", true);
+			this.ddlstTest     = new JComboBox<String>(ensTest);
+			this.btnCommencer  = new JButton("Commencer");
 
-			panelDebug.add( ddlstTest    );
-			panelDebug.add( btnCommencer );
+			panelDebug.add( cbCarteCachee );
+			panelDebug.add( ddlstTest     );
+			panelDebug.add( btnCommencer  );
 
 			/*     Activation      */
 			this.btnCommencer.addActionListener(this);
@@ -130,6 +133,7 @@ public class PanelDebut extends JPanel implements ActionListener
 		{
 			int indiceScenario = ddlstTest.getSelectedIndex();
 
+			Controleur.cacherCarte( this.cbCarteCachee.isSelected() );
 			Mappe.prendreOptionScenario(indiceScenario);
 		}
 	}

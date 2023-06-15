@@ -1,25 +1,27 @@
-2	true	0	Bis	bleu
-
+[Thu Jun 15 14:45:30 CEST 2023]
+(00:44:920)
+9/2
+Bis
 Vert	primaire
-2	Kita	Ticó	rouge
 Rouge	secondaire
 1	Massao	Mutaa	bleu
-2	Tavula	Ticó	rouge
+1	Bis
 Multi	primaire
 1	Milaù	Massao	bleu
-2	Tavula	Tokha	rouge
+1	Bis
 Vert	secondaire
 Jaune	secondaire
-2	Tokha	Laçao	rouge
-2	Laçao	Milaù	rouge
 1	Laçao	Milaù	bleu
-Rouge	primaire
-2	Milaù	Massao	rouge
-1	Loà	Laçao	bleu
-Jaune	primaire
-2	Maÿa	Massao	rouge
-Multi	secondaire
-2	Maÿa	Mokah	rouge
 1	Bis
+Rouge	primaire
+1	Loà	Laçao	bleu
+1	Bis
+Jaune	primaire
+Multi	secondaire
+2	Kita	Ticó	rouge
+2	Bis
+Brun	secondaire
 1	Mokah	Mutaa	bleu
-1	Mokah	Fissah	bleu
+1	Bis
+Brun	primaire
+Bis

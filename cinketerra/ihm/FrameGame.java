@@ -70,7 +70,7 @@ public class FrameGame extends JFrame
 		this.txtHistorique.setEditable(false);
 
 		this.spHistorique = new JScrollPane(this.panelHistorique);
-		this.spHistorique.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		this.spHistorique.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
 		//Ajout des composants
 		this.panelHistorique.add(this.txtHistorique);

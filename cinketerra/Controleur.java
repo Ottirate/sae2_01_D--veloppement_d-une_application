@@ -10,6 +10,7 @@ package cinketerra;
 
 /*       Imports       */
 import java.util.List;
+import java.util.Scanner;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -21,6 +22,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
+import java.io.FileInputStream;
+import java.nio.charset.StandardCharsets;
 import java.awt.Toolkit;
 
 
@@ -37,6 +40,8 @@ public class Controleur implements WindowStateListener
 
 	/*      Attributs      */
 	private static boolean option = false;
+	
+	private static boolean cartesCachees = false;
 
 	private Mappe       metier1;
 	private FrameGame   ihmMappe1;
@@ -46,10 +51,14 @@ public class Controleur implements WindowStateListener
 
 	private FrameCartes ihmPioche;
 
+	public static boolean debug;
+
 
 	/*    Constructeur     */
 	public Controleur( boolean debug )
 	{
+		Controleur.debug = debug;
+
 		FrameDebut frameD = new FrameDebut(this, debug);
 
 		while (Controleur.NB_JOUEUR == -1)
@@ -61,12 +70,12 @@ public class Controleur implements WindowStateListener
 
 		PaquetDeCarte p = new PaquetDeCarte();
 
-		this.metier1    = new Mappe(this, p);
+		this.metier1    = new Mappe(this, p, 1);
 		this.ihmMappe1  = new FrameGame(this, 1);
 
 		if (Controleur.NB_JOUEUR == 2)
 		{
-			this.metier2    = new Mappe    (this, p);
+			this.metier2    = new Mappe    (this, p, 2);
 			this.ihmMappe2  = new FrameGame(this, 2);
 		}
 
@@ -95,6 +104,9 @@ public class Controleur implements WindowStateListener
 
 		this.ihmMappe1.addWindowStateListener(this);
 		this.ihmPioche.addWindowStateListener(this);
+
+		if (debug)
+			this.lancerScenario( 0 );
 	}
 
 
@@ -216,7 +228,7 @@ public class Controleur implements WindowStateListener
 		String sRet = "./resources/cartes/";
 		Carte c = this.metier1.getCarte(indice);
 
-		if (c != null && !c.estCache())
+		if ((c != null && !c.estCache()) || Controleur.cartesCachees)
 			sRet += (c.getContour().equals(Color.white) ? "blanc_" : "noir_") + c.getCouleur().toLowerCase() + ".png";
 		else
 			sRet += "carte_dos.png";
@@ -281,8 +293,8 @@ public class Controleur implements WindowStateListener
 
 	public boolean colorier (Chemin c, int id) 
 	{ 
-		if (id == 1) return this.metier1.colorier(c, id);
-		else         return this.metier2.colorier(c, id);
+		if (id == 1){System.out.println("Joueur " + id + " joue " + c); return this.metier1.colorier(c, id); }
+		else        {System.out.println("Joueur " + id + " joue " + c); return this.metier2.colorier(c, id); }
 	}
 
 	public boolean estColoriable(Chemin c, int id) 
@@ -378,12 +390,12 @@ public class Controleur implements WindowStateListener
 
 
 	// IHM - Historique
-	public void hideHistorique (int id) 
+	public void hideHistorique (int id)
 	{
 		if (id == 1) this.ihmMappe1.hideHistorique();
 		else         this.ihmMappe2.hideHistorique();
 	}
-	public void showHistorique (int id) 
+	public void showHistorique (int id)
 	{
 		if (id == 1) this.ihmMappe1.showHistorique();
 		else         this.ihmMappe2.showHistorique();
@@ -394,27 +406,12 @@ public class Controleur implements WindowStateListener
 	// Méthode de forçage de la pioche
 	public void forcePioche( Carte c )
 	{
-		int indice = 0;
-
-		for (Carte carte : this.getCartes())
-		{
-			if ( carte.estCache()      ) indice++;
-			if ( c    .equals  (carte) ) break;
-		}
-
-		this.ihmPioche.forcePioche( indice );
+		this.ihmPioche.forcePioche( c );
 	}
 
 	public void melangerPioche( boolean etat )
 	{
 		this.metier1.melangerPioche(etat);
-	}
-
-	// Force Colorier
-	public void forceColorier(int joueur, Chemin chemin, Color color)
-	{
-		if ( joueur == 1) this.metier1.colorier(chemin, joueur);
-		if ( joueur == 2) this.metier2.colorier(chemin, joueur);
 	}
 
 	//Méthode de forçage de la bifurcation
@@ -429,11 +426,97 @@ public class Controleur implements WindowStateListener
 	// 	Mappe.forceCarteBonus(cb);
 	// }
 
-	public void lancerScenario(int num )
+	public static void cacherCarte(boolean etat)
 	{
-		this.metier1.lancerScenario( num );
+		Controleur.cartesCachees = etat;
 	}
 
+	public void lancerScenario (int num)
+	{
+		try
+		{
+			Scanner scan = new Scanner(new FileInputStream(Mappe.NOM_FICHIER + "scenarios/scenario_" + num + ".data"), StandardCharsets.UTF_8);
+
+			String   s       = scan.nextLine();
+			String[] ensInfo = s.split("\t");
+
+			Mappe.setTourEventBifurcation(Integer.parseInt(ensInfo[2]));
+
+			// Si c'est le joueur 1, on lui met sa couleur
+			if (ensInfo[4].equals("rouge")) this.metier1.forcerCouleur(Color.RED );
+			else                            this.metier1.forcerCouleur(Color.BLUE);
+			//Sinon, on met la couleur opposé
+			
+			if (this.metier2 != null)
+				if (ensInfo[4].equals("rouge")) this.metier2.forcerCouleur(Color.BLUE);
+				else                            this.metier2.forcerCouleur(Color.RED );
+
+			
+
+			scan.nextLine();
+
+
+			while (scan.hasNextLine()) 
+			{
+				s = scan.nextLine();
+				ensInfo = s.split("\t");
+
+				// Pioche carte
+				if (ensInfo.length == 2)
+				{
+					Color coulContour;
+					if (ensInfo[1].equals("primaire")) coulContour = Color.BLACK;
+					else                               coulContour = Color.WHITE;
+					
+					for (Carte c : Carte.values())
+						if (c.getCouleur().equals(ensInfo[0]) && c.getContour() == coulContour)
+							this.forcePioche(c);
+					
+				}
+
+				//Activation Bonus
+				if (ensInfo.length == 2)
+				{
+					for (CarteBonus cb : CarteBonus.values())
+						if (cb.name().equals(ensInfo[1]))
+							this.activerCarteBonus(Integer.parseInt(ensInfo[0]));
+				}
+
+				// Si il y a les infos d'une prise de chemin
+				if (ensInfo.length == 4)
+				{
+					int    numJoueur = Integer.parseInt (ensInfo[0]);
+					Ile    ileA      = this.metier1.getIleId(ensInfo[1]);
+					Ile    ileB      = this.metier1.getIleId(ensInfo[2]);
+					Chemin c         = this.metier1.trouverChemin(ileA, ileB);
+
+					if (numJoueur == 1) this.metier1.setColor(c);
+					else                this.metier2.colorier(c, numJoueur);
+				}
+
+				//Evennement
+				if (ensInfo.length == 1) 
+				{
+					if (ensInfo[0].equals(""))
+						this.initialiserManche();
+					else
+					{
+						for (CarteBonus cb : CarteBonus.values())
+							if (cb.name().equals(ensInfo[0]))
+								Mappe.forceCarteBonus(cb);
+					}
+				}
+
+			}
+
+			scan.close();
+		}
+		catch (Exception e)
+		{
+			System.out.println("Nom fichier invalide : " + Mappe.NOM_FICHIER + "scenarios/scenario_" + num + ".data");
+			e.printStackTrace();
+		}
+	}
 
 	// Main
 	public static void main(String[] args)

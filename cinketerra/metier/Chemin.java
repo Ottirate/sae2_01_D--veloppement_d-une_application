@@ -70,4 +70,9 @@ public class Chemin
 		       c.ileA == this.ileB ||
 		       c.ileB == this.ileB ;
 	}	
+
+	public String toString ()
+	{
+		return this.ileA.getNom() + " à " + this.ileB.getNom();
+	}
 }

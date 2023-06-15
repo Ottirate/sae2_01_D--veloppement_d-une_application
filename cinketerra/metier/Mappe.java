@@ -31,7 +31,7 @@ public class Mappe
 	/*----------------------------------*/
 
 	/** Chemin relatif du fichier de données */
-	private static final String      NOM_FICHIER = "./resources/";
+	public  static final String      NOM_FICHIER = "./resources/";
 
 	/** Liste de constantes de couleurs */
 	private static List<Color>       colors;
@@ -43,13 +43,14 @@ public class Mappe
 	private static List<CarteBonus>  lstCarteBonus;
 
 	/** Evenements */
-	private static int    tourEventBifurcation;
+	private static int    tourEventBifurcation = -1;
 
 	/*----------------------------------*/
 	/*           ATTRIBUTS              */
 	/*----------------------------------*/
 
 	private Controleur ctrl;
+	private int        id  ;
 
 	/** Liste de toutes les îles */
 	private List<Ile>     lstIles;
@@ -95,10 +96,11 @@ public class Mappe
 	/**
 	 * Constructeur sans paramètres qui initialise l'objet.
 	 */
-	public Mappe(Controleur ctrl, PaquetDeCarte p) 
+	public Mappe(Controleur ctrl, PaquetDeCarte p, int id) 
 	{
 		this.ctrl   = ctrl;
 		this.paquet = p;
+		this.id     = id;
 		
 		this.points = "0; bonus chemins: 0; bonus îles: 0";
 
@@ -125,8 +127,6 @@ public class Mappe
 		else
 			if (Mappe.colors.get(0) == Color.RED) Collections.addAll(Mappe.colors, Color.RED , Color.BLUE);
 			else                                  Collections.addAll(Mappe.colors, Color.BLUE, Color.RED );
-
-
 
 		this.lstRegions       = new ArrayList<>();
 		this.lstIles          = new ArrayList<>();
@@ -189,26 +189,37 @@ public class Mappe
 		this.paquet.reinitialiser();
 		this.ctrl  .bloquerPioche(false);
 
-		this.feutre = Mappe.colors.remove(0);
+		if (Mappe.carteBonus == null)
+			Mappe.carteBonus = Mappe.lstCarteBonus.remove(0);
 
-		Mappe.carteBonus = Mappe.lstCarteBonus.remove(0);
 		this.carteBonusActive = false;
-		this.bonusAEteActive = false;
+		this.bonusAEteActive  = false;
 
+		this.definirFeutre();
+
+		this.estDebutManche = true;
+
+		if (Mappe.tourEventBifurcation == -1)
+			Mappe.tourEventBifurcation = (int) ( Math.random() * 11 );
+
+		System.out.println("Nouvelle manche avec coul :" + this.feutre);
+
+
+		Mappe.addAction(new Mouvement("La carte bonus " + Mappe.carteBonus + " a été pioché.",
+			                           Mappe.carteBonus + ""));
+		this.ctrl.majIHM();
+
+		this.mancheTermine = true;
+	}
+
+	private void definirFeutre ()
+	{
+		this.feutre = Mappe.colors.remove(0);
+		
 		if (this.feutre.equals(Color.RED))
 			this.ileDeDepart = this.getIleId("Ticó");
 		else
 			this.ileDeDepart = this.getIleId("Mutaa");
-
-		this.estDebutManche = true;
-
-		Mappe.tourEventBifurcation = (int) ( Math.random() * 11 );
-
-		System.out.println("Nouvelle manche avec coul :" + this.feutre);
-
-		this.ctrl.majIHM();
-
-		this.mancheTermine = true;
 	}
 	
 	public Chemin trouverChemin (Ile i1, Ile i2)
@@ -361,6 +372,8 @@ public class Mappe
 		if (!this.estColoriable(c))
 			return false;
 
+		System.out.println("CEST COLORIABLE ALORS COLORIE FDP");
+
 		if (c.getCouleurPrim() == null)
 			c.setCouleurPrim(this.feutre);
 		else
@@ -405,7 +418,11 @@ public class Mappe
 
 
 		if (!this.bonusAEteActive)
+		{
 			this.bonusAEteActive = this.carteBonusActive;
+			Mappe.addAction(new Mouvement("Le joueur " + this.id + " a utiliser son pouvoir " + Mappe.carteBonus,
+			                               this.id + "\t" + Mappe.carteBonus));
+		}
 
 		this.carteBonusActive = false;
 
@@ -431,9 +448,10 @@ public class Mappe
 	 * @return {@code vrai} si le chemin est coloriable, autrement {@code faux}
 	 * @see {@link Mappe#colorier(Chemin)}
 	 */
-	public boolean estColoriable(Chemin c) 
+	public boolean estColoriable(Chemin c)
 	{
 		if (c == null) return false;
+
 		/* Si le chemin n'existe pas ou que on peut pas jouer de carte */
 		if ((this.aJouer) ^ this.bonusBis) return false;
 
@@ -470,6 +488,8 @@ public class Mappe
 				return true;
 			else
 				return false;
+		
+		System.out.println("G");
 
 		/* Si c'est une extrémité ou si la direction est pas une bonne couleur */
 		if (this.getNbCarteTotal() - this.getNbCarteRestante() == Mappe.getTourEvent("Bifurcation"))
@@ -677,97 +697,31 @@ public class Mappe
 	/**               Forcage              */
 	/**                                    */
 
-	public void lancerScenario (int num)
-	{
-		try
-		{
-			Scanner scan = new Scanner(new FileInputStream(Mappe.NOM_FICHIER + "scenarios/scenario_" + num + ".data"), StandardCharsets.UTF_8);
-
-			scan.nextLine();
-
-			int nbTour   = 0;
-
-			while (scan.hasNextLine()) 
-			{
-				String s = scan.nextLine();
-				String[] ensInfo = s.split("\t");
-
-				// Pioche carte
-				if (ensInfo.length == 2)
-				{
-					Color coulContour;
-					if (ensInfo[1].equals("primaire")) coulContour = Color.BLACK;
-					else                               coulContour = Color.WHITE;
-					
-					for (Carte c : Carte.values())
-						if (c.getCouleur().equals(ensInfo[0]) && c.getContour() == coulContour)
-							this.ctrl.forcePioche(c);
-					
-					nbTour ++;
-				}
-
-				// Si il y a les infos d'une île
-				if (ensInfo.length == 4)
-				{
-					int    numJoueur = Integer.parseInt (ensInfo[0]);
-					Ile    ileA      = this.getIleId(ensInfo[1]);
-					Ile    ileB      = this.getIleId(ensInfo[2]);
-					Chemin c         = this.trouverChemin(ileA, ileB);
-
-					Color coul;
-					if (ensInfo[3].equals("rouge")) coul = Color.RED ;
-					else                            coul = Color.BLUE;
-
-					this.ctrl.forceColorier(numJoueur, c, coul);
-				}
-
-				//Evennement
-				if (ensInfo.length == 1) 
-				{
-					if (ensInfo[0].equals("bifurcation"))
-						Mappe.setTourEventBifurcation(nbTour);
-					else
-						if (ensInfo[0].equals(""))
-							this.ctrl.initialiserManche();
-						else
-						{
-							for (CarteBonus cb : CarteBonus.values())
-								if (cb.name().equals(ensInfo[0]))
-									Mappe.carteBonus = cb;
-						}
-				}
-
-			}
-
-			scan.close();
-		}
-		catch (Exception e)
-		{
-			System.out.println("Nom fichier invalide : " + Mappe.NOM_FICHIER);
-		}
-	}
-
 	public static void prendreOptionScenario(int num)
 	{
 		try
 		{
 			Scanner scan = new Scanner(new FileInputStream(Mappe.NOM_FICHIER + "scenarios/scenario_" + num + ".data"), StandardCharsets.UTF_8);
 
-			String   s = scan.nextLine();
+			String   s       = scan.nextLine();
 			String[] ensInfo = s.split("\t");
-
-			Controleur.setNbJoueur    (Integer.parseInt(ensInfo[0]));
 
 			if (ensInfo[1].equals("true")) Controleur.setOptionActive(true) ;
 			else                           Controleur.setOptionActive(false);
 
-			Mappe.setTourEventBifurcation(Integer.parseInt(ensInfo[2]));
+			Controleur.setNbJoueur    (Integer.parseInt(ensInfo[0]));
+
+			for (CarteBonus cb : CarteBonus.values())
+				if (cb.name().equals(ensInfo[3]))
+					Mappe.forceCarteBonus(cb);
 
 			scan.close();
+			System.out.println(s);
 		}
 		catch (Exception e)
 		{
-			System.out.println("Nom fichier invalide : " + Mappe.NOM_FICHIER);
+			System.out.println("Nom fichier invalide : " + Mappe.NOM_FICHIER + "scenarios/scenario_" + num + ".data");
+			e.printStackTrace();
 		}
 	}
 
@@ -786,4 +740,19 @@ public class Mappe
 		Mappe.carteBonus = cb;
 	}
 
+	public void forcerCouleur(Color c)
+	{
+		if (this.id == 1)
+			if (c.equals(Color.BLUE))
+				Mappe.colors = new ArrayList<>(Arrays.asList(Color.BLUE, Color.RED));
+			else
+				Mappe.colors = new ArrayList<>(Arrays.asList(Color.RED , Color.BLUE));
+		else
+			if (Mappe.colors.get(0) == Color.RED) Collections.addAll(Mappe.colors, Color.RED , Color.BLUE);
+			else                                  Collections.addAll(Mappe.colors, Color.BLUE, Color.RED );
+
+
+		this.definirFeutre();
+		System.out.println("Refaire feutre");
+	}
 }

@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import cinketerra.Controleur;
+import cinketerra.metier.Carte;
 
 import java.awt.event.*;
 
@@ -106,8 +107,8 @@ public class FrameCartes extends JFrame implements ActionListener
 	/*      Scénario       */
 
 	// Forcer la pioche
-	public void forcePioche( int indice )
+	public void forcePioche( Carte c )
 	{
-		this.panelPioche.forcePioche( indice );
+		this.panelPioche.forcePioche( c );
 	}
 }
