@@ -1,9 +1,12 @@
-2	true	4	Croisement	rouge
+2	true	0	Double	rouge
 
-Brun	primaire
-2	Mutaa	Khont-Rolah	bleu
-Vert	primaire
-1	Kita	Ticó	rouge
+Jaune	primaire
+1	Ticó	Laçao	rouge
+2	Mutaa	Milaù	bleu
 Jaune	secondaire
-1	Laçao	Ticó	rouge
-2	Mutaa	Milaù	bleue
+1	Laçao	Milaù	rouge
+Multi	primaire
+Brun	primaire
+Rouge	primaire
+
+Double
