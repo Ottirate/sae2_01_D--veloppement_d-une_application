@@ -5,20 +5,18 @@
 
 
 /*      Paquetage      */
-package cinketerra.ihm;
+package debug.scenario.ihm;
 
 
 /*       Imports       */
 import javax.swing.*;
 
-import cinketerra.Controleur;
-import debug.scenario.metier.Mappe;
+import debug.scenario.Controleur;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.*;
@@ -27,7 +25,7 @@ import java.awt.event.*;
 /**
  * Panel écran titre
  */
-public class PanelDebut extends JPanel implements ActionListener
+public class PanelDebut extends JPanel
 {
 	
 
@@ -56,18 +54,11 @@ public class PanelDebut extends JPanel implements ActionListener
 	private int        posY1   = 335;
 	private int        posY2   = 335;
 
-	private boolean    debug;
-
-	private JComboBox<String> ddlstTest;
-	private JButton           btnCommencer;
-
 
 	/*    Constructeur     */
-	public PanelDebut(Controleur ctrl, boolean debug)
+	public PanelDebut(Controleur ctrl)
 	{
-		this.ctrl           = ctrl;
-		this.debug          = debug;
-
+		this.ctrl = ctrl;
 		this.imgUnJoueur    = new ImageIcon(PanelDebut.PATH + "UnJoueur.png");
 		this.imgDeuxJoueurs = new ImageIcon(PanelDebut.PATH + "DeuxJoueurs.png");
 
@@ -92,28 +83,7 @@ public class PanelDebut extends JPanel implements ActionListener
 		this.add(this.lblTexte, BorderLayout.CENTER);
 		this.add(panelTmp,      BorderLayout.SOUTH);
 
-
-		if (debug)
-		{
-			JPanel panelDebug = new JPanel( new GridLayout(7, 1) );
-
-			String[] ensTest  = new String[] {"Premières cartes noires","Premières cartes blanches","Intersections", "Cycle", "Scénario libre"};
-
-			this.ddlstTest    = new JComboBox<String>(ensTest);
-			this.btnCommencer = new JButton("Commencer");
-
-			panelDebug.add( ddlstTest    );
-			panelDebug.add( btnCommencer );
-
-			/*     Activation      */
-			this.btnCommencer.addActionListener(this);
-
-			panelTmp.add(panelDebug, BorderLayout.NORTH);
-		}
-		else
-		{
-			panelTmp.add(this.cbPouvoir, BorderLayout.NORTH);
-		}
+		panelTmp.add(this.cbPouvoir, BorderLayout.NORTH);
 
 		//Action
 		GereSouris gs = new GereSouris();
@@ -124,39 +94,26 @@ public class PanelDebut extends JPanel implements ActionListener
 		this.repaint();
 	}
 
-	public void actionPerformed( ActionEvent e )
-	{
-		if (this.debug)
-		{
-			int indiceScenario = ddlstTest.getSelectedIndex();
-
-			Mappe.prendreOptionScenario(indiceScenario);
-		}
-	}
-
 
 	/*     Paint/Draw      */
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
 
-		if (!this.debug)
-		{
-			// Affichage du mode 1 joueur
-			Image     reImage  = this.imgUnJoueur.getImage().getScaledInstance(this.redimX1, this.redimY1, Image.SCALE_SMOOTH);
-			ImageIcon newImage = new ImageIcon(reImage);
+		// Affichage du mode 1 joueur
+		Image     reImage  = this.imgUnJoueur.getImage().getScaledInstance(this.redimX1, this.redimY1, Image.SCALE_SMOOTH);
+		ImageIcon newImage = new ImageIcon(reImage);
 
-			newImage.paintIcon(this, g, this.posX1, this.posY1);
+		newImage.paintIcon(this, g, this.posX1, this.posY1);
 
-			// Affichage du mode 2 joueurs
-			reImage  = this.imgDeuxJoueurs.getImage().getScaledInstance(this.redimX2, this.redimY2, Image.SCALE_SMOOTH);
-			newImage = new ImageIcon(reImage);
+		// Affichage du mode 2 joueurs
+		reImage  = this.imgDeuxJoueurs.getImage().getScaledInstance(this.redimX2, this.redimY2, Image.SCALE_SMOOTH);
+		newImage = new ImageIcon(reImage);
 
-			newImage.paintIcon(this, g, this.posX2, this.posY2);
+		newImage.paintIcon(this, g, this.posX2, this.posY2);
 
-			g.drawString("1 joueur" , 60 , 455);
-			g.drawString("2 joueurs", 175, 455);
-		}
+		g.drawString("1 joueur" , 60 , 455);
+		g.drawString("2 joueurs", 175, 455);
 	}
 
 

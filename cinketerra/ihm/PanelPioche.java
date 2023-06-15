@@ -216,7 +216,17 @@ public class PanelPioche extends JPanel
 		return new ImageIcon(reImage);
 	}
 
+	/*      Scénario       */
 
+	// Forcer la pioche
+	public void forcePioche( int indice )
+	{
+		this.ctrl.piocher(indice);
+
+		this.ensCartePioche.remove(this.ensCartePioche.size() - 1);
+
+		this.repaint();
+	}
 
 
 	/**

@@ -7,62 +7,111 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import debug.scenario.Controleur;
+import debug.scenario.metier.Carte;
 
 import java.awt.event.*;
 
+/**
+ * Frame qui contient la pioche.
+ * 
+ * @author Équipe 1
+ * @date juin 2023
+ */
 public class FrameCartes extends JFrame implements ActionListener
 {
+
+	/*---------------------*/
+	/*      Attributs      */
+	/*---------------------*/
+	
 	private Controleur ctrl;
+
+	private PanelPioche panelPioche;
+	private JPanel      panelBtn;
 
 	private JButton btnManche;
 
-	private PanelPioche panelPioche;
 
+	/**
+	 * Constructeur qui prend un objet {@code Controleur} en paramètre.
+	 * 
+	 * @param ctrl le controleur
+	 */
 	public FrameCartes(Controleur ctrl) 
 	{
 		this.ctrl = ctrl;
 
-		// Info de base
+		/*---------------------*/
+		/*  Paramètre de base  */
+		/*---------------------*/
+
 		this.setTitle("Pioche");
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 
-		this.setLayout(new BorderLayout());
-
 		this.setSize(1280, 350);
+
+
+		/*---------------------------*/
+		/*  Création des composants  */
+		/*---------------------------*/
 
 		this.btnManche   = new JButton("Manche suivante");
 		this.panelPioche = new PanelPioche(ctrl);
 
-		JPanel panelTemp = new JPanel();
-		panelTemp.add(this.btnManche);
+		this.panelBtn = new JPanel();
+		this.panelBtn.setOpaque(false);
 
-		this.add(this.panelPioche, BorderLayout.CENTER);
-		this.add(panelTemp       , BorderLayout.SOUTH );
 
-		this.btnManche.addActionListener(this);
+		/*------------------------*/
+		/*  Ajout des composants  */
+		/*------------------------*/
+
+		this.panelBtn.add(this.btnManche);
+
+		this.add( this.panelBtn,    BorderLayout.SOUTH  );
+		this.add( this.panelPioche, BorderLayout.CENTER );
+
+		
+		/*----------------------*/
+		/*      Activation      */
+		/*----------------------*/
+
 		this.hideButton();
+		this.btnManche.addActionListener(this);
 
 		this.setVisible(true);
 	}
 
-	public void piocherForce(int qtt)
-	{
-		this.panelPioche.piocherForce(qtt);
-	}
 
-	public void initPioche() { this.panelPioche.initPioche(); }
+	/*      Méthodes       */
+	// Pioche
+	public void initPioche()  { this.panelPioche.initPioche(); }
 	public void bloquerPioche(boolean bloque) { this.panelPioche.bloquerPioche(bloque); }
-
-	public void showButton () {this.btnManche.setVisible(true );}
-	public void hideButton () {this.btnManche.setVisible(false);}
-
+	
+	//Boutton manche
+	public void showButton () { this.panelBtn.setVisible(true);  }
+	public void hideButton () { this.panelBtn.setVisible(false); }
+	
+	// Maj
 	public void maj () { this.panelPioche.repaint(); }
 
+
+	/*       Action        */
 	public void actionPerformed(ActionEvent e)
 	{
 		this.ctrl     .initialiserManche ()               ;
 		this.btnManche.setText           ("Fin de partie");
 	}
 
+
+
+
+	/*      Scénario       */
+
+	// Forcer la pioche
+	public void forcePioche( int indice )
+	{
+		this.panelPioche.forcePioche( indice );
+	}
 }

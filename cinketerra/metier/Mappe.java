@@ -51,7 +51,7 @@ public class Mappe
 
 	private Controleur ctrl;
 
-	/* Liste de toutes les îles */
+	/** Liste de toutes les îles */
 	private List<Ile>     lstIles;
 
 	/** Liste de toutes les régions */
@@ -88,6 +88,9 @@ public class Mappe
 
 	/** Le nombre de points */
 	private String        points;
+
+	/** Tests & Forcing */
+	private boolean piocheMelangee = true;
 
 	/**
 	 * Constructeur sans paramètres qui initialise l'objet.
@@ -447,7 +450,9 @@ public class Mappe
 			System.out.println("ileA coul = " + ileA.getCoul() + " ileB coul = " + ileB.getCoul());
 			System.out.println("ileA appartient " + this.ileAppartientALigne(ileA) + "  -  ileB appartient " + this.ileAppartientALigne(ileB));
 
-			if (!((!this.ileAppartientALigne(ileA) && ileA.getCoul().equals(this.colBonus)) || (!this.ileAppartientALigne(ileB) && ileB.getCoul().equals(this.colBonus)))) return false;
+			if ( !( (!this.ileAppartientALigne(ileA) && ileA.getCoul().equals(this.colBonus) ) ||
+			        (!this.ileAppartientALigne(ileB) && ileB.getCoul().equals(this.colBonus) ) ) )
+				return false;
 		}
 
 		/* Dans le cas où il s'agit du premier trait */
@@ -666,6 +671,119 @@ public class Mappe
 		int  sec   = (int) ( duree / 1000 );
 
 		return String.format("%02d:%02d:%03d", sec/60, sec%60, duree%1000);
+	}
+
+	/**                                    */
+	/**               Forcage              */
+	/**                                    */
+
+	public void lancerScenario (int num)
+	{
+		try
+		{
+			Scanner scan = new Scanner(new FileInputStream(Mappe.NOM_FICHIER + "scenarios/scenario_" + num + ".data"), StandardCharsets.UTF_8);
+
+			scan.nextLine();
+
+			int nbTour   = 0;
+
+			while (scan.hasNextLine()) 
+			{
+				String s = scan.nextLine();
+				String[] ensInfo = s.split("\t");
+
+				// Pioche carte
+				if (ensInfo.length == 2)
+				{
+					Color coulContour;
+					if (ensInfo[1].equals("primaire")) coulContour = Color.BLACK;
+					else                               coulContour = Color.WHITE;
+					
+					for (Carte c : Carte.values())
+						if (c.getCouleur().equals(ensInfo[0]) && c.getContour() == coulContour)
+							this.ctrl.forcePioche(c);
+					
+					nbTour ++;
+				}
+
+				// Si il y a les infos d'une île
+				if (ensInfo.length == 4)
+				{
+					int    numJoueur = Integer.parseInt (ensInfo[0]);
+					Ile    ileA      = this.getIleId(ensInfo[1]);
+					Ile    ileB      = this.getIleId(ensInfo[2]);
+					Chemin c         = this.trouverChemin(ileA, ileB);
+
+					Color coul;
+					if (ensInfo[3].equals("rouge")) coul = Color.RED ;
+					else                            coul = Color.BLUE;
+
+					this.ctrl.forceColorier(numJoueur, c, coul);
+				}
+
+				//Evennement
+				if (ensInfo.length == 1) 
+				{
+					if (ensInfo[0].equals("bifurcation"))
+						Mappe.setTourEventBifurcation(nbTour);
+					else
+						if (ensInfo[0].equals(""))
+							this.ctrl.initialiserManche();
+						else
+						{
+							for (CarteBonus cb : CarteBonus.values())
+								if (cb.name().equals(ensInfo[0]))
+									Mappe.carteBonus = cb;
+						}
+				}
+
+			}
+
+			scan.close();
+		}
+		catch (Exception e)
+		{
+			System.out.println("Nom fichier invalide : " + Mappe.NOM_FICHIER);
+		}
+	}
+
+	public static void prendreOptionScenario(int num)
+	{
+		try
+		{
+			Scanner scan = new Scanner(new FileInputStream(Mappe.NOM_FICHIER + "scenarios/scenario_" + num + ".data"), StandardCharsets.UTF_8);
+
+			String   s = scan.nextLine();
+			String[] ensInfo = s.split("\t");
+
+			Controleur.setNbJoueur    (Integer.parseInt(ensInfo[0]));
+
+			if (ensInfo[1].equals("true")) Controleur.setOptionActive(true) ;
+			else                           Controleur.setOptionActive(false);
+
+			Mappe.setTourEventBifurcation(Integer.parseInt(ensInfo[2]));
+
+			scan.close();
+		}
+		catch (Exception e)
+		{
+			System.out.println("Nom fichier invalide : " + Mappe.NOM_FICHIER);
+		}
+	}
+
+	public void melangerPioche(boolean etat)
+	{
+		this.piocheMelangee = etat;
+	}
+
+	public static void setTourEventBifurcation(int tour)
+	{
+		Mappe.tourEventBifurcation = tour;
+	}
+
+	public static void forceCarteBonus(CarteBonus cb)
+	{
+		Mappe.carteBonus = cb;
 	}
 
 }

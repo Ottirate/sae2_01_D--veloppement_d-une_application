@@ -5,13 +5,13 @@
 
 
 /*      Paquetage      */
-package cinketerra.ihm;
+package debug.scenario.ihm;
 
 
 /*       Imports       */
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import cinketerra.Controleur;
+import debug.scenario.Controleur;
 
 
 /**
@@ -27,7 +27,7 @@ public class FrameDebut extends JFrame
 
 
 	/*    Constructeur     */
-	public FrameDebut(Controleur ctrl, boolean debug)
+	public FrameDebut(Controleur ctrl)
 	{
 		this.ctrl = ctrl;
 
@@ -41,7 +41,7 @@ public class FrameDebut extends JFrame
 		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 
 		//Création des composants
-		this.panelD = new PanelDebut(ctrl, debug);
+		this.panelD = new PanelDebut(ctrl);
 
 		//Ajout des composants
 		this.add(panelD);

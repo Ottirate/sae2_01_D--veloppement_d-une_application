@@ -30,7 +30,7 @@ public class ControleurTests
 	/*      Méthodes       */
 	public void lancerTest( int indice )
 	{
-		new Controleur(indice);
+		Controleur c = new Controleur( indice );
 	}
 
 

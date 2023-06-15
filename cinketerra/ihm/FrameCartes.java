@@ -102,4 +102,12 @@ public class FrameCartes extends JFrame implements ActionListener
 		this.ctrl     .initialiserManche ()               ;
 		this.btnManche.setText           ("Fin de partie");
 	}
+
+	/*      Scénario       */
+
+	// Forcer la pioche
+	public void forcePioche( int indice )
+	{
+		this.panelPioche.forcePioche( indice );
+	}
 }

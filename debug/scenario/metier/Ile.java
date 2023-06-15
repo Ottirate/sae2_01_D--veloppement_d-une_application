@@ -1,10 +1,26 @@
+/*
+* Auteur : Équipe 1
+* Date   : juin 2023
+* */
+
+/*      Paquetage      */
 package debug.scenario.metier;
 
+/*       Imports       */
 import java.util.List;
 import java.util.ArrayList;
 
+import java.awt.Color;
+
+
+/**
+ * Représentation des iles.
+ */
 public class Ile 
 {
+
+
+	/*      Attributs      */
 	private String nom;
 	private Region reg;
 	private String coul;
@@ -20,6 +36,8 @@ public class Ile
 
 	private List<Chemin> lstChemins;
 	
+
+	/*    Constructeur     */
 	public Ile (Region reg, String nom, String coul, int xP, int yP, int xI, int yI, int xN, int yN)
 	{
 		this.nom     = nom ;
@@ -41,6 +59,9 @@ public class Ile
 		reg.ajouterIle(this);
 	}
 
+
+
+	/*     Accesseurs      */
 	public String getNom    () { return this.nom;     }
 	public String getCoul   () { return this.coul;    }
 	public Region getReg    () { return this.reg;     }
@@ -54,9 +75,18 @@ public class Ile
 	public int    getXNom   () { return this.xNom;    }
 	public int    getYNom   () { return this.yNom;    }
 
-	public void addChemin (Chemin c) { this.lstChemins.add(c); }
 	public List<Chemin> getCheminAutour () { return this.lstChemins; }
+	public int getNbCheminsColorie(Color color)
+	{
+		return (int) this.lstChemins.stream().filter(c -> c.getCouleurPrim() != null && c.getCouleurPrim().equals(color)).count();
+	}
+	
 
+	/*     Modifieurs      */
+	public void addChemin (Chemin c) { this.lstChemins.add(c); }
+
+
+	/*      Méthodes       */
 	public String toString ()
 	{
 		return String.format("%-15s", this.nom    ) +

@@ -36,7 +36,7 @@ public class Controleur implements WindowStateListener
 
 
 	/*      Attributs      */
-	private boolean option = false;
+	private static boolean option = false;
 
 	private Mappe       metier1;
 	private FrameGame   ihmMappe1;
@@ -48,9 +48,9 @@ public class Controleur implements WindowStateListener
 
 
 	/*    Constructeur     */
-	public Controleur()
+	public Controleur( boolean debug )
 	{
-		FrameDebut frameD = new FrameDebut(this);
+		FrameDebut frameD = new FrameDebut(this, debug);
 
 		while (Controleur.NB_JOUEUR == -1)
 		{
@@ -104,7 +104,7 @@ public class Controleur implements WindowStateListener
 
 
 	//Controleur
-	public boolean getOptionActive() { return this.option ;}
+	public boolean getOptionActive() { return Controleur.option ;}
 	
 
 	//Mappe - Metier
@@ -237,7 +237,7 @@ public class Controleur implements WindowStateListener
 
 
 	/*     Modifieurs      */
-	public        void setOptionActive( boolean state ) { this.option          = state ; }
+	public static void setOptionActive( boolean state ) { Controleur.option    = state ; }
 	public static void setNbJoueur    ( int     nb    ) { Controleur.NB_JOUEUR = nb    ; }
 
 
@@ -264,7 +264,7 @@ public class Controleur implements WindowStateListener
 
 		if (this.getNbCarteTotal() - this.getNbCarteRestante() == Mappe.getTourEvent("Bifurcation"))
 		{
-			JFrame f = new FrameAnnonce( "zeppelin" );			
+			JFrame f = new FrameAnnonce( "zeppelin" );
 			Mappe.addAction(new Mouvement("Bifurcation en cours...", "bifurcation"));
 		}
 
@@ -389,10 +389,55 @@ public class Controleur implements WindowStateListener
 		else         this.ihmMappe2.showHistorique();
 	}
 
+	/*      Scénario       */
+
+	// Méthode de forçage de la pioche
+	public void forcePioche( Carte c )
+	{
+		int indice = 0;
+
+		for (Carte carte : this.getCartes())
+		{
+			if ( carte.estCache()      ) indice++;
+			if ( c    .equals  (carte) ) break;
+		}
+
+		this.ihmPioche.forcePioche( indice );
+	}
+
+	public void melangerPioche( boolean etat )
+	{
+		this.metier1.melangerPioche(etat);
+	}
+
+	// Force Colorier
+	public void forceColorier(int joueur, Chemin chemin, Color color)
+	{
+		if ( joueur == 1) this.metier1.colorier(chemin, joueur);
+		if ( joueur == 2) this.metier2.colorier(chemin, joueur);
+	}
+
+	//Méthode de forçage de la bifurcation
+	// public void setTourEventBifurcation( int tour )
+	// {
+	//  	Mappe.setTourEventBifurcation( tour );
+	// }
+
+	// Méthode de forçage de la carte bonus
+	// public void forceCarteBonus(CarteBonus cb)
+	// {
+	// 	Mappe.forceCarteBonus(cb);
+	// }
+
+	public void lancerScenario(int num )
+	{
+		this.metier1.lancerScenario( num );
+	}
+
 
 	// Main
 	public static void main(String[] args)
 	{
-		new Controleur();
+		new Controleur( args.length >= 1 && args[0].equals("debug") );
 	}
 }

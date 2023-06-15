@@ -1,53 +1,83 @@
+/*
+* Auteur : Équipe 1
+* Date   : juin 2023
+* */
+
+
+/*      Paquetage      */
 package debug.scenario.ihm;
 
+
+
+
+/*       Imports       */
+import java.util.List;
 import java.util.ArrayList;
 
 import javax.swing.*;
 
 import debug.scenario.Controleur;
+import debug.scenario.metier.Carte;
+import debug.scenario.metier.PaquetDeCarte;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.BorderLayout;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.*;
 import java.awt.Cursor;
 import java.awt.Font;
 
-@SuppressWarnings("unused")
+
+
+/**
+ * Panel affichant la pioche
+ */
 public class PanelPioche extends JPanel
 {
-	private Controleur ctrl;
-	private Graphics2D g2;
-
-	private int nbCarteTotal;
-
-	private int largCarte;
-	private int longCarte;
-
-	private int carteRelevee;     // indice de la carte que l'on sélectionne
-	
-	private ArrayList<Rectangle> ensCartePioche;
-
-	private GereSouris gs;
-
-	private boolean isBlocked;
 
 
+
+
+	/* Attributs de Classe */
+	/*      Constants      */
 	private final static double COEF_CARTE    = 0.667;
 	private final static int    POS_Y_CARTE   = 50;
 	private final static int    MARGE_X_CARTE = 50;
 	private final static int    ESPACEMENT    = 15;
 
-	//getImage( int )
-	//carteCachee( int )
+
+
+
+	/*      Attributs      */
+	private Controleur ctrl;
+
+	private int largCarte;
+	private int longCarte;
+	private double coef;
+
+	private GereSouris gs;
+	
+	private boolean isBlocked;
+
+	private int           carteRelevee;     // indice de la carte que l'on sélectionne
+	private PaquetDeCarte paquetDeBase;
+
+	private List<Rectangle> ensCartePioche;
+	private Graphics2D      g2;
+
+
+
+
+	/*    Constructeur     */
 	public PanelPioche( Controleur ctrl )
 	{
 		this.ctrl         = ctrl;
-		this.nbCarteTotal = this.ctrl.getNbCarteTotal();
 		this.carteRelevee = -1;
-		this.isBlocked = false;
+		this.isBlocked    = false;
+		this.paquetDeBase = new PaquetDeCarte();
 
 		// Images
 		ImageIcon img = new ImageIcon( this.ctrl.getImage(0) );
@@ -65,6 +95,10 @@ public class PanelPioche extends JPanel
 		this.addMouseMotionListener(gs);
 	}
 
+
+
+
+	/*      Méthodes       */
 	public void initPioche()
 	{
 		gs.init();
@@ -77,81 +111,141 @@ public class PanelPioche extends JPanel
 		this.carteRelevee = -1;
 	}
 
-	public void piocherForce(int qtt)
-	{
-		for (int i = 0; i < qtt; i++)
-		{
-			this.ctrl.piocher(9 - i);
-			this.ensCartePioche.remove(PanelPioche.this.ensCartePioche.size() - 1);
-		}
 
-		this.repaint();
-	}
 
+	
+	/*     Paint/Draw      */
 	public void paintComponent( Graphics g )
 	{
+		ImageIcon img, img2;
+
 		super.paintComponent(g);
 
 		this.g2 = (Graphics2D) g;
 
+		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+
+		// Calcul du coefficient
+		int hauteur     = this.ctrl.getHauteurPioche() - 40 ;
+		int largeur     = this.ctrl.getLargeurPioche() - 20 ;
+
+		double coef1    = hauteur * 1.0 / ( this.longCarte * 1.5 );
+		double coef2    = largeur * 1.0 / ( this.largCarte * 1.5 );
+		double lastCoef = this.coef;
+
+		this.coef = Math.min(coef1, coef2);
+
+		if (this.coef < 0.3) this.coef = 0.3;
+		if (this.coef != lastCoef) gs.init();
+
+
 		//dessiner l'ensemble des cartes
 		int cptPioche   = 0;
-		int cptDefausse = 0;
 
-		g.setFont(new Font("", Font.BOLD, 12));
+		this.g2.setFont(new Font("", Font.BOLD, 12));
 
 		for( int cpt = 0; cpt < this.ctrl.getNbCarteTotal(); cpt++ )
 		{
-			// Images
-			ImageIcon img = new ImageIcon( this.ctrl.getImage(cpt) );
-			
-			Image ogImage = img.getImage();
-			Image reImage = ogImage.getScaledInstance((int)(this.largCarte), (int)(this.longCarte), Image.SCALE_DEFAULT);
+			// Image
+			img  = this.redimImage(new ImageIcon( this.ctrl.getImage(cpt)), (int)(this.largCarte), (int)(this.longCarte), false);
 
-			ImageIcon newImage = new ImageIcon(reImage);
-			
 			// Surélévation de la pioche
 			if ( this.ctrl.carteCachee( cpt ) && cptPioche == this.carteRelevee)
 			{
-				newImage.paintIcon(this, g, this.calculPosCartePioche(cptPioche), PanelPioche.POS_Y_CARTE - 10);
+				img.paintIcon(this, this.g2, this.calculPosCartePioche(cptPioche), PanelPioche.POS_Y_CARTE - 10);
 				cptPioche++;
 			}
 			// Pioche
 			else if ( this.ctrl.carteCachee( cpt ) )
 			{
-				newImage.paintIcon(this, g, this.calculPosCartePioche(cptPioche), PanelPioche.POS_Y_CARTE);
-				//System.out.println( "coord x image " +cptPioche+ " posée : " + this.calculPosCartePioche( cptPioche ) );
+				img .paintIcon(this, this.g2, this.calculPosCartePioche  (cptPioche), PanelPioche.POS_Y_CARTE);
 				cptPioche++;
 			}
-			//cas des cartes du tas
-			else if (!this.ctrl.getCarte(cpt).equals(this.ctrl.getDerniereCartePiochee()))
-			{
-				newImage.paintIcon(this, g, this.calculPosCarteDefausse(++cptDefausse), PanelPioche.POS_Y_CARTE);
-			}
 			// Main
-			else
+			else if (this.ctrl.getCarte(cpt).equals(this.ctrl.getDerniereCartePiochee()))
 			{
-				int x = this.calculPosCarteDefausse(this.ctrl.getNbCarteTotal() - this.ctrl.getNbCarteRestante()) - 200;
-				g.drawString("Main :", x, 20);
-				newImage.paintIcon(this, g, x, PanelPioche.POS_Y_CARTE);
+				this.g2.drawString("Main :", 725, 20);
+				img.paintIcon(this, this.g2, 725, PanelPioche.POS_Y_CARTE);
 			}
 		}
 
-		if (cptDefausse > 0) g.drawString("Défausse : ", this.calculPosCarteDefausse(cptDefausse), 20);
-		if (cptPioche   > 0) g.drawString("Pioche : "  , this.calculPosCartePioche  (0          ), 20);
+
+		// Cartes restantes
+		for (int cptB = 0 ; cptB < this.paquetDeBase.getNbCarteTotal(); cptB++)
+			for (int cptC = 0 ; cptC < this.ctrl.getNbCarteTotal(); cptC++ )
+				if (this.paquetDeBase.getCarte(cptB).equals(this.ctrl.getCarte(cptC)) && this.ctrl.getCarte(cptC).estCache())
+				{
+					img2 = this.redimImage(new ImageIcon( this.ctrl.getImageRetournee(this.paquetDeBase.getCarte(cptB))), (int)(this.largCarte/2), (int)(this.longCarte/2), false);
+
+					if (cptB < 5)
+						img2.paintIcon(this, this.g2, this.calculPosCarteDefausse(cptB%5), PanelPioche.POS_Y_CARTE);
+					else
+						img2.paintIcon(this, this.g2, this.calculPosCarteDefausse(cptB%5), PanelPioche.POS_Y_CARTE + (int) ( (this.longCarte/2 + 10) * this.coef ));
+				}
+
+
+		// Intitulés
+		if (cptPioche   > 0)
+		{
+			this.g2.drawString("Cartes restantes : ", this.calculPosCarteDefausse(4), 20);
+			this.g2.drawString("Pioche : "          , this.calculPosCartePioche  (0        ), 20);
+		}
 	}
 	
-	public int calculPosCartePioche  ( int indice ){ return PanelPioche.MARGE_X_CARTE + indice*PanelPioche.ESPACEMENT; }
-	public int calculPosCarteDefausse( int indice ){ return (int)(this.getWidth() - indice*(this.largCarte+PanelPioche.ESPACEMENT) - PanelPioche.MARGE_X_CARTE); }
+	public int calculPosCartePioche  ( int indice )
+	{
+		return PanelPioche.MARGE_X_CARTE + indice * (int) (PanelPioche.ESPACEMENT * this.coef);
+	}
+
+	public int calculPosCarteDefausse( int indice )
+	{
+		return (int)(this.getWidth() - (indice+1)*(( this.largCarte/2 ) * this.coef + PanelPioche.ESPACEMENT ) - PanelPioche.MARGE_X_CARTE);
+	}
+
+	private ImageIcon redimImage(ImageIcon img, double width, double height, boolean isStatic)
+	{
+		if (!isStatic)
+		{
+			width  = 1.0 * width  * this.coef;
+			height = 1.0 * height * this.coef;
+		}
+
+		Image ogImage = img.getImage();
+		Image reImage = ogImage.getScaledInstance((int) width, (int) height, Image.SCALE_DEFAULT);
+
+		return new ImageIcon(reImage);
+	}
 
 
-	/*-----------------------------------*/
-	/*       GESTIONS DE LA SOURIS       */
-	/*-----------------------------------*/
-	
+
+
+	/*      Scénario       */
+
+	// Forcer la pioche
+	public void forcePioche( int indice )
+	{
+		this.ctrl.piocher(indice);
+
+		this.ensCartePioche.remove(this.ensCartePioche.size() - 1);
+
+		this.repaint();
+	}
+
+
+
+
+
+
+	/**
+	* Classe Privée : 
+	*     - Gestion de la souris
+	*/
 	private class GereSouris extends MouseAdapter
 	{
-		/**Constructeur. */
+
+
+		/*    Constructeur     */
 		public GereSouris()
 		{
 			super();
@@ -159,20 +253,31 @@ public class PanelPioche extends JPanel
 			this.init();
 		}
 
+
+		/*      Méthodes       */
 		public void init()
 		{
 			//liste de carte
 			PanelPioche.this.ensCartePioche = new ArrayList<>();
 
 			for (int i = 0 ; i < PanelPioche.this.ctrl.getNbCarteTotal() ; i++)
-				PanelPioche.this.ensCartePioche.add(new Rectangle(PanelPioche.this.calculPosCartePioche(i), PanelPioche.POS_Y_CARTE, PanelPioche.this.largCarte, PanelPioche.this.longCarte));
+			{
+				PanelPioche.this.ensCartePioche.add(
+					
+					new Rectangle(
+						PanelPioche.this.calculPosCartePioche(i),
+						PanelPioche.POS_Y_CARTE,
+
+						(int) (PanelPioche.this.largCarte * PanelPioche.this.coef),
+						(int) (PanelPioche.this.longCarte * PanelPioche.this.coef)
+					)
+
+				);
+			}
 		}
 
-		/**
-		 * Lorsque la souris est cliquée.
-		 * <br><br>
-		 * {@inheritDoc}
-		 */
+
+		/*     Activation      */
 		public void mousePressed(MouseEvent e)
 		{
 			if (PanelPioche.this.isBlocked) return;
@@ -184,29 +289,13 @@ public class PanelPioche extends JPanel
 
 			if (indice != null)
 			{
-
-				//PanelPioche.this.ctrl.piocher(indice);
-				//Carte c = null;//PanelPioche.this.ctrl.getCarte(indice);
-
-				System.out.println("indice = " + indice);
 				PanelPioche.this.ctrl.piocher(indice);
 				PanelPioche.this.ensCartePioche.remove(PanelPioche.this.ensCartePioche.size() - 1);
-
-				/*if (c != null)
-				{
-					c.setCache(false);
-					PanelPioche.this.ensCartePioche.remove(PanelPioche.this.ensCartePioche.size() - 1);
-
-					PanelPioche.this.repaint();
-				}*/
 
 				PanelPioche.this.repaint();
 			}
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		public void mouseMoved(MouseEvent e)
 		{
 			if (PanelPioche.this.isBlocked) return;
@@ -230,22 +319,7 @@ public class PanelPioche extends JPanel
 			PanelPioche.this.repaint();
 		}
 
-		// public void mouseExited(MouseEvent e)
-		// {
-	 	// 	int posX = e.getX();
-		// 	int posY = e.getY();
-			
-		// 	Integer indice = trouverCarte(posX, posY);
-
-		// 	if (indice != null && indice == PanelPioche.this.carteRelevee)
-		// 	{
-		// 		System.out.println("testExit " + indice);
-		// 		PanelPioche.this.carteRelevee = indice;
-		// 	}
-
-		// }
-
-		/**Cherche l'ile clique. */
+		//Cherche l'ile clique
 		private Integer trouverCarte(int x, int y)
 		{
 			for (int i = PanelPioche.this.ensCartePioche.size() - 1; i >= 0 ; i--) // parcours à l'envers pour correspondre au positionnement par IHM
@@ -260,5 +334,5 @@ public class PanelPioche extends JPanel
 
 			return null;
 		}
-	 }
+	}
 }

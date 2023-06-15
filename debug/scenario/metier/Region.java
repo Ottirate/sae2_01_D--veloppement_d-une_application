@@ -1,19 +1,43 @@
+/*
+* Auteur : Équipe 1
+* Date   : juin 2023
+* */
+
+
+/*      Paquetage      */
 package debug.scenario.metier;
 
+
+/*       Imports       */
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Représente une région d'île.
+ */
 public class Region 
 {
+
+	
+	/*      Attributs      */
 	private String    nom;
 	private List<Ile> lstIle;
 
+
+	/*    Constructeur     */
 	public Region (String nom)
 	{
 		this.nom = nom;
 		this.lstIle = new ArrayList<>();
 	}
 	
+
+	/*     Accesseurs      */
+	public List<Ile> getIles() { return this.lstIle; }
+	public String    getNom () { return this.nom;    }
+
+
+	/*      Méthodes       */
 	public boolean ajouterIle(Ile i)
 	{
 		if (i == null || this.lstIle.contains(i))
@@ -38,5 +62,4 @@ public class Region
 
 		return sRep;
 	} 
-
 }
