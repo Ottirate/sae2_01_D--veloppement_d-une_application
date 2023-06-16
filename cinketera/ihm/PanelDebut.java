@@ -91,19 +91,20 @@ public class PanelDebut extends JPanel implements ActionListener
 
 		JPanel panelTmp = new JPanel();
 		panelTmp.setPreferredSize(new Dimension(300, 200));
-		panelTmp.setOpaque(false);
+		panelTmp.setOpaque       (false                  );
 
 		//Ajout des composants
-		this.add(this.lblLogo,  BorderLayout.NORTH);
+		this.add(this.lblLogo,  BorderLayout.NORTH );
 		this.add(this.lblTexte, BorderLayout.CENTER);
-		this.add(panelTmp,      BorderLayout.SOUTH);
+		this.add(panelTmp,      BorderLayout.SOUTH );
 
 
 		if (debug)
 		{
 			JPanel panelDebug = new JPanel( new GridLayout(7, 1) );
 
-			String[] ensTest  = new String[] {
+			String[] ensTest  = new String[]
+			{
 				"Scénario libre",
 				"Croisements & Cycles",
 				"Deux joueurs & Bifurcation",
@@ -119,7 +120,7 @@ public class PanelDebut extends JPanel implements ActionListener
 
 			this.btnCommencer  = new JButton("Commencer");
 
-			this.rbUn          = new JRadioButton("Un joueur"  , true);
+			this.rbUn          = new JRadioButton("Un joueur"  , true );
 			this.rbDeux        = new JRadioButton("Deux joueur", false);
 
 			this.btg           = new ButtonGroup();
@@ -140,7 +141,7 @@ public class PanelDebut extends JPanel implements ActionListener
 
 			/*     Activation      */
 			this.btnCommencer.addActionListener(this);
-			this.ddlstTest.addActionListener(this);
+			this.ddlstTest   .addActionListener(this);
 
 			panelTmp.add(panelDebug, BorderLayout.NORTH);
 		}

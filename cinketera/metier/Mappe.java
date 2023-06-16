@@ -566,7 +566,7 @@ public class Mappe
 		List<Region> lstRegionsParcourues = new ArrayList<>();
 		List<Ile>    lstIlesParcourues    = new ArrayList<>();
 
-		int tempIles = 0;
+		int tempIles  = 0;
 		int nbMaxIles = 0;
 
 		for (Chemin c : this.lstCheminColorie)

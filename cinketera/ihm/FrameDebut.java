@@ -33,13 +33,13 @@ public class FrameDebut extends JFrame
 		this.ctrl = ctrl;
 
 		//Paramètre de base
-		this.setTitle("Choix du nombre de joueur");
-		this.setIconImage( new ImageIcon(PanelDebut.PATH + "Cinketera.png").getImage() );
+		this.setTitle    ("Choix du nombre de joueur");
+		this.setIconImage(new ImageIcon(PanelDebut.PATH + "Cinketera.png").getImage());
 
-		this.setSize(300,500);
-		this.setLocationRelativeTo(null);
+		this.setSize              (300,500);
+		this.setLocationRelativeTo(null   );
 
-		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		//Création des composants
 		this.panelD = new PanelDebut(ctrl, debug);

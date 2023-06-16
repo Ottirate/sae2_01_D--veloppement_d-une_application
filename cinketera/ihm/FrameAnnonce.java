@@ -33,24 +33,24 @@ public class FrameAnnonce extends JFrame
 	{
 		double width  = getToolkit().getScreenSize().getWidth();
 
-		this.img  = getToolkit().getImage( "./resources/images/" + imgName + ".png" );
+		this. img = getToolkit().getImage( "./resources/images/" + imgName + ".png" );
 		Image img = new ImageIcon(this.img).getImage();
-		this.img  = img.getScaledInstance(1440 / 2, 467 / 2, Image.SCALE_SMOOTH); 
+		this. img = img.getScaledInstance(1440 / 2, 467 / 2, Image.SCALE_SMOOTH); 
 
 		/*  Paramètres de base  */
-		this.setSize((int) width, 233);
+		this.setSize       ((int) width, 233);
 		this.setUndecorated(true);
 
-		this.setLocationRelativeTo(null);
-		this.setAlwaysOnTop(true);
-		this.setFocusable(false);
+		this.setLocationRelativeTo(null );
+		this.setAlwaysOnTop       (true );
+		this.setFocusable         (false);
 
-		this.setBackground(new Color(0, 0, 0, 0));
+		this.setBackground           (new Color(0, 0, 0, 0));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		/*  Visible + Animation  */
 		this.setVisible(true);
-		new Animation( this ).start();
+		new Animation  (this).start();
 	}
 
 

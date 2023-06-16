@@ -52,21 +52,21 @@ public class FrameGame extends JFrame
 		this.id   = id;
 
 		//Paramètre de base
-		this.setTitle("CinkeTerra (Joueur " + id + ")" );
-		this.setSize(1280, 925);
-		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+		this.setTitle                ("CinkeTerra (Joueur " + id + ")");
+		this.setSize                 (1280, 925                       );
+		this.setLocationRelativeTo   (null                            );
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE            );
 
 		this.setLayout(new BorderLayout());
 
 		//Création des composants
-		this.panelIles   = new PanelIles(ctrl,id);
+		this.panelIles = new PanelIles(ctrl,id);
 
 		this.panelHistorique = new JPanel();
 		this.panelHistorique.setBorder(new TitledBorder(new EtchedBorder(), "Journal de bord"));
 
 		this.txtHistorique = new JTextArea();
-		this.txtHistorique.setColumns(30);
+		this.txtHistorique.setColumns (30   );
 		this.txtHistorique.setEditable(false);
 
 		this.spHistorique = new JScrollPane(this.panelHistorique);
@@ -106,12 +106,12 @@ public class FrameGame extends JFrame
 	}
 
 	//Historique
-	public void hideHistorique () 
+	public void hideHistorique()
 	{ 
 		this.historiqueShowed = false;
 		this.maj();
 	}
-	public void showHistorique () 
+	public void showHistorique()
 	{ 
 		this.historiqueShowed = true;
 		this.maj();
