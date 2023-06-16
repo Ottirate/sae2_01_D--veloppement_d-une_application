@@ -367,7 +367,7 @@ public class Mappe
 	 * @return {@code vrai} si il a été colorié, sinon {@code faux}
 	 * @see {@link Mappe#estColoriable(Chemin)}
 	 */
-	public boolean colorier(Chemin c, int id) 
+	public boolean colorier(Chemin c, int id)
 	{
 		if (!this.estColoriable(c))
 			return false;
@@ -501,7 +501,7 @@ public class Mappe
 	private boolean ileAppartientALigne(Ile i)
 	{
 		for (Chemin chemin : i.getCheminAutour())
-			if (this.lstCheminColorie.contains(chemin)) return true;
+			if (this.lstCheminColorie.contains(chemin) && (this.feutre.equals(chemin.getCouleurPrim()) || this.feutre.equals(chemin.getCouleurSec()))) return true;
 
 		return i.equals(this.ileDeDepart);
 	}
@@ -582,7 +582,7 @@ public class Mappe
 			lstIlesParcourues.add(ile);
 		}
 
-		lstIlesParcourues = lstIlesParcourues.stream().distinct().toList();
+		lstIlesParcourues    = lstIlesParcourues   .stream().distinct().toList();
 		lstRegionsParcourues = lstRegionsParcourues.stream().distinct().toList();
 
 		for (Region r : lstRegionsParcourues)
