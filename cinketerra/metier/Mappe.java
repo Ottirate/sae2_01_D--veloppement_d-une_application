@@ -181,7 +181,7 @@ public class Mappe
 	public void initialiserManche()
 	{
 		// S'il n'y a plus de couleurs disponibles
-		if (Mappe.colors.size() == 0)
+		if (Mappe.colors != null && Mappe.colors.size() == 0)
 		{
 			this.ctrl.finDePartie();
 			Mappe.colors.add(Color.WHITE);
