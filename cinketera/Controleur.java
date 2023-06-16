@@ -419,18 +419,6 @@ public class Controleur implements WindowStateListener
 		this.metier1.melangerPioche(etat);
 	}
 
-	//Méthode de forçage de la bifurcation
-	// public void setTourEventBifurcation( int tour )
-	// {
-	//  	Mappe.setTourEventBifurcation( tour );
-	// }
-
-	// Méthode de forçage de la carte bonus
-	// public void forceCarteBonus(CarteBonus cb)
-	// {
-	// 	Mappe.forceCarteBonus(cb);
-	// }
-
 	public static void cacherCarte(boolean etat)
 	{
 		Controleur.cartesCachees = etat;
