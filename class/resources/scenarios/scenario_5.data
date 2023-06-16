@@ -1,0 +1,14 @@
+1	true	3	CompteDouble	bleu
+
+Jaune	secondaire
+1	Mutaa	Milaù	bleu
+Rouge	primaire
+Multi	secondaire
+1	CompteDouble
+2	Milaù	Laçao	bleu
+Vert	primaire
+bifurcation
+2	Laçao	Tokha
+Jaune	secondaire
+1	Tokha	Tiamù	bleu
+Rouge	secondaire
