@@ -54,7 +54,7 @@ public class Chemin
 	public Color getCouleurPrim() { return this.coulrPrim; }
 	public Color getCouleurSec () { return this.coulSec  ; }
 
-	public boolean estColorie  () { return this.coulrPrim != null && this.coulSec != null ; }
+	public boolean estColorie  () { return this.coulrPrim != null || this.coulSec != null ; }
 
 
 	/*     Modifieurs      */
