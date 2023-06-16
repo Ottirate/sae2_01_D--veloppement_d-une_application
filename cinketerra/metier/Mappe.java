@@ -628,10 +628,10 @@ public class Mappe
 				if (!c.estColorie())
 					continue;
 
-				if (c.getCouleurPrim().equals(Color.RED))
+				if (c.getCouleurPrim().equals(Color.RED) || c.getCouleurSec().equals(Color.RED))
 					red = true;
 				
-				if (c.getCouleurPrim().equals(Color.BLUE))
+				if (c.getCouleurPrim().equals(Color.BLUE) || c.getCouleurSec().equals(Color.BLUE))
 					blue = true;
 			}
 
