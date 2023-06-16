@@ -513,7 +513,6 @@ public class Controleur implements WindowStateListener
 							if (cb.name().equals(ensInfo[0]))
 							{
 								Mappe.forceCarteBonus(cb);
-								System.out.println(ensInfo[0]);
 							}
 					}
 				}
