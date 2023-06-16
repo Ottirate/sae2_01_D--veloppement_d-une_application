@@ -5,13 +5,14 @@
 
 
 /*      Paquetage      */
-package cinketerra.ihm;
+package cinketera.ihm;
 
 
 /*       Imports       */
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import cinketerra.Controleur;
+
+import cinketera.Controleur;
 
 
 /**

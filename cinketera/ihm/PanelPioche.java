@@ -5,7 +5,7 @@
 
 
 /*      Paquetage      */
-package cinketerra.ihm;
+package cinketera.ihm;
 
 
 
@@ -16,9 +16,9 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-import cinketerra.Controleur;
-import cinketerra.metier.Carte;
-import cinketerra.metier.PaquetDeCarte;
+import cinketera.Controleur;
+import cinketera.metier.Carte;
+import cinketera.metier.PaquetDeCarte;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;

@@ -4,7 +4,7 @@
 * */
 
 /*      Paquetage      */
-package cinketerra.metier;
+package cinketera.metier;
 
 /*       Imports       */
 import java.util.List;

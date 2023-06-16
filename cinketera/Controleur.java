@@ -5,7 +5,7 @@
 
 
 /*      Paquetage      */
-package cinketerra;
+package cinketera;
 
 
 import java.util.ArrayList;
@@ -18,8 +18,8 @@ import java.util.Scanner;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import cinketerra.ihm.*;
-import cinketerra.metier.*;
+import cinketera.ihm.*;
+import cinketera.metier.*;
 
 import java.awt.Color;
 import java.awt.Dimension;

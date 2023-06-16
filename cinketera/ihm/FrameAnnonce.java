@@ -1,4 +1,4 @@
-package cinketerra.ihm;
+package cinketera.ihm;
 
 import java.awt.Color;
 import java.awt.Graphics;

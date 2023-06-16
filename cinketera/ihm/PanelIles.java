@@ -5,7 +5,7 @@
 
 
 /*      Paquetage      */
-package cinketerra.ihm;
+package cinketera.ihm;
 
 
 
@@ -14,8 +14,8 @@ package cinketerra.ihm;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-import cinketerra.Controleur;
-import cinketerra.metier.*;
+import cinketera.Controleur;
+import cinketera.metier.*;
 
 import java.awt.*;
 import java.awt.event.*;

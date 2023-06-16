@@ -1,4 +1,4 @@
-package cinketerra.ihm;
+package cinketera.ihm;
 
 import java.awt.BorderLayout;
 
@@ -6,8 +6,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import cinketerra.Controleur;
-import cinketerra.metier.Carte;
+import cinketera.Controleur;
+import cinketera.metier.Carte;
 
 import java.awt.event.*;
 

@@ -1,10 +1,10 @@
-package cinketerra.metier;
+package cinketera.metier;
 
 
 /** Lecture */
 import java.util.Scanner;
 
-import cinketerra.Controleur;
+import cinketera.Controleur;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -388,7 +388,6 @@ public class Mappe
 				this.colBonus = c.getIleB().getCoul();
 
 			this.bonusBis = true;
-			//(this.carteBonusActive && !this.bonusAEteActive && Mappe.carteBonus.ordinal() == 0)
 		}
 
 		this.lstCheminColorie.add(c);
@@ -628,10 +627,10 @@ public class Mappe
 				if (!c.estColorie())
 					continue;
 
-				if (c.getCouleurPrim().equals(Color.RED) || c.getCouleurSec().equals(Color.RED))
+				if (Color.RED.equals(c.getCouleurPrim()) || Color.RED.equals(c.getCouleurSec()))
 					red = true;
 				
-				if (c.getCouleurPrim().equals(Color.BLUE) || c.getCouleurSec().equals(Color.BLUE))
+				if (Color.BLUE.equals(c.getCouleurPrim()) || Color.BLUE.equals(c.getCouleurSec()))
 					blue = true;
 			}
 

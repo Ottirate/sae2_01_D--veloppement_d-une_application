@@ -1,9 +1,9 @@
-# Cinke Terra
+# Cinke Tera
 
 
 ## Qu'est ce que c'est ?
 
-Cinke Terra, ou en français, les cinq terres et un jeu qui consiste à relier 21 îles principales, diviser en 5 régions, avec des voies maritimes.
+Cinke Tera, ou en français, les cinq terres et un jeu qui consiste à relier 21 îles principales, diviser en 5 régions, avec des voies maritimes.
 Le jeu se joue entièrement à la souris, il est donc nécessaire d'en avoir une.
 Il est possible de jouer à deux, mais on peut bien sûr jouer seul de notre côté.
 
@@ -25,7 +25,7 @@ Pas de panique, les îles atteignables seront surlignées de leur couleur afin d
 ## Comment lancer le jeu
 1. Veuillez vous positionner dans le fichier envoyé, puis avec la commande javac @compile.list @option.list, compilez les fichiers java.
 2. Ensuite, déplacer vous dans le fichier class avec la commande cd class
-3. Lancer l'application avec la commande java cinketerra.Controleur
+3. Lancer l'application avec la commande java cinketera.Controleur
 
 
 

@@ -5,7 +5,7 @@
 
 
 /*      Paquetage      */
-package cinketerra.metier;
+package cinketera.metier;
 
 
 /**

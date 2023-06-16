@@ -5,7 +5,7 @@
 
 
 /*      Paquetage      */
-package cinketerra.ihm;
+package cinketera.ihm;
 
 
 /*       Imports       */
@@ -17,9 +17,9 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
-import cinketerra.Controleur;
-import cinketerra.metier.Mappe;
-import cinketerra.metier.Mouvement;
+import cinketera.Controleur;
+import cinketera.metier.Mappe;
+import cinketera.metier.Mouvement;
 
 import java.awt.BorderLayout;
 

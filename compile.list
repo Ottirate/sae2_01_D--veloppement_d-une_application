@@ -1,17 +1,17 @@
-./cinketerra/Controleur.java
+./cinketera/Controleur.java
 
-./cinketerra/ihm/FrameCartes.java
-./cinketerra/ihm/FrameGame.java
-./cinketerra/ihm/PanelIles.java
-./cinketerra/ihm/PanelPioche.java
-./cinketerra/ihm/FrameDebut.java
-./cinketerra/ihm/PanelDebut.java
-./cinketerra/ihm/FrameAnnonce.java
+./cinketera/ihm/FrameCartes.java
+./cinketera/ihm/FrameGame.java
+./cinketera/ihm/PanelIles.java
+./cinketera/ihm/PanelPioche.java
+./cinketera/ihm/FrameDebut.java
+./cinketera/ihm/PanelDebut.java
+./cinketera/ihm/FrameAnnonce.java
 
-./cinketerra/metier/Carte.java
-./cinketerra/metier/Chemin.java
-./cinketerra/metier/Ile.java
-./cinketerra/metier/Mappe.java
-./cinketerra/metier/PaquetDeCarte.java
-./cinketerra/metier/Region.java
-./cinketerra/metier/Mouvement.java
+./cinketera/metier/Carte.java
+./cinketera/metier/Chemin.java
+./cinketera/metier/Ile.java
+./cinketera/metier/Mappe.java
+./cinketera/metier/PaquetDeCarte.java
+./cinketera/metier/Region.java
+./cinketera/metier/Mouvement.java
