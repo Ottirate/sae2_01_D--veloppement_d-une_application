@@ -256,8 +256,6 @@ public class PanelIles extends JPanel
 					g2.setColor(c.getCouleurSec());
 					g2.setStroke(new BasicStroke(5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, pointille , 2.0f));
 					g2.drawLine(x1, y1, x2, y2);
-
-					System.out.println("Deux couleurs bitches");
 				}
 
 			}
