@@ -483,8 +483,6 @@ public class Mappe
 			return (this.ileAppartientALigne(ileB) && this.bonneCouleur(ileA)) || (this.ileAppartientALigne(ileA) && this.bonneCouleur(ileB));
 		else
 			return (this.cheminsColorieAutour(ileB) && this.bonneCouleur(ileA)) || (this.cheminsColorieAutour(ileA) && this.bonneCouleur(ileB));
-
-		//return false;
 	}
 
 	private boolean cheminsColorieAutour (Ile i)
