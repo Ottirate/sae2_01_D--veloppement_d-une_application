@@ -1,8 +1,7 @@
-2	true	0	Double	rouge
+1	true	0	Double	rouge
 
 Jaune	primaire
 1	Ticó	Laçao	rouge
-2	Mutaa	Milaù	bleu
 Jaune	secondaire
 1	Laçao	Milaù	rouge
 Multi	primaire
@@ -10,3 +9,4 @@ Brun	primaire
 Rouge	primaire
 
 Double
+Jaune	primaire
