@@ -3,20 +3,20 @@
 
 ## Qu'est ce que c'est ?
 
-Cinke Tera, ou en français, les cinq terres et un jeu qui consiste à relier 21 îles principales, diviser en 5 régions, avec des voies maritimes.
+Cinke Tera, ou en français, les cinq terres et un jeu qui consiste à relier 21 îles principales, divisées en 5 régions, avec des voies maritimes.
 Le jeu se joue entièrement à la souris, il est donc nécessaire d'en avoir une.
 Il est possible de jouer à deux, mais on peut bien sûr jouer seul de notre côté.
 
 
 ## Les règles
-La partie se déroule en deux manches, chacune composé aléatoirement de 5 à 10 tours. À chaque début de tour, vous devez piocher une carte dans le paquet. Il existe deux types de cartes : les bords noirs et les bords blancs. Chaque type est décomposé en 5 couleurs (rose, gris, vert, jaune et multicouleur)
+La partie se déroule en deux manches, chacune composées aléatoirement de 5 à 10 tours. À chaque début de tour, vous devez piocher une carte dans le paquet. Il existe deux types de cartes : les bords noirs et les bords blancs. Chaque type est décomposé en 5 couleurs (rose, gris, vert, jaune et multicouleur)
 Vous commencerez sur une île de départ qui dépend de la couleur de votre feutre : pas besoin de se souvenir des noms, les îles seront en surbrillance en début de partie.
 
 Vous n'avez pas le droit de :
 - Faire une boucle avec la même couleur
 - Croiser des routes maritimes entre elles qu'importe leur couleur
 - Créer une route maritime qui ne commence pas sur une extrémité de la couleur en jeu
-- Faire une route qui ne lie pas une île de la couleur de la carte pioché
+- Faire une route qui ne lie pas une île de la couleur de la carte piochée
 
 Une fois toutes les cartes noires piochées, la deuxième manche se lancera avec les mêmes règles, seule la couleur change.
 Pas de panique, les îles atteignables seront surlignées de leur couleur afin de vous aider dans votre partie.

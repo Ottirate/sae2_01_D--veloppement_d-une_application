@@ -8,10 +8,10 @@
 package cinketera;
 
 
+/*       Imports       */
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-/*       Imports       */
 import java.util.List;
 import java.util.Scanner;
 
@@ -143,7 +143,7 @@ public class Controleur implements WindowStateListener
 		else         return this.metier2.getRegions();
 	}
 
-	public Color   getColFeutre(int id) 
+	public Color getColFeutre(int id) 
 	{ 
 		if (id == 1) return this.metier1.getColFeutre();
 		else         return this.metier2.getColFeutre();
@@ -418,18 +418,6 @@ public class Controleur implements WindowStateListener
 	{
 		this.metier1.melangerPioche(etat);
 	}
-
-	//Méthode de forçage de la bifurcation
-	// public void setTourEventBifurcation( int tour )
-	// {
-	//  	Mappe.setTourEventBifurcation( tour );
-	// }
-
-	// Méthode de forçage de la carte bonus
-	// public void forceCarteBonus(CarteBonus cb)
-	// {
-	// 	Mappe.forceCarteBonus(cb);
-	// }
 
 	public static void cacherCarte(boolean etat)
 	{
