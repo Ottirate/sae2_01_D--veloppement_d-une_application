@@ -1,13 +1,16 @@
-1	true	3	CompteDouble	bleu
+1	true	8	CompteDouble	bleu
 
+Brun	primaire
+1	Mutaa	Mokah	bleu
+Rouge	primaire
+1	Mokah	Fuego	bleu
+Brun	secondaire
+1	Fuego	Kiola	bleu
+Vert	secondaire
+1	Kita	Kiola	bleu
+Multi	secondaire
+1	Kita	Ticó	bleu
 Jaune	primaire
 1	Mutaa	Milaù	bleu
-Rouge	primaire
-Multi	primaire
-CompteDouble
-2	Milaù	Laçao	bleu
-Vert	primaire
-bifurcation
-2	Laçao	Tokha
-Brun	primaire
-1	Tokha	Tiamù	bleu
+Rouge	secondaire
+1	Milaù	Loà	bleu
